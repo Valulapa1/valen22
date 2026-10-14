@@ -7,15 +7,18 @@
  */
 
 export const eventConfig = {
-  id: "estas-para-mas-bsas-2026",
-  name: "Estoy Para Más — Edición Buenos Aires 2026",
-  ticketName: "Entrada general",
-  /** Precio fijo por entrada, sin fecha límite ni descuento por cantidad. */
-  ticketPrice: 45000,
+  id: "estas-para-mas-bsas-2027",
+  name: "Estoy Para Más — 2.ª edición Buenos Aires 2027",
+  ticketName: "Entrada general · Preventa 2 días",
+  /** Precio de preventa por entrada (incluye sábado y domingo). */
+  ticketPrice: 50000,
   currency: "ARS",
   maxTicketsPerPurchase: 5,
-  eventDate: "2026-09-20",
-  eventTime: "09:00",
+  /** Primer día del evento (se usa para la cuenta regresiva). */
+  eventDate: "2027-03-06",
+  /** Texto de fecha que se muestra en correos y pantallas. */
+  eventDateLabel: "Sábado 6 y domingo 7 de marzo de 2027",
+  eventTime: "09:00 a 20:00",
   location:
     "Salón privado en Capital Federal, Buenos Aires (la dirección exacta se envía al confirmar)",
   /** Aparece en el resumen de la tarjeta del comprador (máx. 22 caracteres). */

@@ -77,7 +77,7 @@ window.epmTrack = function(event, meta){
   }catch(e){}
 })();
 </script>
-<meta name="description" content="Una experiencia de expansión de identidad para mujeres que saben que su vida puede ser más grande. 20 de septiembre de 2026, Buenos Aires.">
+<meta name="description" content="Una experiencia de expansión de identidad para mujeres que saben que su vida puede ser más grande. Sábado 6 y domingo 7 de marzo de 2027, Buenos Aires.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -768,24 +768,24 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         <div class="eyebrow">Evento presencial · Buenos Aires</div>
         <h1>Hay una forma de vivir que todavía no conoces</h1>
         <p class="hero-sub">
-          Un solo dia, una sola decision para reconocer que estas para mas
+          Dos días, una sola decisión para reconocer que estás para más
         </p>
         <div class="hero-story">
-          <b>El 20 de septiembre dejas de esperar.</b>
+          <b>El 6 de marzo dejás de esperar.</b>
         </div>
         <div class="hero-ctas">
           <a href="#reservar" class="btn btn-primary">Ver qué pasa ese día <span class="arw">→</span></a>
         </div>
-        <div class="hero-micro"><span class="dot"></span> Domingo 20 de septiembre · $45.000</div>
+        <div class="hero-micro"><span class="dot"></span> Sábado 6 y domingo 7 de marzo · Preventa $50.000</div>
       </div>
 
     </div>
 
     <!-- stats de confianza -->
     <div class="hero-stats">
-      <div class="hstat"><b>11 hs</b><span>Una transformación de verdad de 9 am a 8 pm</span></div>
-      <div class="hstat"><b>Domingo</b><span>20 de septiembre</span></div>
-      <div class="hstat"><b>150</b><span>Mujeres en un mismo salón premium</span></div>
+      <div class="hstat"><b>2 días</b><span>Una transformación de verdad, de 9 am a 8 pm sábado y domingo</span></div>
+      <div class="hstat"><b>6 y 7</b><span>de marzo de 2027</span></div>
+      <div class="hstat"><b>2.ª edición</b><span>Mujeres en un mismo salón premium · lugares limitados</span></div>
       <div class="hstat"><b>Bs. As.</b><span>Capital Federal. La dirección exacta llega al confirmar</span></div>
     </div>
   </div>
@@ -813,7 +813,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         allowfullscreen></iframe>
     </div>
 
-    <!-- Banner de ponentes -->
+    <!-- Banner de ponentes: oculto hasta anunciar las ponentes de la 2.ª edición (2027).
     <figure class="ponentes rv">
       <img
         src="assets/img/ponentes-horizontal.jpeg"
@@ -823,17 +823,50 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         alt="Ponentes de Estoy Para Más: Trinidad Kuroki, Valentina Parodi, Analuz Torres y Melany Costanzi"
         loading="lazy">
     </figure>
+    -->
+
+    <!-- Tipos de entrada 2027 -->
+    <style>
+      .tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:1124px;margin:0 auto 32px}
+      @media (max-width:860px){.tiers{grid-template-columns:1fr}}
+      .tier{border:1px solid var(--linea);border-radius:var(--r);padding:26px;background:var(--papel);display:flex;flex-direction:column;gap:10px}
+      .tier.feat{border-color:var(--bronce)}
+      .tier-name{font-family:var(--mono,monospace);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronce)}
+      .tier-price{font-family:var(--display,serif);font-size:2.2rem;line-height:1}
+      .tier p{margin:0;font-size:.92rem}
+      .tier .btn{margin-top:auto}
+    </style>
+    <div class="tiers rv">
+      <div class="tier feat">
+        <div class="tier-name">General · Preventa</div>
+        <div class="tier-price">$50.000</div>
+        <p>Los dos días completos, sábado y domingo de 9 a 20 hs.</p>
+        <a href="#comprar" class="btn btn-dark btn-block">Comprar entrada <span class="arw">→</span></a>
+      </div>
+      <div class="tier">
+        <div class="tier-name">VIP</div>
+        <div class="tier-price">USD 200</div>
+        <p>⚠ [Beneficios de la entrada VIP]</p>
+        <a href="https://wa.me/5493541694363?text=Hola%20Vale!%20Quiero%20info%20de%20la%20entrada%20VIP%20de%20Estoy%20Para%20M%C3%A1s" class="btn btn-block" style="border:1px solid var(--tinta)">Quiero la VIP</a>
+      </div>
+      <div class="tier">
+        <div class="tier-name">Platino · Solo 10 lugares</div>
+        <div class="tier-price">USD 750</div>
+        <p>⚠ [Beneficios de la entrada Platino]</p>
+        <a href="https://wa.me/5493541694363?text=Hola%20Vale!%20Quiero%20info%20de%20la%20entrada%20Platino%20de%20Estoy%20Para%20M%C3%A1s" class="btn btn-block" style="border:1px solid var(--tinta)">Quiero la Platino</a>
+      </div>
+    </div>
 
     <!-- Checkout: precio + cupos + reserva -->
     <div class="entry-buy checkout-solo rv">
 
         <div class="price-row">
-          <div class="price">$45.000</div>
-          <div class="price-alt">o en cuotas</div>
+          <div class="price">$50.000</div>
+          <div class="price-alt">preventa · los dos días · o en cuotas</div>
         </div>
         <p class="anchor">
-          Once horas por menos de lo que gastás en dos salidas. La diferencia es que de acá
-          salís con la decisión tomada el mismo día, no dentro de dos años.
+          Dos días completos por menos de lo que gastás en un fin de semana de salidas. La diferencia
+          es que de acá salís con la decisión tomada, no dentro de dos años.
         </p>
 
         <a href="#comprar" class="btn btn-dark btn-block">Reservo mi lugar <span class="arw">→</span></a>
@@ -952,9 +985,9 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
 <section class="sec tight" id="el-dia" style="background:var(--arena);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="eyebrow">Once horas</div>
-      <h2>Qué pasa ese día.</h2>
-      <p class="lead">De 9 a 20. Once horas es mucho tiempo: tenés derecho a saber en qué las vas a invertir.</p>
+      <div class="eyebrow">Dos días</div>
+      <h2>Qué pasa esos días.</h2>
+      <p class="lead">Sábado y domingo, de 9 a 20. Es mucho tiempo: tenés derecho a saber en qué lo vas a invertir.</p>
     </div>
 
     
@@ -1033,7 +1066,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
   <div class="band-bg" style="background-image:url('assets/img/banda-final.jpg')"></div>
   <div class="wrap band-in">
     <div class="eyebrow center">Última llamada</div>
-    <h2>El 20 de septiembre pasa igual.</h2>
+    <h2>El 6 de marzo pasa igual.</h2>
     <p>La única diferencia es si estás adentro o mirando desde afuera.</p>
 
     <div class="countdown" id="cd">
@@ -1043,15 +1076,15 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
     </div>
 
     <div class="band-perks">
-      <div class="perk"><b>Es domingo</b>No pedís el día ni avisás en el trabajo: ya lo tenés libre</div>
-      <div class="perk"><b>$45.000 la entrada</b>Pago único o en cuotas con Mercado Pago</div>
+      <div class="perk"><b>Es fin de semana</b>Sábado y domingo: no pedís el día ni avisás en el trabajo</div>
+      <div class="perk"><b>Preventa $50.000</b>Los dos días. Pago único o en cuotas con Mercado Pago</div>
       <div class="perk"><b>¿Dudás? Escribime</b>Por WhatsApp, antes de pagar. Te contesto yo</div>
     </div>
 
     <a href="#comprar" class="btn btn-primary" style="padding:19px 44px;font-size:1rem">
       Reservo mi lugar <span class="arw">→</span>
     </a>
-    <p class="band-last">Cuando se llenen los 150 lugares, la próxima edición es el año que viene.</p>
+    <p class="band-last">Los lugares son limitados. Cuando se completen, la próxima edición es el año que viene.</p>
   </div>
 </section>
 
@@ -1093,7 +1126,7 @@ addEventListener('scroll',()=>{
 },{passive:true});
 
 /* contador al 20/09/2026 */
-const target=new Date('2026-09-20T09:00:00-03:00');
+const target=new Date('2027-03-06T09:00:00-03:00');
 function tickCd(){
   const now=new Date(), diff=target-now;
   if(diff>0){

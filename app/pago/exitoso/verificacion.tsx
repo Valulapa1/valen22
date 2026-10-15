@@ -112,7 +112,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
           comprobante.
         </p>
         <div className="pago-actions">
-          <a className="btn btn-primary" href="/">
+          <a className="btn btn-primary" href="/estoy-para-mas">
             Volver al inicio
           </a>
         </div>
@@ -167,7 +167,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
           exacta del salón se envía por correo antes del evento.
         </p>
         <div className="pago-actions">
-          <a className="btn btn-primary" href="/">
+          <a className="btn btn-primary" href="/estoy-para-mas">
             Volver al inicio
           </a>
         </div>
@@ -190,7 +190,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
           <a className="btn btn-primary" href="/#comprar">
             Intentar de nuevo
           </a>
-          <a className="btn btn-outline" href="/">
+          <a className="btn btn-outline" href="/estoy-para-mas">
             Volver al inicio
           </a>
         </div>
@@ -230,7 +230,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
           >
             Volver a verificar
           </button>
-          <a className="btn btn-outline" href="/">
+          <a className="btn btn-outline" href="/estoy-para-mas">
             Volver al inicio
           </a>
         </div>
@@ -254,7 +254,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
         WhatsApp y lo resolvemos.
       </p>
       <div className="pago-actions">
-        <a className="btn btn-primary" href="/">
+        <a className="btn btn-primary" href="/estoy-para-mas">
           Volver al inicio
         </a>
       </div>

@@ -2,9 +2,14 @@
 const nextConfig = {
   async rewrites() {
     return {
-      // La landing es un HTML estático servido desde public/. El rewrite se
-      // resuelve antes que el filesystem para que "/" apunte al archivo.
-      beforeFiles: [{ source: "/", destination: "/index.html" }],
+      // Las landings son HTML estáticos servidos desde public/. Los rewrites se
+      // resuelven antes que el filesystem.
+      beforeFiles: [
+        // Home: página personal de Valentina (programas, historia, testimonios).
+        { source: "/", destination: "/inicio.html" },
+        // Landing del evento con la venta de entradas.
+        { source: "/estoy-para-mas", destination: "/index.html" },
+      ],
       afterFiles: [],
       fallback: [],
     };

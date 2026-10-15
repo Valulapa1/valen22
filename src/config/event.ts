@@ -11,7 +11,7 @@ export const eventConfig = {
   name: "Estoy Para Más — 2.ª edición Buenos Aires 2027",
   ticketName: "Entrada general · Preventa 2 días",
   /** Precio de preventa por entrada (incluye sábado y domingo). */
-  ticketPrice: 50000,
+  ticketPrice: 40000,
   currency: "ARS",
   maxTicketsPerPurchase: 5,
   /** Primer día del evento (se usa para la cuenta regresiva). */

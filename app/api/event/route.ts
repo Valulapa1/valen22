@@ -20,5 +20,7 @@ export async function GET() {
     eventDate: eventConfig.eventDate,
     eventTime: eventConfig.eventTime,
     location: eventConfig.location,
+    presaleEndsAt: eventConfig.presaleEndsAt,
+    tiers: eventConfig.tiers,
   });
 }

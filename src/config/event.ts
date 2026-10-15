@@ -21,6 +21,19 @@ export const eventConfig = {
   eventTime: "09:00 a 20:00",
   location:
     "Salón privado en Capital Federal, Buenos Aires (la dirección exacta se envía al confirmar)",
+  /** Último día de la preventa de la entrada general (inclusive). */
+  presaleEndsAt: "2026-12-15",
+  /** WhatsApp al que se deriva cada reserva para coordinar la transferencia. */
+  whatsappNumber: "5493541694363",
+  /**
+   * Tipos de entrada. Las reservas se pagan por transferencia: la web toma los
+   * datos y deriva a WhatsApp. El precio de cada tipo sale siempre de acá.
+   */
+  tiers: {
+    general: { label: "General · Preventa", price: 40000, currency: "ARS" },
+    vip: { label: "VIP", price: 200, currency: "USD" },
+    platino: { label: "Platino", price: 750, currency: "USD", limited: 10 },
+  },
   /** Aparece en el resumen de la tarjeta del comprador (máx. 22 caracteres). */
   statementDescriptor: "ESTASPARAMAS",
   contactEmail: "hola@estasparamas.com",

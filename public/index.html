@@ -860,7 +860,8 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           <li>Sábado y domingo, de 9 a 20 hs</li>
           <li>Sábado: transformación personal con coaching vivencial</li>
           <li>Domingo: construir un entorno de alto valor</li>
-          <li>Dinámicas, charlas y comunidad de mujeres</li>
+          <li><b>Bonus preventa:</b> una clase online con Valentina por mes hasta el evento</li>
+          <li><b>Venite con una amiga:</b> precio especial por 2 entradas</li>
         </ul>
         <a href="#comprar" data-tier="general" class="btn btn-dark btn-block">Reservar General <span class="arw">→</span></a>
       </div>
@@ -872,7 +873,8 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         <ul class="tier-list">
           <li>Zona preferencial, en las primeras filas</li>
           <li>Desayuno incluido los dos días</li>
-          <li>Kit de regalo del evento</li>
+          <li>Invitación especial entregada en mano: una caja de regalo</li>
+          <li>Merienda exclusiva los días previos al evento</li>
         </ul>
         <a href="#comprar" data-tier="vip" class="btn btn-dark btn-block">Reservar VIP <span class="arw">→</span></a>
       </div>
@@ -1114,6 +1116,36 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
   </div>
 </section>
 
+<!-- ============ GALERÍA 1.ª EDICIÓN ============ -->
+<section class="sec" id="galeria">
+  <style>
+    .gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:300px;gap:14px;max-width:1124px;margin:0 auto}
+    .gal img{width:100%;height:100%;object-fit:cover;display:block;border-radius:var(--r)}
+    .gal img:first-child{grid-column:span 2}
+    @media (max-width:760px){
+      .gal{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:200px;gap:10px}
+      .gal img:last-child{display:none}
+    }
+  </style>
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow center">Primera edición · 20 de septiembre de 2026</div>
+      <h2>Así se vivió.</h2>
+      <p class="lead">Más de 70 mujeres, un mismo salón y un día que no se olvida.</p>
+    </div>
+    <div class="gal rv">
+      <img src="/assets/img/evento/vale-escenario-logo.jpg" alt="Valentina sonriendo en el escenario de Estoy Para Más" loading="lazy">
+      <img src="/assets/img/evento/abrazo-escenario.jpg" alt="Valentina abraza a una asistente emocionada en el escenario" loading="lazy">
+      <img src="/assets/img/evento/manos-arriba.jpg" alt="Ronda de mujeres con las manos en alto durante una dinámica" loading="lazy">
+      <img src="/assets/img/evento/abrazo.jpg" alt="Dos asistentes abrazadas al cierre de una dinámica" loading="lazy">
+      <img src="/assets/img/evento/baile.jpg" alt="Asistentes bailando y riendo juntas" loading="lazy">
+      <img src="/assets/img/evento/panel-escenario.jpg" alt="Valentina conversa con tres invitadas en el escenario" loading="lazy">
+      <img src="/assets/img/evento/encuentro-1.jpg" alt="Dos mujeres se miran y sonríen durante una dinámica" loading="lazy">
+      <img src="/assets/img/evento/aplausos.jpg" alt="El público aplaude de pie una charla" loading="lazy">
+    </div>
+  </div>
+</section>
+
 <!-- ============ HISTORIA ============ -->
 <section class="sec dark" id="historia">
   <div class="wrap">
@@ -1124,6 +1156,28 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           “Mi trabajo no es que me sigas, es que aprendas a confiar en vos misma y construyas tu vida 10/10.”
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CAPTURA DE CONTACTO (inline) ============ -->
+<section class="sec tight lead-capture" id="regalo">
+  <div class="wrap">
+    <div class="lc-card rv">
+      <div class="lc-copy">
+        <div class="eyebrow">¿Todavía lo estás pensando?</div>
+        <h2>Recibí gratis una clase de Valentina.</h2>
+        <p class="lead">Dejame tus datos y te la mando por WhatsApp. Además, te enterás primero de las novedades del evento, antes de que suba la preventa.</p>
+      </div>
+      <form class="lc-form" data-lead-form data-source="inline_evento" novalidate>
+        <div class="field"><label for="lc-nombre">Nombre</label><input id="lc-nombre" name="firstName" autocomplete="given-name" required></div>
+        <div class="field"><label for="lc-wp">WhatsApp</label><input id="lc-wp" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+54 9 11 ..." required></div>
+        <div class="field"><label for="lc-email">Email <span style="text-transform:none;letter-spacing:0">(opcional)</span></label><input id="lc-email" name="email" type="email" inputmode="email" autocomplete="email"></div>
+        <div class="field"><label for="lc-interes">¿Qué entrada te interesa?</label>
+          <select id="lc-interes" name="interest"><option value="">Todavía no sé</option><option value="general">General</option><option value="vip">VIP</option><option value="platino">Platino</option></select></div>
+        <p class="lc-msg" role="status" aria-live="polite"></p>
+        <button type="submit" class="btn btn-primary btn-block">Quiero mi clase de regalo <span class="arw">→</span></button>
+      </form>
     </div>
   </div>
 </section>
@@ -1423,6 +1477,127 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       window.epmTrack('checkout_viewed', {});
     });
   });
+})();
+</script>
+
+<!-- ============ VENTANA DE BIENVENIDA (captura de contacto) ============ -->
+<style>
+.lead-capture{background:var(--arena);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.lc-card{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+@media (max-width:860px){.lc-card{grid-template-columns:1fr;gap:28px}}
+.lc-form{background:var(--papel);border:1px solid var(--linea);border-radius:var(--r);padding:28px}
+.lc-form .field{margin-bottom:14px}
+.lc-form input,.lc-form select{width:100%;padding:13px 15px;border:1px solid var(--linea);background:#fff;font-family:var(--body);font-size:.96rem;border-radius:var(--r);color:var(--tinta)}
+.lc-form input:focus,.lc-form select:focus{outline:none;border-color:var(--bronce);box-shadow:0 0 0 3px rgba(168,124,79,.13)}
+.lc-form label{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);margin-bottom:6px}
+.lc-msg{min-height:1.2em;margin:0 0 12px;font-size:.9rem;color:#B0473E}
+.lc-msg.ok{color:#2F4F2B}
+.lm-backdrop{position:fixed;inset:0;background:rgba(26,16,23,.62);display:none;align-items:center;justify-content:center;padding:16px;z-index:200;backdrop-filter:blur(3px)}
+.lm-backdrop.open{display:flex}
+.lm{position:relative;width:100%;max-width:880px;max-height:calc(100svh - 32px);overflow:auto;background:var(--papel);border-radius:14px;display:grid;grid-template-columns:.9fr 1.1fr;box-shadow:0 30px 80px -30px rgba(0,0,0,.55)}
+@media (max-width:760px){.lm{grid-template-columns:1fr}.lm-photo{height:170px!important}}
+.lm-photo{background:url('/assets/img/evento/abrazo-escenario.jpg') center 30%/cover;min-height:100%}
+.lm-body{padding:34px 32px 30px}
+.lm-body h2{font-size:clamp(1.6rem,3.2vw,2.2rem);line-height:1.08;margin:10px 0 10px}
+.lm-body p.lead{font-size:1rem;margin:0 0 18px}
+.lm-close{position:absolute;top:10px;right:10px;width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.9);color:var(--tinta);font-size:22px;line-height:1;cursor:pointer}
+.lm .lc-form{background:none;border:none;padding:0}
+.lm-skip{display:block;margin:12px auto 0;background:none;border:none;color:var(--gris);font-size:.85rem;text-decoration:underline;cursor:pointer}
+</style>
+<div class="lm-backdrop" id="lead-modal" aria-hidden="true">
+  <div class="lm" role="dialog" aria-modal="true" aria-labelledby="lm-title">
+    <button type="button" class="lm-close" aria-label="Cerrar" data-lm-close>×</button>
+    <div class="lm-photo" aria-hidden="true"></div>
+    <div class="lm-body">
+      <div class="eyebrow">Un regalo antes de seguir</div>
+      <h2 id="lm-title">Recibí gratis una clase de Valentina.</h2>
+      <p class="lead">Dejame tus datos y te la mando por WhatsApp. Y te enterás primero de las novedades de Estoy Para Más, antes de que suba la preventa.</p>
+      <form class="lc-form" data-lead-form data-source="popup_evento" novalidate>
+        <div class="field"><label for="lm-nombre">Nombre</label><input id="lm-nombre" name="firstName" autocomplete="given-name" required></div>
+        <div class="field"><label for="lm-wp">WhatsApp</label><input id="lm-wp" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+54 9 11 ..." required></div>
+        <div class="field"><label for="lm-email">Email <span style="text-transform:none;letter-spacing:0">(opcional)</span></label><input id="lm-email" name="email" type="email" inputmode="email" autocomplete="email"></div>
+        <p class="lc-msg" role="status" aria-live="polite"></p>
+        <button type="submit" class="btn btn-primary btn-block">Quiero mi clase de regalo <span class="arw">→</span></button>
+      </form>
+      <button type="button" class="lm-skip" data-lm-close>Ahora no, gracias</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY='epm_lead_2027', SEEN='epm_lead_popup_seen';
+  function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function read(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function sread(k){ try{ return sessionStorage.getItem(k); }catch(e){ return null; } }
+  function swrite(k,v){ try{ sessionStorage.setItem(k,v); }catch(e){} }
+
+  /* Si ya dejó sus datos, los usamos para completar el formulario de reserva. */
+  function prefill(){
+    var raw=read(KEY); if(!raw) return;
+    try{
+      var d=JSON.parse(raw);
+      var map={'buy-nombre':d.firstName,'buy-whatsapp':d.phone,'buy-email':d.email};
+      Object.keys(map).forEach(function(id){ var el=document.getElementById(id); if(el && !el.value && map[id]) el.value=map[id]; });
+    }catch(e){}
+  }
+  prefill();
+
+  /* Formularios de contacto (ventana y bloque de la página) */
+  document.querySelectorAll('[data-lead-form]').forEach(function(f){
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var msg=f.querySelector('.lc-msg'), btn=f.querySelector('button[type=submit]');
+      var data={
+        firstName:(f.firstName.value||'').trim(),
+        phone:(f.phone.value||'').trim(),
+        email:(f.email.value||'').trim(),
+        source:f.getAttribute('data-source'),
+        visitorId:window.__epmVisitorId||''
+      };
+      if(f.interest && f.interest.value) data.interest=f.interest.value;
+      msg.className='lc-msg';
+      if(data.firstName.length<2){ msg.textContent='Decinos tu nombre.'; f.firstName.focus(); return; }
+      if(!/^\+?[\d\s\-().]{8,20}$/.test(data.phone)){ msg.textContent='Ingresá un WhatsApp válido, con código de área.'; f.phone.focus(); return; }
+      if(data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)){ msg.textContent='Revisá el email.'; f.email.focus(); return; }
+      btn.disabled=true;
+      fetch('/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),keepalive:true})
+        .catch(function(){})
+        .then(function(){
+          store(KEY, JSON.stringify({firstName:data.firstName,phone:data.phone,email:data.email}));
+          prefill();
+          msg.className='lc-msg ok';
+          msg.textContent='¡Listo, '+data.firstName.split(' ')[0]+'! En breve te escribimos por WhatsApp con tu clase de regalo.';
+          btn.innerHTML='Datos enviados ✓';
+          if(f.getAttribute('data-source')==='popup_evento'){ setTimeout(closeModal, 2600); }
+        });
+    });
+  });
+
+  /* Ventana: aparece una sola vez por visita, a los 12 segundos o al bajar
+     un 40% de la página. No aparece si ya dejó sus datos. */
+  var modal=document.getElementById('lead-modal'); if(!modal) return;
+  var lastFocus=null;
+  function openModal(){
+    if(read(KEY) || sread(SEEN) || modal.classList.contains('open')) return;
+    swrite(SEEN,'1');
+    lastFocus=document.activeElement;
+    modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    setTimeout(function(){ var i=document.getElementById('lm-nombre'); if(i) i.focus(); },50);
+  }
+  function closeModal(){
+    modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  modal.querySelectorAll('[data-lm-close]').forEach(function(b){ b.addEventListener('click',closeModal); });
+  modal.addEventListener('click',function(e){ if(e.target===modal) closeModal(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && modal.classList.contains('open')) closeModal(); });
+  var timer=setTimeout(openModal,12000);
+  window.addEventListener('scroll',function onS(){
+    var h=document.documentElement; var pct=(h.scrollTop||document.body.scrollTop)/((h.scrollHeight-h.clientHeight)||1);
+    if(pct>0.4){ window.removeEventListener('scroll',onS); clearTimeout(timer); openModal(); }
+  },{passive:true});
 })();
 </script>
 </body>

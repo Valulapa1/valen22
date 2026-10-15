@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { getSupabaseAdmin, type RegistrationRow } from "@/lib/supabase-admin";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { Funnel } from "./funnel";
-import { RegistrationsTable } from "./registrations-table";
+import { RegistrationsTable, type AdminRow } from "./registrations-table";
+import { LeadsTable, type LeadRow } from "./leads-table";
 
 export const metadata: Metadata = {
   title: "Panel — Estoy Para Más",
@@ -10,33 +11,38 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
+const BASE_COLUMNS =
+  "id, first_name, last_name, email, phone, quantity, total_amount, currency, status, payment_status, external_reference, paid_at, created_at";
+
+const TIERS = [
+  { key: "general", label: "General" },
+  { key: "vip", label: "VIP" },
+  { key: "platino", label: "Platino" },
+] as const;
+
+function money(n: number, currency: string) {
+  return currency === "USD"
+    ? `USD ${n.toLocaleString("es-AR", { maximumFractionDigits: 0 })}`
+    : n.toLocaleString("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
+}
+
 export default async function AdminPage() {
   const supabase = getSupabaseAdmin();
-  const { data, error } = await supabase
-    .from("event_registrations")
-    .select(
-      "id, first_name, last_name, email, phone, quantity, total_amount, currency, status, payment_status, external_reference, paid_at, created_at",
-    )
-    .order("created_at", { ascending: false })
-    .returns<
-      Pick<
-        RegistrationRow,
-        | "id"
-        | "first_name"
-        | "last_name"
-        | "email"
-        | "phone"
-        | "quantity"
-        | "total_amount"
-        | "currency"
-        | "status"
-        | "payment_status"
-        | "external_reference"
-        | "paid_at"
-        | "created_at"
-      >[]
-    >();
 
+  // Con la migración de 2027 cada reserva trae su tipo de entrada. Si todavía
+  // no se corrió, leemos igual las columnas de siempre.
+  let { data, error } = await supabase
+    .from("event_registrations")
+    .select(`${BASE_COLUMNS}, ticket_type, payment_method`)
+    .order("created_at", { ascending: false })
+    .returns<AdminRow[]>();
+  if (error) {
+    ({ data, error } = await supabase
+      .from("event_registrations")
+      .select(BASE_COLUMNS)
+      .order("created_at", { ascending: false })
+      .returns<AdminRow[]>());
+  }
   if (error) {
     console.error("[admin] Error consultando inscripciones:", error.message);
   }
@@ -44,12 +50,34 @@ export default async function AdminPage() {
   const rows = data ?? [];
   const confirmed = rows.filter((r) => r.status === "confirmed");
   const pending = rows.filter((r) => r.status === "pending");
-  const failed = rows.filter((r) => r.status === "payment_failed" || r.status === "error");
-  const revenue = confirmed.reduce((sum, r) => sum + Number(r.total_amount), 0);
+  const tickets = (list: AdminRow[]) => list.reduce((s, r) => s + Number(r.quantity), 0);
+  const revenueARS = confirmed
+    .filter((r) => r.currency !== "USD")
+    .reduce((sum, r) => sum + Number(r.total_amount), 0);
+  const revenueUSD = confirmed
+    .filter((r) => r.currency === "USD")
+    .reduce((sum, r) => sum + Number(r.total_amount), 0);
 
-  // Contador de visitas propio (ver /api/track-visit): no depende de la API
-  // paga de Vercel. "Hoy" y "7 días" son ventanas de tiempo, no días de
-  // calendario, para no complicarse con zonas horarias.
+  const byTier = TIERS.map((t) => {
+    const ofTier = rows.filter((r) => (r.ticket_type ?? "general") === t.key);
+    return {
+      ...t,
+      confirmed: tickets(ofTier.filter((r) => r.status === "confirmed")),
+      pending: tickets(ofTier.filter((r) => r.status === "pending")),
+    };
+  });
+
+  const { data: leadsData, error: leadsError } = await supabase
+    .from("leads")
+    .select("id, first_name, email, phone, interest, source, created_at")
+    .order("created_at", { ascending: false })
+    .limit(2000)
+    .returns<LeadRow[]>();
+  if (leadsError) console.error("[admin] Error consultando contactos:", leadsError.message);
+  const leads = leadsData ?? [];
+
+  // Contador de visitas propio (ver /api/track-visit). "24 hs" y "7 días"
+  // son ventanas de tiempo, no días de calendario.
   const now = Date.now();
   const since24h = new Date(now - 24 * 60 * 60 * 1000).toISOString();
   const since7d = new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString();
@@ -63,15 +91,10 @@ export default async function AdminPage() {
   const visitsTotal = visitsTotalRes.count ?? 0;
   const visits24h = visits24hRes.count ?? 0;
   const visits7d = visits7dRes.count ?? 0;
-  const conversionRate = visitsTotal > 0 ? (confirmed.length / visitsTotal) * 100 : null;
+  const leads24h = leads.filter((l) => l.created_at >= since24h).length;
 
-  // Embudo: en qué parte del camino se quedan. Los pasos intermedios cuentan
-  // visitantes distintos (visitor_id); "Compran" solo suma las inscripciones
-  // que ya tienen visitor_id (las de antes de este contador quedan afuera a
-  // propósito, para no mezclar con el embudo nuevo). El cuestionario de
-  // bienvenida ya no existe en la landing, así que el embudo arranca
-  // directo en "miran el precio".
-  const FUNNEL_EVENTS = ["checkout_viewed", "checkout_initiated"] as const;
+  // Embudo por visitantes distintos (visitor_id anónimo de sesión).
+  const FUNNEL_EVENTS = ["lead_captured", "checkout_viewed", "checkout_initiated"] as const;
   const [eventsRes, confirmedVisitorsRes] = await Promise.all([
     supabase.from("analytics_events").select("visitor_id, event").in("event", FUNNEL_EVENTS),
     supabase
@@ -85,15 +108,14 @@ export default async function AdminPage() {
   const eventRows = eventsRes.data ?? [];
   const distinctVisitors = (eventName: string) =>
     new Set(eventRows.filter((r) => r.event === eventName).map((r) => r.visitor_id)).size;
-  const purchasedVisitors = new Set(
-    (confirmedVisitorsRes.data ?? []).map((r) => r.visitor_id),
-  ).size;
+  const purchasedVisitors = new Set((confirmedVisitorsRes.data ?? []).map((r) => r.visitor_id)).size;
 
   const funnelSteps = [
     { key: "landing", label: "Llegan a la página", count: visitsTotal },
-    { key: "viewed", label: "Miran el precio", count: distinctVisitors("checkout_viewed") },
-    { key: "initiated", label: "Inician el pago", count: distinctVisitors("checkout_initiated") },
-    { key: "purchased", label: "Compran", count: purchasedVisitors },
+    { key: "lead", label: "Dejan sus datos", count: distinctVisitors("lead_captured") },
+    { key: "viewed", label: "Miran las entradas", count: distinctVisitors("checkout_viewed") },
+    { key: "initiated", label: "Envían la reserva", count: distinctVisitors("checkout_initiated") },
+    { key: "purchased", label: "Pagaron", count: purchasedVisitors },
   ];
 
   return (
@@ -109,20 +131,35 @@ export default async function AdminPage() {
 
       <div className="admin-stats">
         <div className="admin-stat">
-          <b>{confirmed.length}</b>
-          <span>Entradas confirmadas</span>
+          <b>{tickets(confirmed)}</b>
+          <span>Entradas pagas</span>
         </div>
         <div className="admin-stat">
-          <b>{revenue.toLocaleString("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 })}</b>
-          <span>Recaudado</span>
+          <b>{money(revenueARS, "ARS")}</b>
+          <span>Recaudado en pesos</span>
+        </div>
+        <div className="admin-stat">
+          <b>{money(revenueUSD, "USD")}</b>
+          <span>Recaudado en dólares</span>
         </div>
         <div className="admin-stat">
           <b>{pending.length}</b>
-          <span>Pagos pendientes</span>
+          <span>Reservas por cobrar</span>
         </div>
+      </div>
+
+      <div className="admin-stats admin-stats-tiers">
+        {byTier.map((t) => (
+          <div className="admin-stat" key={t.key}>
+            <b>{t.confirmed}</b>
+            <span>
+              {t.label} pagas · {t.pending} por cobrar
+            </span>
+          </div>
+        ))}
         <div className="admin-stat">
-          <b>{failed.length}</b>
-          <span>Fallidos / con error</span>
+          <b>{leads.length}</b>
+          <span>Contactos · {leads24h} hoy</span>
         </div>
       </div>
 
@@ -140,21 +177,27 @@ export default async function AdminPage() {
           <span>Visitas totales</span>
         </div>
         <div className="admin-stat">
-          <b>{conversionRate !== null ? `${conversionRate.toFixed(1)}%` : "—"}</b>
-          <span>Conversión (compran / visitan)</span>
+          <b>{visitsTotal > 0 ? `${((leads.length / visitsTotal) * 100).toFixed(1)}%` : "—"}</b>
+          <span>Dejan sus datos / visitan</span>
         </div>
       </div>
 
       <section className="admin-section">
         <h2 className="admin-section-title">Embudo: dónde se quedan</h2>
         <p className="admin-section-note">
-          Cada porcentaje es sobre el paso anterior, no sobre el total. Solo cuenta desde
-          que se activó este seguimiento — las compras más viejas no aparecen acá.
+          Cada porcentaje es sobre el paso anterior, no sobre el total.
         </p>
         <Funnel steps={funnelSteps} />
       </section>
 
+      <h2 className="admin-block-title">Reservas</h2>
       <RegistrationsTable rows={rows} />
+
+      <h2 className="admin-block-title">Contactos</h2>
+      <p className="admin-block-note">
+        Todas las personas que dejaron sus datos, hayan reservado o no. Ideal para el seguimiento.
+      </p>
+      <LeadsTable rows={leads} />
     </main>
   );
 }

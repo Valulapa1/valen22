@@ -69,6 +69,7 @@ export async function POST(request: Request) {
       status: "pending",
       payment_status: "pending",
       external_reference: reference,
+      visitor_id: data.visitorId ?? null,
     };
     let { error } = await supabase
       .from("event_registrations")
@@ -82,6 +83,16 @@ export async function POST(request: Request) {
     } else {
       saved = true;
     }
+    // También queda como contacto, para el seguimiento aunque no pague.
+    const { error: leadError } = await supabase.from("leads").insert({
+      first_name: `${data.firstName} ${data.lastName}`,
+      phone: data.phone,
+      email: data.email,
+      interest: data.ticketType,
+      source: "reserva",
+      visitor_id: data.visitorId ?? null,
+    });
+    if (leadError) console.error("[reservas] Error guardando contacto:", leadError.message);
   } catch (err) {
     console.error("[reservas] Supabase no disponible:", (err as Error).message);
   }

@@ -340,6 +340,10 @@ details[open] summary::after{content:"–"}
   f.addEventListener('submit',function(e){
     e.preventDefault();
     var n=f.nombre.value.trim(), em=f.email.value.trim(), wp=f.whatsapp.value.trim();
+    try{
+      fetch('/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},keepalive:true,
+        body:JSON.stringify({firstName:n,phone:wp,email:em,source:'home_clase'})}).catch(function(){});
+    }catch(err){}
     var msg='Hola Vale! Soy '+n+' y quiero la clase de regalo de tu programa ✨\nMi email: '+em+'\nMi WhatsApp: '+wp;
     window.open('https://wa.me/5493541694363?text='+encodeURIComponent(msg),'_blank','noopener');
   });

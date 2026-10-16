@@ -78,6 +78,24 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
     }
   }
 
+  async function removeRow(r: AdminRow) {
+    if (!confirm(`¿Eliminar la reserva de ${r.first_name} ${r.last_name}? No se puede deshacer.`)) return;
+    setBusy(r.id);
+    try {
+      const res = await fetch("/api/admin/registrations", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: r.id }),
+      });
+      if (!res.ok) throw new Error();
+      setRows((prev) => prev.filter((x) => x.id !== r.id));
+    } catch {
+      alert("No se pudo eliminar. Probá de nuevo.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
   return (
     <>
       <div className="admin-toolbar">
@@ -122,6 +140,7 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
                 <th>Acción</th>
                 <th>Fecha</th>
                 <th>Código</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -190,6 +209,11 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
                   </td>
                   <td>{formatDate(r.created_at)}</td>
                   <td>{r.external_reference}</td>
+                  <td>
+                    <button type="button" className="admin-del" disabled={busy === r.id} onClick={() => removeRow(r)} aria-label="Eliminar reserva">
+                      Eliminar
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

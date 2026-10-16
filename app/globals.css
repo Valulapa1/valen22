@@ -628,3 +628,6 @@ a {
 }
 .admin-sub{font-size:.75rem;opacity:.7;margin-top:2px}
 .admin-badge.partial{background:#F3E6CF;color:#7A5418}
+.admin-del{background:none;border:1px solid #e3c9c4;color:#a0473e;border-radius:999px;font-size:.72rem;padding:4px 10px;cursor:pointer}
+.admin-del:hover{background:#f7e9e6}
+.admin-del:disabled{opacity:.5}

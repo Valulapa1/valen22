@@ -855,7 +855,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
       <div class="eyebrow center">Elegí tu experiencia</div>
       <h2 style="margin:10px 0 8px">Tres formas de vivir Estoy Para Más.</h2>
       <p class="lead" style="margin:0">Preventa de la entrada general hasta el 15 de diciembre. Después, el valor sube.</p>
-      <p class="voices" style="font-size:1.1rem;margin-top:18px">“Sin dudas fue mágico y transformador.”<span>Asistente de la primera edición</span></p>
+      <p class="voices" style="font-size:1.1rem;margin-top:18px">“Sin dudas fue mágico y transformador.”<span>Malena Aranda · Asistente de la primera edición</span></p>
     </div>
     <p class="rv" style="max-width:760px;margin:0 auto 34px;text-align:center;font-family:var(--display,serif);font-style:italic;font-size:1.3rem;line-height:1.45">“Veo tu valor y todo lo que generás en mí y en miles de chicas: un movimiento hermoso para tener una mentalidad expansiva.”<span style="display:block;margin-top:10px;font-family:var(--body,sans-serif);font-style:normal;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)">Mensaje que le llegó a Valentina</span></p>
     <div class="tiers rv">
@@ -877,6 +877,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         <div class="tier-badge">Recomendada</div>
         <div class="tier-name">VIP</div>
         <div class="tier-price">USD 200</div>
+        <p class="tier-ars" data-usd="200"></p>
         <p class="tier-note">Todo lo de la General, más:</p>
         <ul class="tier-list">
           <li>Zona preferencial, en las primeras filas</li>
@@ -889,6 +890,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
       <div class="tier tier-platino">
         <div class="tier-name">Platino · Solo 10 lugares</div>
         <div class="tier-price">USD 750</div>
+        <p class="tier-ars" data-usd="750"></p>
         <p class="tier-note">Todo lo de la VIP, más:</p>
         <ul class="tier-list">
           <li>Primera fila, con mesa propia</li>
@@ -913,7 +915,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         </p>
 
         <a href="#comprar" class="btn btn-dark btn-block">Reservo mi lugar <span class="arw">→</span></a>
-        <p class="pay">Pago por transferencia en pesos o dólares.<br>Capital Federal, Buenos Aires. La dirección exacta se envía al confirmar.</p>
+        <p class="pay">Pago por transferencia. General en pesos; VIP y Platino en dólares o en pesos al dólar blue del día (promedio entre compra y venta).<br>Capital Federal, Buenos Aires. La dirección exacta se envía al confirmar.</p>
     </div>
   </div>
 </section>
@@ -1015,6 +1017,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           <div><span class="lbl">Precio por entrada</span><span id="buy-unit">—</span></div>
           <div><span class="lbl">Cantidad</span><span id="buy-qty">1</span></div>
           <div class="buy-total-row"><span class="lbl">Total</span><b id="buy-total">—</b></div>
+          <div id="buy-ars-row" style="display:none"><span class="lbl">En pesos hoy</span><span id="buy-ars">—</span></div>
         </div>
 
         <div class="terms-row" id="terms-row">
@@ -1155,13 +1158,11 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
       <div class="eyebrow center">Lo que nos escribieron después</div>
       <h2>En sus palabras.</h2>
     </div>
-    <div class="quotes rv">
-      <figure class="quote" style="margin:0"><span class="q-result">Un lugar seguro</span><blockquote class="q-text" style="margin:0 0 18px">“Logré conectar con Dios, con todas las mujeres que estaban ahí y permitirme sentir todas las emociones sin juzgarme. Un lugar SEGURO donde pude ser yo misma.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase">Asistente · 1.ª edición</figcaption></figure>
-      <figure class="quote" style="margin:0"><span class="q-result">Mágico y transformador</span><blockquote class="q-text" style="margin:0 0 18px">“Sin dudas fue mágico y transformador. 💜”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase">Asistente · 1.ª edición</figcaption></figure>
-      <figure class="quote" style="margin:0"><span class="q-result">Del corazón</span><blockquote class="q-text" style="margin:0 0 18px">“Una experiencia única, genuina, del corazón. Conocí personitas hermosas con las que seguro me junto a merendar.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase">Asistente · 1.ª edición</figcaption></figure>
-      <figure class="quote" style="margin:0"><span class="q-result">Me animé</span><blockquote class="q-text" style="margin:0 0 18px">“Fue increíble. Sos luz. Estuve ahí de pasar al frente.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase">Asistente · 1.ª edición</figcaption></figure>
-      <figure class="quote" style="margin:0"><span class="q-result">Rodeada de mujeres increíbles</span><blockquote class="q-text" style="margin:0 0 18px">“Fue hermoso poder asistir y estar rodeada de mujeres increíbles. Agradecida es poco. 🤍”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase">Asistente · 1.ª edición</figcaption></figure>
-      <figure class="quote" style="margin:0"><span class="q-result">Aprendí de todas</span><blockquote class="q-text" style="margin:0 0 18px">“¡Tremenda experiencia! Aprendí muchísimo de cada una de ustedes.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase">Asistente · 1.ª edición</figcaption></figure>
+    <div class="quotes rv" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">
+      <figure class="quote" style="margin:0"><span class="q-result">Un lugar seguro</span><blockquote class="q-text" style="margin:0 0 18px">“Logré conectar con Dios, con todas las mujeres que estaban ahí y permitirme sentir todas las emociones sin juzgarme ni tener miedo a la mirada del otro. Sin dudas, un lugar SEGURO donde pude ser yo misma.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Julieta Flores</b> · Asistente 1.ª edición</figcaption></figure>
+      <figure class="quote" style="margin:0"><span class="q-result">Mágico y transformador</span><blockquote class="q-text" style="margin:0 0 18px">“Muchas gracias, sin dudas fue mágico y transformador. 💜🫂”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Malena Aranda</b> · Asistente 1.ª edición</figcaption></figure>
+      <figure class="quote" style="margin:0"><span class="q-result">Sos luz</span><blockquote class="q-text" style="margin:0 0 18px">“Fue increíble. Sos luz, te admiro… Estuve ahí de pasar al frente.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Lucía</b> · Asistente 1.ª edición</figcaption></figure>
+      <figure class="quote" style="margin:0"><span class="q-result">Un día increíble</span><blockquote class="q-text" style="margin:0 0 18px">“Gracias por semejante evento ❤️ Fue un día increíble, con personas maravillosas. Muy productivo.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Gladys</b> · Asistente 1.ª edición</figcaption></figure>
     </div>
   </div>
 </section>
@@ -1303,6 +1304,18 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
   let eventInfo = null;
   let submitting = false;
   let pendingQty = null;
+  let usdRate = null; // dólar blue, promedio entre compra y venta
+  const arsRow = document.getElementById('buy-ars-row');
+  const arsEl = document.getElementById('buy-ars');
+  const fmtARS = n => n.toLocaleString('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0});
+  fetch('/api/dolar').then(r=>r.json()).then(d=>{
+    if(!d || !d.promedio) return;
+    usdRate = d.promedio;
+    document.querySelectorAll('.tier-ars').forEach(el=>{
+      el.textContent = '≈ ' + fmtARS(Number(el.getAttribute('data-usd'))*usdRate) + ' al dólar blue de hoy';
+    });
+    renderTotals();
+  }).catch(()=>{});
 
   const fmt = (n, cur) => cur === 'USD'
     ? 'USD ' + n.toLocaleString('es-AR',{maximumFractionDigits:0})
@@ -1325,6 +1338,10 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
     unitEl.textContent = fmt(t.price, t.currency) + (t.pairPrice && q >= 2 ? ' · 2 por ' + fmt(t.pairPrice, t.currency) : '');
     qtyEl.textContent = q;
     totalEl.textContent = fmt(tierTotal(t, q), t.currency);
+    if(t.currency === 'USD' && usdRate){
+      arsEl.textContent = fmtARS(tierTotal(t, q) * usdRate) + ' (blue ' + fmtARS(usdRate) + ')';
+      arsRow.style.display = '';
+    } else { arsRow.style.display = 'none'; }
   }
 
   /* Los botones de cada tipo de entrada preseleccionan el tipo en el formulario. */
@@ -1450,6 +1467,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
         'Entrada: ' + t.label,
         'Cantidad: ' + data.quantity,
         'Total: ' + fmt(tierTotal(t, data.quantity), t.currency) + (t.pairPrice && data.quantity >= 2 ? ' (precio amigas)' : ''),
+        ...(t.currency === 'USD' && usdRate ? ['En pesos hoy: ' + fmtARS(tierTotal(t, data.quantity) * usdRate) + ' (dólar blue promedio ' + fmtARS(usdRate) + ')'] : []),
         'Nombre: ' + data.firstName + ' ' + data.lastName,
         'Email: ' + data.email,
         'WhatsApp: ' + data.phone
@@ -1521,6 +1539,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 .lc-form label{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);margin-bottom:6px}
 .lc-msg{min-height:1.2em;margin:0 0 12px;font-size:.9rem;color:#B0473E}
 .lc-msg.ok{color:#2F4F2B}
+.tier-ars{margin:-4px 0 0!important;font-size:.84rem!important;opacity:.75;min-height:1em}
 .tier-pair{display:block;text-align:center;margin-top:10px;font-size:.88rem;color:var(--bronce);text-decoration:underline;text-underline-offset:3px}
 .lm-backdrop{position:fixed;inset:0;background:rgba(26,16,23,.62);display:none;align-items:center;justify-content:center;padding:16px;z-index:200;backdrop-filter:blur(3px)}
 .lm-backdrop.open{display:flex}

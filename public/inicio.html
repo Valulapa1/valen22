@@ -263,7 +263,6 @@ details[open] summary::after{content:"–"}
 <p style="margin: 0; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; font-size: clamp(24px, 2.6vw, 32px); line-height: 1.35; color: #F6F0EA">“No siento que simplemente me digas qué hacer, sino que me ayudás a encontrar mis propias respuestas. Gracias por creer en mí cuando yo misma dudé, y por recordarme que puedo avanzar incluso con miedo.”</p>
 <footer style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #D8C5B3">Mensaje de una alumna</footer>
 </blockquote>
-<p style="margin: -24px auto 0; max-width: 680px; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 22px; color: #E4D9E6">“Veo tu valor y todo lo que generás en mí y en miles de chicas: un movimiento hermoso para tener una mentalidad expansiva.”</p>
 </div>
 </section>
 
@@ -351,6 +350,99 @@ details[open] summary::after{content:"–"}
     }catch(err){}
     var msg='Hola Vale! Soy '+n+' y quiero la clase de regalo de tu programa ✨\nMi email: '+em+'\nMi WhatsApp: '+wp;
     window.open('https://wa.me/5493541694363?text='+encodeURIComponent(msg),'_blank','noopener');
+  });
+})();
+</script>
+
+<!-- Antes de WhatsApp (Transformarte) o Calendly (ADN) guardamos el contacto:
+     así ningún nombre ni número se pierde aunque no termine de escribir o agendar. -->
+<style>
+.pre-bg{position:fixed;inset:0;background:rgba(30,20,36,.62);display:none;align-items:center;justify-content:center;padding:16px;z-index:200;backdrop-filter:blur(3px)}
+.pre-bg.open{display:flex}
+.pre{position:relative;background:#F6F0EA;color:#2E2236;border-radius:24px;max-width:440px;width:100%;padding:32px 28px 24px;box-sizing:border-box;max-height:92vh;overflow:auto}
+.pre h3{margin:0 0 6px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:30px;line-height:1.1}
+.pre p{margin:0 0 18px;font-size:15px;color:#4D3F57}
+.pre label{display:block;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;margin:12px 0 6px;color:#7A5C8E}
+.pre input,.pre select{width:100%;box-sizing:border-box;font-family:inherit;font-size:16px;padding:13px 14px;border:1px solid #D8C5B3;border-radius:12px;background:#fff;color:#2E2236}
+.pre button[type=submit]{width:100%;margin-top:20px;font-family:inherit;background:#2E2236;color:#F6F0EA;border:none;padding:15px 22px;border-radius:999px;font-size:16px;font-weight:600;cursor:pointer}
+.pre .pre-x{position:absolute;top:10px;right:12px;background:none;border:none;font-size:26px;line-height:1;cursor:pointer;color:#2E2236}
+.pre .pre-err{color:#B0473E;font-size:13px;margin:10px 0 0;min-height:1em}
+.pre .pre-fine{font-size:12px;color:#7d6f86;text-align:center;margin:12px 0 0}
+</style>
+<div class="pre-bg" id="pre" aria-hidden="true">
+  <form class="pre" id="pre-form" role="dialog" aria-modal="true" aria-labelledby="pre-title" novalidate>
+    <button type="button" class="pre-x" aria-label="Cerrar" data-pre-close>×</button>
+    <h3 id="pre-title">Antes de seguir…</h3>
+    <p id="pre-sub">Dejame tus datos así te contacto si algo se corta.</p>
+    <label for="pre-n">Nombre</label><input id="pre-n" name="nombre" autocomplete="name" required>
+    <label for="pre-w">WhatsApp</label><input id="pre-w" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="+54 9 11 ..." required>
+    <div id="pre-email-wrap"><label for="pre-e">Email</label><input id="pre-e" name="email" type="email" inputmode="email" autocomplete="email"></div>
+    <div id="pre-pilar-wrap"><label for="pre-p">¿Qué querés trabajar primero?</label>
+      <select id="pre-p" name="pilar"><option value="">Todavía no sé</option><option>mi identidad</option><option>mis hábitos</option><option>mi mentalidad</option><option>mi entorno</option></select></div>
+    <p class="pre-err" id="pre-err" role="alert"></p>
+    <button type="submit" id="pre-go">Seguir</button>
+    <p class="pre-fine">Tus datos solo los usa Valentina para contactarte.</p>
+  </form>
+</div>
+<script>
+(function(){
+  var WA='5493541694363', KEY='vp_contacto';
+  var bg=document.getElementById('pre'), f=document.getElementById('pre-form');
+  var mode=null, target=null;
+  function read(){ try{ return JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ return null; } }
+  function save(d){ try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){} }
+  function go(d){
+    if(mode==='adn'){
+      var u=new URL(target);
+      if(d.nombre) u.searchParams.set('name', d.nombre);
+      if(d.email) u.searchParams.set('email', d.email);
+      window.open(u.toString(),'_blank','noopener');
+    } else {
+      var msg='Hola Vale! Soy '+d.nombre+' y quiero saber más de Transformarte ✨'+(d.pilar?'\nMe gustaría trabajar '+d.pilar+'.':'');
+      window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank','noopener');
+    }
+  }
+  function send(d){
+    try{
+      fetch('/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},keepalive:true,
+        body:JSON.stringify({firstName:d.nombre,phone:d.whatsapp,email:d.email||'',interest:mode==='adn'?'adn':'transformarte',source:mode==='adn'?'home_adn':'home_transformarte'})}).catch(function(){});
+    }catch(e){}
+  }
+  function open(m, href){
+    mode=m; target=href;
+    var known=read();
+    if(known && known.nombre && known.whatsapp && (m!=='adn' || known.email)){ send(known); go(known); return; }
+    document.getElementById('pre-title').textContent = m==='adn' ? 'Agendá tu llamada' : 'Hablemos de Transformarte';
+    document.getElementById('pre-sub').textContent = m==='adn'
+      ? 'Dejame tus datos y te llevo a mi agenda con todo ya cargado. Si no encontrás horario, te escribo yo.'
+      : 'Dejame tus datos y se abre WhatsApp con tu mensaje listo. Si se corta, te escribo yo.';
+    document.getElementById('pre-email-wrap').style.display = m==='adn' ? '' : 'none';
+    document.getElementById('pre-pilar-wrap').style.display = m==='adn' ? 'none' : '';
+    document.getElementById('pre-go').textContent = m==='adn' ? 'Elegir horario →' : 'Hablar con Valentina →';
+    if(known){ f.nombre.value=known.nombre||''; f.whatsapp.value=known.whatsapp||''; f.email.value=known.email||''; }
+    document.getElementById('pre-err').textContent='';
+    bg.classList.add('open'); bg.setAttribute('aria-hidden','false');
+    setTimeout(function(){ f.nombre.focus(); }, 50);
+  }
+  function close(){ bg.classList.remove('open'); bg.setAttribute('aria-hidden','true'); }
+  document.querySelectorAll('a[href*="calendly.com"]').forEach(function(a){
+    a.addEventListener('click', function(e){ e.preventDefault(); open('adn', a.href); });
+  });
+  document.querySelectorAll('a[href*="wa.me"][href*="Transformarte"]').forEach(function(a){
+    a.addEventListener('click', function(e){ e.preventDefault(); open('transformarte', a.href); });
+  });
+  bg.addEventListener('click', function(e){ if(e.target===bg || e.target.hasAttribute('data-pre-close')) close(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    var d={nombre:f.nombre.value.trim(), whatsapp:f.whatsapp.value.trim(), email:f.email.value.trim(), pilar:f.pilar.value};
+    var err='';
+    if(d.nombre.length<2) err='Decime tu nombre.';
+    else if(!/^\+?[\d\s\-().]{8,20}$/.test(d.whatsapp)) err='Revisá tu WhatsApp.';
+    else if(mode==='adn' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)) err='Necesito tu email para la agenda.';
+    if(err){ document.getElementById('pre-err').textContent=err; return; }
+    save({nombre:d.nombre, whatsapp:d.whatsapp, email:d.email});
+    send(d); close(); go(d);
   });
 })();
 </script>

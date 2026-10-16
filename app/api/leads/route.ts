@@ -19,9 +19,9 @@ const leadSchema = z.object({
     .max(160)
     .optional()
     .or(z.literal("").transform(() => undefined)),
-  interest: z.enum(["general", "vip", "platino"]).optional(),
+  interest: z.enum(["general", "vip", "platino", "transformarte", "adn"]).optional(),
   source: z
-    .enum(["popup_evento", "inline_evento", "home_clase", "reserva"])
+    .enum(["popup_evento", "inline_evento", "home_clase", "home_transformarte", "home_adn", "reserva"])
     .default("popup_evento"),
   visitorId: z.string().uuid().optional().or(z.literal("").transform(() => undefined)),
 });

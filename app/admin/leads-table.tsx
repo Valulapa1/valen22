@@ -16,6 +16,8 @@ const SOURCE_LABEL: Record<string, string> = {
   popup_evento: "Ventana del evento",
   inline_evento: "Página del evento",
   home_clase: "Clase de regalo",
+  home_transformarte: "Quiere Transformarte",
+  home_adn: "Quiere agendar ADN",
   reserva: "Reserva",
 };
 
@@ -23,6 +25,8 @@ const INTEREST_LABEL: Record<string, string> = {
   general: "General",
   vip: "VIP",
   platino: "Platino",
+  transformarte: "Transformarte",
+  adn: "Método ADN",
 };
 
 function formatDate(iso: string): string {
@@ -96,6 +100,8 @@ export function LeadsTable({ rows }: { rows: LeadRow[] }) {
           <option value="popup_evento">Ventana del evento</option>
           <option value="inline_evento">Página del evento</option>
           <option value="home_clase">Clase de regalo</option>
+          <option value="home_transformarte">Quiere Transformarte</option>
+          <option value="home_adn">Quiere agendar ADN</option>
           <option value="reserva">Reserva</option>
         </select>
         <button type="button" className="admin-action" onClick={download} disabled={filtered.length === 0}>

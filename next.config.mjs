@@ -9,6 +9,9 @@ const nextConfig = {
         { source: "/", destination: "/inicio.html" },
         // Landing del evento con la venta de entradas.
         { source: "/estoy-para-mas", destination: "/index.html" },
+        // Legales.
+        { source: "/terminos", destination: "/terminos.html" },
+        { source: "/privacidad", destination: "/privacidad.html" },
       ],
       afterFiles: [],
       fallback: [],

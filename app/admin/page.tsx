@@ -3,6 +3,7 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { Funnel } from "./funnel";
 import { RegistrationsTable } from "./registrations-table";
 import { paidOf, type AdminRow } from "./paid";
+import { ticketUrl } from "@/lib/site";
 import { LeadsTable, type LeadRow } from "./leads-table";
 
 export const metadata: Metadata = {
@@ -55,7 +56,7 @@ export default async function AdminPage() {
     console.error("[admin] Error consultando inscripciones:", error.message);
   }
 
-  const rows = data ?? [];
+  const rows = (data ?? []).map((r) => ({ ...r, ticket_url: ticketUrl(r.external_reference) }));
   const confirmed = rows.filter((r) => r.status === "confirmed");
   const pending = rows.filter((r) => r.status === "pending");
   const tickets = (list: AdminRow[]) => list.reduce((s, r) => s + Number(r.quantity), 0);

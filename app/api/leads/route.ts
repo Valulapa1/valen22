@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { notifyAdmin } from "@/lib/email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -67,6 +68,13 @@ export async function POST(request: Request) {
       console.error("[leads] Error guardando contacto:", error.message);
     } else {
       saved = true;
+      if (d.source === "aplicacion_platino") {
+        await notifyAdmin(`Nueva aplicación a Platino: ${d.firstName}`, [
+          `${d.firstName} aplicó a Platino.`,
+          `WhatsApp: ${d.phone}${d.email ? ` · Email: ${d.email}` : ""}`,
+          ...(d.notes ?? "").split("\n"),
+        ]);
+      }
       if (d.visitorId) {
         await supabase
           .from("analytics_events")

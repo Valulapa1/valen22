@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { eventConfig, getPaymentSchedule, getTierTotal } from "@/config/event";
+import { eventConfig, getCurrentTier, getPaymentSchedule, getTierTotal } from "@/config/event";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { notifyAdmin, reservationEmail, sendEmail } from "@/lib/email";
+import { getUsdRate } from "@/lib/dolar";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,7 +26,7 @@ export async function POST(request: Request) {
   const supabase = getSupabaseAdmin();
   const { data: row, error } = await supabase
     .from("event_registrations")
-    .select("id, quantity, ticket_type, status, amount_paid")
+    .select("id, quantity, ticket_type, status, amount_paid, first_name, last_name, email, phone, external_reference")
     .eq("external_reference", reference)
     .maybeSingle();
   if (error || !row) return NextResponse.json({ error: "No encontramos tu reserva." }, { status: 404 });
@@ -33,7 +35,7 @@ export async function POST(request: Request) {
   }
 
   const quantity = Number(row.quantity);
-  const tier = eventConfig.tiers.vip;
+  const tier = getCurrentTier("vip");
   const total = getTierTotal("vip", quantity);
   const schedule = getPaymentSchedule("vip", quantity, paymentPlan);
   const plan = schedule.length > 1 ? "cuotas" : "unico";
@@ -53,6 +55,28 @@ export async function POST(request: Request) {
     console.error("[reservas/upgrade] Error:", upErr.message);
     return NextResponse.json({ error: "No se pudo cambiar la entrada." }, { status: 500 });
   }
+
+  const mail = reservationEmail(
+    {
+      first_name: row.first_name,
+      last_name: row.last_name,
+      email: row.email,
+      phone: row.phone,
+      quantity,
+      total_amount: total,
+      currency: tier.currency,
+      external_reference: reference,
+      ticket_type: "vip",
+      label: tier.label,
+      schedule,
+    },
+    await getUsdRate(),
+  );
+  await sendEmail({ to: row.email, ...mail });
+  await notifyAdmin(`Pasó a VIP: ${row.first_name} ${row.last_name}`, [
+    `${row.first_name} ${row.last_name} cambió su reserva General a VIP (${quantity} × USD ${tier.price}).`,
+    `Código: ${reference}`,
+  ]);
 
   return NextResponse.json({
     reference,

@@ -35,6 +35,12 @@ function formatMoney(n: number, currency: string): string {
     : Number(n).toLocaleString("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
 }
 
+function waDigits(phone: string): string {
+  let digits = phone.replace(/\D/g, "");
+  if (digits.length === 10) digits = `549${digits}`;
+  return digits;
+}
+
 function waLink(phone: string, name: string): string {
   let digits = phone.replace(/\D/g, "");
   if (digits.length === 10) digits = `549${digits}`; // celular argentino sin prefijo
@@ -73,6 +79,24 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
       setRows((prev) => prev.map((r) => (r.id === id ? { ...r, status: j.status, amount_paid: j.amountPaid } : r)));
     } catch {
       alert("No se pudo actualizar. Probá de nuevo.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function removeRow(r: AdminRow) {
+    if (!confirm(`¿Eliminar la reserva de ${r.first_name} ${r.last_name}? No se puede deshacer.`)) return;
+    setBusy(r.id);
+    try {
+      const res = await fetch("/api/admin/registrations", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: r.id }),
+      });
+      if (!res.ok) throw new Error();
+      setRows((prev) => prev.filter((x) => x.id !== r.id));
+    } catch {
+      alert("No se pudo eliminar. Probá de nuevo.");
     } finally {
       setBusy(null);
     }
@@ -122,6 +146,7 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
                 <th>Acción</th>
                 <th>Fecha</th>
                 <th>Código</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -168,6 +193,22 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
                         {paidOf(r) > 0 ? "+ Cuota pagada" : "Seña pagada"}
                       </button>
                     )}
+                    {r.status === "confirmed" && r.ticket_url && (
+                      <div className="admin-ticket">
+                        <a href={r.ticket_url} target="_blank" rel="noopener noreferrer">
+                          Ver entrada
+                        </a>
+                        <a
+                          href={`https://api.whatsapp.com/send?phone=${waDigits(r.phone)}&text=${encodeURIComponent(
+                            `¡Hola ${r.first_name}! 🤍 Ya está confirmado tu lugar en Estoy Para Más. Esta es tu entrada: ${r.ticket_url}`,
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Mandar por WhatsApp
+                        </a>
+                      </div>
+                    )}
                     {r.status === "confirmed" ? (
                       <button
                         type="button"
@@ -190,6 +231,11 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
                   </td>
                   <td>{formatDate(r.created_at)}</td>
                   <td>{r.external_reference}</td>
+                  <td>
+                    <button type="button" className="admin-del" disabled={busy === r.id} onClick={() => removeRow(r)} aria-label="Eliminar reserva">
+                      Eliminar
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

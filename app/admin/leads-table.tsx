@@ -65,7 +65,8 @@ function toCsv(rows: LeadRow[]): string {
   return [header, ...lines].join("\n");
 }
 
-export function LeadsTable({ rows }: { rows: LeadRow[] }) {
+export function LeadsTable({ rows: initialRows }: { rows: LeadRow[] }) {
+  const [rows, setRows] = useState(initialRows);
   const [search, setSearch] = useState("");
   const [source, setSource] = useState("all");
 
@@ -77,6 +78,20 @@ export function LeadsTable({ rows }: { rows: LeadRow[] }) {
       return `${r.first_name} ${r.email ?? ""} ${r.phone}`.toLowerCase().includes(q);
     });
   }, [rows, search, source]);
+
+  async function removeLead(r: LeadRow) {
+    if (!confirm(`¿Eliminar el contacto de ${r.first_name}? No se puede deshacer.`)) return;
+    const res = await fetch("/api/admin/leads", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: r.id }),
+    }).catch(() => null);
+    if (!res || !res.ok) {
+      alert("No se pudo eliminar. Probá de nuevo.");
+      return;
+    }
+    setRows((prev) => prev.filter((x) => x.id !== r.id));
+  }
 
   function download() {
     const blob = new Blob(["﻿" + toCsv(filtered)], { type: "text/csv;charset=utf-8" });
@@ -129,6 +144,7 @@ export function LeadsTable({ rows }: { rows: LeadRow[] }) {
                 <th>Origen</th>
                 <th>Notas</th>
                 <th>Fecha</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -145,6 +161,11 @@ export function LeadsTable({ rows }: { rows: LeadRow[] }) {
                   <td>{SOURCE_LABEL[r.source] ?? r.source}</td>
                   <td style={{ whiteSpace: "pre-line", maxWidth: 320, fontSize: ".82rem" }}>{r.notes ?? "—"}</td>
                   <td>{formatDate(r.created_at)}</td>
+                  <td>
+                    <button type="button" className="admin-del" onClick={() => removeLead(r)} aria-label="Eliminar contacto">
+                      Eliminar
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

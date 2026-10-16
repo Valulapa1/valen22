@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { ADMIN_SESSION_COOKIE, isValidSessionToken } from "@/lib/admin-auth";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { sendEmail, ticketEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,7 +33,7 @@ export async function PATCH(request: Request) {
 
   const { data: row, error: readErr } = await supabase
     .from("event_registrations")
-    .select("total_amount, installments, amount_paid")
+    .select("total_amount, installments, amount_paid, first_name, last_name, email, phone, quantity, currency, external_reference, ticket_type, confirmation_email_sent_at")
     .eq("id", id)
     .maybeSingle();
   if (readErr || !row) {
@@ -76,5 +77,44 @@ export async function PATCH(request: Request) {
     console.error("[admin/registrations] Error actualizando:", error.message);
     return NextResponse.json({ error: "No se pudo actualizar." }, { status: 500 });
   }
-  return NextResponse.json({ ok: true, status: next, amountPaid });
+  // Pagó todo: le mandamos la entrada (una sola vez).
+  let ticketSent = false;
+  if (next === "confirmed" && !row.confirmation_email_sent_at && row.email) {
+    const mail = ticketEmail({
+      first_name: row.first_name,
+      last_name: row.last_name,
+      email: row.email,
+      phone: row.phone,
+      quantity: Number(row.quantity),
+      total_amount: total,
+      currency: row.currency,
+      external_reference: row.external_reference,
+      ticket_type: row.ticket_type,
+      schedule: [],
+    });
+    ticketSent = await sendEmail({ to: row.email, ...mail });
+    if (ticketSent) {
+      await supabase
+        .from("event_registrations")
+        .update({ confirmation_email_sent_at: new Date().toISOString() })
+        .eq("id", id);
+    }
+  }
+  return NextResponse.json({ ok: true, status: next, amountPaid, ticketSent });
+}
+
+/** DELETE /api/admin/registrations — borra una reserva (por ejemplo, una de prueba). */
+export async function DELETE(request: Request) {
+  const token = (await cookies()).get(ADMIN_SESSION_COOKIE)?.value;
+  if (!(await isValidSessionToken(token))) {
+    return NextResponse.json({ error: "No autorizado." }, { status: 401 });
+  }
+  const parsed = z.object({ id: z.string().uuid() }).safeParse(await request.json().catch(() => null));
+  if (!parsed.success) return NextResponse.json({ error: "Datos inválidos." }, { status: 400 });
+  const { error } = await getSupabaseAdmin().from("event_registrations").delete().eq("id", parsed.data.id);
+  if (error) {
+    console.error("[admin/registrations] Error borrando:", error.message);
+    return NextResponse.json({ error: "No se pudo borrar." }, { status: 500 });
+  }
+  return NextResponse.json({ ok: true });
 }

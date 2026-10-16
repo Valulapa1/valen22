@@ -30,7 +30,13 @@ export const eventConfig = {
    * datos y deriva a WhatsApp. El precio de cada tipo sale siempre de acá.
    */
   tiers: {
-    general: { label: "General · Preventa", price: 40000, currency: "ARS" },
+    general: {
+      label: "General · Preventa",
+      price: 40000,
+      currency: "ARS",
+      /** "Venite con una amiga": cada par de entradas generales cuesta esto. */
+      pairPrice: 55500,
+    },
     vip: { label: "VIP", price: 200, currency: "USD" },
     platino: { label: "Platino", price: 750, currency: "USD", limited: 10 },
   },
@@ -52,4 +58,18 @@ export function getOrderTotal(quantity: number): number {
 /** Precio "por unidad" para guardar en la fila y para el ítem de Mercado Pago. */
 export function getUnitPriceForOrder(quantity: number): number {
   return eventConfig.ticketPrice;
+}
+
+type TierKey = keyof typeof eventConfig.tiers;
+
+/**
+ * Total de una reserva según tipo y cantidad. En la General, cada par de
+ * entradas va al precio "Venite con una amiga"; la entrada suelta, a precio normal.
+ */
+export function getTierTotal(ticketType: TierKey, quantity: number): number {
+  const tier = eventConfig.tiers[ticketType];
+  if ("pairPrice" in tier) {
+    return Math.floor(quantity / 2) * tier.pairPrice + (quantity % 2) * tier.price;
+  }
+  return tier.price * quantity;
 }

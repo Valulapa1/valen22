@@ -861,9 +861,10 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           <li>Sábado: transformación personal con coaching vivencial</li>
           <li>Domingo: construir un entorno de alto valor</li>
           <li><b>Bonus preventa:</b> una clase online con Valentina por mes hasta el evento</li>
-          <li><b>Venite con una amiga:</b> precio especial por 2 entradas</li>
+          <li><b>Venite con una amiga:</b> 2 entradas por $55.500 (ahorrás $24.500)</li>
         </ul>
         <a href="#comprar" data-tier="general" class="btn btn-dark btn-block">Reservar General <span class="arw">→</span></a>
+        <a href="#comprar" data-tier="general" data-qty="2" class="tier-pair">Venimos dos amigas · $55.500 <span class="arw">→</span></a>
       </div>
       <div class="tier feat">
         <div class="tier-badge">Recomendada</div>
@@ -989,7 +990,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         <div class="field">
           <label for="buy-tipo">Tipo de entrada</label>
           <select id="buy-tipo" name="ticketType" required>
-            <option value="general">General · Preventa — $40.000</option>
+            <option value="general">General · Preventa — $40.000 (2 por $55.500)</option>
             <option value="vip">VIP — USD 200</option>
             <option value="platino">Platino — USD 750 (solo 10 lugares)</option>
           </select>
@@ -1282,6 +1283,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 
   let eventInfo = null;
   let submitting = false;
+  let pendingQty = null;
 
   const fmt = (n, cur) => cur === 'USD'
     ? 'USD ' + n.toLocaleString('es-AR',{maximumFractionDigits:0})
@@ -1292,19 +1294,26 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
     return tiers ? tiers[tipoSelect.value] : null;
   }
 
+  /* Mismo cálculo que getTierTotal() del servidor: en la General, cada par va a precio amiga. */
+  function tierTotal(t, q){
+    return t.pairPrice ? Math.floor(q/2)*t.pairPrice + (q%2)*t.price : t.price*q;
+  }
+
   function renderTotals(){
     const t = currentTier();
     if(!t) return;
     const q = parseInt(qtySelect.value,10) || 1;
-    unitEl.textContent = fmt(t.price, t.currency);
+    unitEl.textContent = fmt(t.price, t.currency) + (t.pairPrice && q >= 2 ? ' · 2 por ' + fmt(t.pairPrice, t.currency) : '');
     qtyEl.textContent = q;
-    totalEl.textContent = fmt(t.price * q, t.currency);
+    totalEl.textContent = fmt(tierTotal(t, q), t.currency);
   }
 
   /* Los botones de cada tipo de entrada preseleccionan el tipo en el formulario. */
   document.querySelectorAll('[data-tier]').forEach(function(a){
     a.addEventListener('click', function(){
       tipoSelect.value = a.getAttribute('data-tier');
+      const wantQty = a.getAttribute('data-qty');
+      if(wantQty){ pendingQty = wantQty; if(qtySelect.querySelector('option[value="'+wantQty+'"]')) qtySelect.value = wantQty; }
       renderTotals();
     });
   });
@@ -1326,12 +1335,13 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
         opt.textContent = i === 1 ? '1 entrada' : i+' entradas';
         qtySelect.appendChild(opt);
       }
+      if(pendingQty && qtySelect.querySelector('option[value="'+pendingQty+'"]')) qtySelect.value = pendingQty;
       renderTotals();
       submitBtn.disabled = false;
     }).catch(()=>{
       /* Sin servidor, seguimos con los precios publicados: la reserva viaja por WhatsApp. */
       eventInfo = { maxTicketsPerPurchase: 5, whatsappNumber: '5493541694363', tiers: {
-        general: { label: 'General · Preventa', price: 40000, currency: 'ARS' },
+        general: { label: 'General · Preventa', price: 40000, currency: 'ARS', pairPrice: 55500 },
         vip: { label: 'VIP', price: 200, currency: 'USD' },
         platino: { label: 'Platino', price: 750, currency: 'USD' }
       }};
@@ -1420,7 +1430,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
         '',
         'Entrada: ' + t.label,
         'Cantidad: ' + data.quantity,
-        'Total: ' + fmt(t.price * data.quantity, t.currency),
+        'Total: ' + fmt(tierTotal(t, data.quantity), t.currency) + (t.pairPrice && data.quantity >= 2 ? ' (precio amigas)' : ''),
         'Nombre: ' + data.firstName + ' ' + data.lastName,
         'Email: ' + data.email,
         'WhatsApp: ' + data.phone
@@ -1428,7 +1438,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       if(ref) lines.push('Código de reserva: ' + ref);
       lines.push('', '¿Me pasás los datos para la transferencia?');
       if(typeof window.epmTrack === 'function') window.epmTrack('checkout_initiated', { quantity: data.quantity, ticketType: data.ticketType });
-      try{ if(typeof fbq === 'function') fbq('track','InitiateCheckout',{ value: t.price * data.quantity, currency: t.currency, num_items: data.quantity }); }catch(err){}
+      try{ if(typeof fbq === 'function') fbq('track','InitiateCheckout',{ value: tierTotal(t, data.quantity), currency: t.currency, num_items: data.quantity }); }catch(err){}
       alertBox.textContent = '¡Listo! Se abrió WhatsApp con tu reserva: solo tenés que enviar el mensaje. Si no se abrió, escribinos al +54 9 3541 69-4363.';
       alertBox.classList.add('show','ok');
       submitBtn.innerHTML = 'Reserva enviada ✓';
@@ -1492,6 +1502,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 .lc-form label{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);margin-bottom:6px}
 .lc-msg{min-height:1.2em;margin:0 0 12px;font-size:.9rem;color:#B0473E}
 .lc-msg.ok{color:#2F4F2B}
+.tier-pair{display:block;text-align:center;margin-top:10px;font-size:.88rem;color:var(--bronce);text-decoration:underline;text-underline-offset:3px}
 .lm-backdrop{position:fixed;inset:0;background:rgba(26,16,23,.62);display:none;align-items:center;justify-content:center;padding:16px;z-index:200;backdrop-filter:blur(3px)}
 .lm-backdrop.open{display:flex}
 .lm{position:relative;width:100%;max-width:880px;max-height:calc(100svh - 32px);overflow:auto;background:var(--papel);border-radius:14px;display:grid;grid-template-columns:.9fr 1.1fr;box-shadow:0 30px 80px -30px rgba(0,0,0,.55)}

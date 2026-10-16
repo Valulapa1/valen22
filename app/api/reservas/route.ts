@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { eventConfig } from "@/config/event";
+import { eventConfig, getTierTotal } from "@/config/event";
 import { registrationSchema } from "@/lib/validation";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -47,6 +47,7 @@ export async function POST(request: Request) {
 
   const data = parsed.data;
   const tier = eventConfig.tiers[data.ticketType];
+  const total = getTierTotal(data.ticketType, data.quantity);
   const reference = `EPM27-${Date.now().toString(36).toUpperCase()}-${Math.random()
     .toString(36)
     .slice(2, 6)
@@ -64,7 +65,7 @@ export async function POST(request: Request) {
       document_number: data.documentNumber ?? null,
       quantity: data.quantity,
       unit_price: tier.price,
-      total_amount: tier.price * data.quantity,
+      total_amount: total,
       currency: tier.currency,
       status: "pending",
       payment_status: "pending",
@@ -105,7 +106,7 @@ export async function POST(request: Request) {
     unitPrice: tier.price,
     currency: tier.currency,
     quantity: data.quantity,
-    total: tier.price * data.quantity,
+    total,
     whatsappNumber: eventConfig.whatsappNumber,
   });
 }

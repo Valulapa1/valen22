@@ -35,6 +35,12 @@ function formatMoney(n: number, currency: string): string {
     : Number(n).toLocaleString("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
 }
 
+function waDigits(phone: string): string {
+  let digits = phone.replace(/\D/g, "");
+  if (digits.length === 10) digits = `549${digits}`;
+  return digits;
+}
+
 function waLink(phone: string, name: string): string {
   let digits = phone.replace(/\D/g, "");
   if (digits.length === 10) digits = `549${digits}`; // celular argentino sin prefijo
@@ -186,6 +192,22 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
                       >
                         {paidOf(r) > 0 ? "+ Cuota pagada" : "Seña pagada"}
                       </button>
+                    )}
+                    {r.status === "confirmed" && r.ticket_url && (
+                      <div className="admin-ticket">
+                        <a href={r.ticket_url} target="_blank" rel="noopener noreferrer">
+                          Ver entrada
+                        </a>
+                        <a
+                          href={`https://api.whatsapp.com/send?phone=${waDigits(r.phone)}&text=${encodeURIComponent(
+                            `¡Hola ${r.first_name}! 🤍 Ya está confirmado tu lugar en Estoy Para Más. Esta es tu entrada: ${r.ticket_url}`,
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Mandar por WhatsApp
+                        </a>
+                      </div>
                     )}
                     {r.status === "confirmed" ? (
                       <button

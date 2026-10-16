@@ -3,6 +3,8 @@ import { z } from "zod";
 import { eventConfig, getCurrentTier, getPaymentSchedule, getTierTotal } from "@/config/event";
 import { registrationSchema } from "@/lib/validation";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { money, notifyAdmin, reservationEmail, sendEmail } from "@/lib/email";
+import { getUsdRate } from "@/lib/dolar";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -93,6 +95,25 @@ export async function POST(request: Request) {
       console.error("[reservas] Error guardando la reserva:", error.message);
     } else {
       saved = true;
+      // Mail con los datos para transferir + aviso a Valentina.
+      const usdRate = tier.currency === "USD" ? await getUsdRate() : null;
+      const mail = reservationEmail(
+        { ...row, ticket_type: data.ticketType, label: tier.label, schedule },
+        usdRate,
+      );
+      const sent = await sendEmail({ to: data.email, ...mail });
+      if (sent) {
+        await supabase
+          .from("event_registrations")
+          .update({ reservation_email_sent_at: new Date().toISOString() })
+          .eq("external_reference", reference);
+      }
+      await notifyAdmin(`Nueva reserva: ${data.firstName} ${data.lastName} · ${tier.label}`, [
+        `${data.firstName} ${data.lastName} reservó ${data.quantity} × ${tier.label}.`,
+        `Total: ${money(total, tier.currency)}${schedule.length > 1 ? ` en ${schedule.length} cuotas` : ""}.`,
+        `WhatsApp: ${data.phone} · Email: ${data.email}`,
+        `Código: ${reference}`,
+      ]);
     }
     // También queda como contacto, para el seguimiento aunque no pague.
     const { error: leadError } = await supabase.from("leads").insert({

@@ -1568,7 +1568,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
         html += accBlock(accounts.ars);
       }
       html += '<p class="ok-fine">Te guardamos el lugar 48 hs para que hagas la transferencia.</p></div>';
-      const wa = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(waLines(info));
+      const wa = 'https://api.whatsapp.com/send?phone=' + waNumber + '&text=' + encodeURIComponent(waLines(info));
       html += '<div class="ok-step"><h4>2 · Mandanos el comprobante</h4>' +
         '<a class="btn btn-primary btn-block" href="' + wa + '" target="_blank" rel="noopener">Enviar comprobante por WhatsApp <span class="arw">→</span></a>' +
         '<p class="ok-fine">Cuando se acredita, te confirmamos tu lugar y te pasamos la dirección del salón.</p></div>';
@@ -1872,7 +1872,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       body:JSON.stringify({firstName:d.n,phone:d.w,email:d.e,interest:'platino',source:'aplicacion_platino',notes:notes,visitorId:window.__epmVisitorId||''})}).catch(function(){}); }catch(err){}
     try{ localStorage.setItem('epm_lead_2027','1'); }catch(err){}
     var text='Hola Vale! Apliqué a Platino de Estoy Para Más ✨\n\nSoy '+d.n+'\n'+notes;
-    f.innerHTML='<p style="font-family:var(--display);font-size:1.4rem;margin:0 0 8px">¡Gracias, '+d.n.split(' ')[0].replace(/[<>&]/g,'')+'! 🤍</p><p style="margin:0 0 16px">Recibí tu aplicación. Te escribo por WhatsApp para charlar y, si es para vos, te paso el link para confirmar tu lugar.</p><a class="btn btn-primary btn-block" target="_blank" rel="noopener" href="https://wa.me/5493541694363?text='+encodeURIComponent(text)+'">Avisarle a Vale por WhatsApp <span class="arw">→</span></a>';
+    f.innerHTML='<p style="font-family:var(--display);font-size:1.4rem;margin:0 0 8px">¡Gracias, '+d.n.split(' ')[0].replace(/[<>&]/g,'')+'! 🤍</p><p style="margin:0 0 16px">Recibí tu aplicación. Te escribo por WhatsApp para charlar y, si es para vos, te paso el link para confirmar tu lugar.</p><a class="btn btn-primary btn-block" target="_blank" rel="noopener" href="https://api.whatsapp.com/send?phone=5493541694363&text='+encodeURIComponent(text)+'">Avisarle a Vale por WhatsApp <span class="arw">→</span></a>';
   });
 })();
 </script>

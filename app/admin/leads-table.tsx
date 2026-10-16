@@ -45,7 +45,7 @@ function waLink(phone: string, name: string): string {
   let digits = phone.replace(/\D/g, "");
   if (digits.length === 10) digits = `549${digits}`;
   const text = `Hola ${name}! Soy Vale, de Estoy Para Más ✨`;
-  return `https://wa.me/${digits}?text=${encodeURIComponent(text)}`;
+  return `https://api.whatsapp.com/send?phone=${digits}&text=${encodeURIComponent(text)}`;
 }
 
 function toCsv(rows: LeadRow[]): string {

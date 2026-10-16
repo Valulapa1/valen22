@@ -156,7 +156,7 @@ details[open] summary::after{content:"–"}
 </div>
 <div style="flex-grow: 1"></div>
 <div style="font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; line-height: 1">USD 390 <span style="font-family: Poppins, sans-serif; font-size: 14px; font-weight: 400; color: rgb(94, 79, 104)">· 3 meses</span></div>
-<a href="https://wa.me/5493541694363?text=Hola%20Vale!%20Vi%20Transformarte%20en%20tu%20p%C3%A1gina%20y%20tengo%20algunas%20dudas%20%E2%9C%A8" style="text-decoration: none; text-align: center; background: #2E2236; color: #F6F0EA; padding: 14px 24px; border-radius: 999px; font-weight: 500">Hablar con Valentina</a>
+<a href="https://api.whatsapp.com/send?phone=5493541694363&text=Hola%20Vale!%20Vi%20Transformarte%20en%20tu%20p%C3%A1gina%20y%20tengo%20algunas%20dudas%20%E2%9C%A8" style="text-decoration: none; text-align: center; background: #2E2236; color: #F6F0EA; padding: 14px 24px; border-radius: 999px; font-weight: 500">Hablar con Valentina</a>
 <p style="margin: 0; font-size: 13px; color: #5E4F68; text-align: center">Escribime por WhatsApp y te respondo tus dudas</p>
 
 </div>
@@ -326,7 +326,7 @@ details[open] summary::after{content:"–"}
 </div>
 </section>
 
-<a href="https://wa.me/5493541694363?text=Hola%20Vale!%20Vi%20tu%20p%C3%A1gina%20y%20quiero%20saber%20m%C3%A1s%20%E2%9C%A8" aria-label="Escribime por WhatsApp" style="position: fixed; right: 20px; bottom: 20px; z-index: 50; width: 60px; height: 60px; border-radius: 999px; background: #2E2236; color: #FFFFFF; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(46,34,54,0.35); text-decoration: none"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2z"/></svg></a>
+<a href="https://api.whatsapp.com/send?phone=5493541694363&text=Hola%20Vale!%20Vi%20tu%20p%C3%A1gina%20y%20quiero%20saber%20m%C3%A1s%20%E2%9C%A8" aria-label="Escribime por WhatsApp" style="position: fixed; right: 20px; bottom: 20px; z-index: 50; width: 60px; height: 60px; border-radius: 999px; background: #2E2236; color: #FFFFFF; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(46,34,54,0.35); text-decoration: none"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2z"/></svg></a>
 
 <footer style="max-width: 1240px; margin: 0 auto; padding: 40px 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; font-size: 14px; color: #5E4F68">
 <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #2E2236">Valentina <span style="font-style: italic">Parodi</span></div>
@@ -349,7 +349,7 @@ details[open] summary::after{content:"–"}
         body:JSON.stringify({firstName:n,phone:wp,email:em,source:'home_clase'})}).catch(function(){});
     }catch(err){}
     var msg='Hola Vale! Soy '+n+' y quiero la clase de regalo de tu programa ✨\nMi email: '+em+'\nMi WhatsApp: '+wp;
-    window.open('https://wa.me/5493541694363?text='+encodeURIComponent(msg),'_blank','noopener');
+    window.open('https://api.whatsapp.com/send?phone=5493541694363&text='+encodeURIComponent(msg),'_blank','noopener');
   });
 })();
 </script>
@@ -399,7 +399,7 @@ details[open] summary::after{content:"–"}
       window.open(u.toString(),'_blank','noopener');
     } else {
       var msg='Hola Vale! Soy '+d.nombre+' y quiero saber más de Transformarte ✨'+(d.pilar?'\nMe gustaría trabajar '+d.pilar+'.':'');
-      window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank','noopener');
+      window.open('https://api.whatsapp.com/send?phone=' + WA + '&text='+encodeURIComponent(msg),'_blank','noopener');
     }
   }
   function send(d){
@@ -428,7 +428,7 @@ details[open] summary::after{content:"–"}
   document.querySelectorAll('a[href*="calendly.com"]').forEach(function(a){
     a.addEventListener('click', function(e){ e.preventDefault(); open('adn', a.href); });
   });
-  document.querySelectorAll('a[href*="wa.me"][href*="Transformarte"]').forEach(function(a){
+  document.querySelectorAll('a[href*="whatsapp.com"][href*="Transformarte"]').forEach(function(a){
     a.addEventListener('click', function(e){ e.preventDefault(); open('transformarte', a.href); });
   });
   bg.addEventListener('click', function(e){ if(e.target===bg || e.target.hasAttribute('data-pre-close')) close(); });

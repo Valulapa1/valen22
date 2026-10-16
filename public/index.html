@@ -751,6 +751,38 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
   .rv{opacity:1;transform:none}
   html{scroll-behavior:auto}
 }
+
+/* ---- 2027: hero más claro, preventa, para vos, faq, sticky ---- */
+.hero-bg{opacity:.55!important;filter:none!important;background-position:center 40%}
+.hero::before{background:linear-gradient(100deg,rgba(51,32,47,.96) 30%,rgba(51,32,47,.72) 58%,rgba(51,32,47,.25) 100%),radial-gradient(ellipse 900px 620px at 78% 8%,rgba(168,124,79,.22),transparent 62%)!important}
+.btn-ghost-light{border:1px solid rgba(255,255,255,.55);color:#fff;background:transparent}
+.btn-ghost-light:hover{background:rgba(255,255,255,.08)}
+.presale{display:inline-flex;flex-direction:column;gap:4px;border:1px solid rgba(232,207,169,.45);border-radius:var(--r);padding:12px 16px;margin-top:6px;background:rgba(51,32,47,.55)}
+.presale-lbl{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#E8CFA9}
+.presale-cd{font-size:1.02rem;color:#fff}
+.presale-cd b{font-family:var(--display);font-weight:400;font-size:1.5rem;margin:0 2px 0 6px}
+.presale-cd b:first-child{margin-left:0}
+.presale-note{font-size:.82rem;color:#CBBCC7}
+.fit{list-style:none;padding:0;margin:0 auto;max-width:860px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.fit li{position:relative;background:var(--papel);border:1px solid var(--linea);border-radius:var(--r);padding:18px 18px 18px 50px;line-height:1.5}
+.fit li::before{content:"✓";position:absolute;left:18px;top:16px;width:22px;height:22px;border-radius:50%;background:var(--bronce);color:#fff;font-size:.8rem;display:flex;align-items:center;justify-content:center}
+@media (max-width:760px){.fit{grid-template-columns:1fr}}
+.faq{display:grid;gap:10px}
+.faq details{background:var(--papel);border:1px solid var(--linea);border-radius:var(--r);padding:0 20px}
+.faq summary{cursor:pointer;list-style:none;padding:18px 28px 18px 0;font-weight:600;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:0;top:14px;font-size:1.4rem;color:var(--bronce)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{margin:0 0 18px;color:var(--gris);line-height:1.65}
+.pay-line{text-align:center;color:var(--gris);font-size:.86rem;max-width:640px;margin:8px auto 0}
+.sticky-cta{display:none}
+@media (max-width:760px){
+  .hero-bg{background-position:70% 30%;opacity:.42!important}
+  .hero::before{background:linear-gradient(180deg,rgba(51,32,47,.55) 0%,rgba(51,32,47,.92) 55%,rgba(51,32,47,.98) 100%)!important}
+  .sticky-cta{display:block;position:fixed;left:12px;right:12px;bottom:12px;z-index:150;background:var(--bronce);color:#fff;text-align:center;padding:15px 18px;border-radius:999px;font-weight:600;font-size:.95rem;box-shadow:0 10px 30px rgba(26,16,23,.35);transform:translateY(140%);transition:transform .3s}
+  .sticky-cta.show{transform:none}
+  .presale{width:100%;box-sizing:border-box}
+}
 </style>
 </head>
 <body>
@@ -761,55 +793,227 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
     <a href="#top" class="logo">ESTOY PARA MÁS</a>
     <div style="display:flex;align-items:center;gap:22px">
       <style>@media (max-width:560px){.nav-home{display:none}}</style><div class="nav-links nav-home"><a href="/">Conocé a Valentina</a></div>
-      <a href="#reservar" class="nav-cta">Reservar mi lugar</a>
+      <a href="#entradas" class="nav-cta">Reservar mi lugar</a>
     </div>
   </div>
 </nav>
 
 <!-- ============ HERO ============ -->
 <header class="hero" id="top">
-  <div class="hero-bg" style="background-image:url('assets/img/hero-audiencia.jpg')"></div>
+  <div class="hero-bg" style="background-image:url('assets/img/evento/escuchando.jpg')"></div>
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <div class="eyebrow">Evento presencial · Buenos Aires</div>
+        <div class="eyebrow">2.ª edición · 6 y 7 de marzo · Buenos Aires</div>
         <h1>Hay una forma de vivir que todavía no conocés</h1>
         <p class="hero-sub">
-          Dos días, una sola decisión para reconocer que estás para más
+          Dos días con mujeres que, como vos, saben que están para más. Esta vez vamos por <strong>500 mujeres</strong> en un mismo salón.
         </p>
-        <div class="hero-story">
-          <b>El 6 de marzo dejás de esperar.</b>
-        </div>
         <div class="hero-ctas">
-          <a href="#reservar" class="btn btn-primary">Ver qué pasa ese día <span class="arw">→</span></a>
+          <a href="#entradas" class="btn btn-primary">Reservar mi lugar <span class="arw">→</span></a>
+          <a href="#el-dia" class="btn btn-ghost-light">Qué vas a vivir</a>
         </div>
-        <div class="hero-micro"><span class="dot"></span> Sábado 6 y domingo 7 de marzo · Preventa $40.000 hasta el 15/12</div>
+        <div class="presale" aria-live="polite">
+          <span class="presale-lbl">La preventa termina en</span>
+          <span class="presale-cd"><b data-cd="d">--</b> días <b data-cd="h">--</b> h <b data-cd="m">--</b> min</span>
+          <span class="presale-note">$40.000 los dos días · después sube el precio</span>
+        </div>
       </div>
-
     </div>
 
     <!-- stats de confianza -->
     <div class="hero-stats">
-      <div class="hstat"><b>2 días</b><span>Una transformación de verdad, de 9 am a 8 pm sábado y domingo</span></div>
-      <div class="hstat"><b>6 y 7</b><span>de marzo de 2027</span></div>
-      <div class="hstat"><b>2.ª edición</b><span>Mujeres en un mismo salón premium · lugares limitados</span></div>
+      <div class="hstat"><b>500</b><span>Mujeres en un mismo salón · cupos limitados</span></div>
+      <div class="hstat"><b>+70</b><span>Mujeres vivieron la 1.ª edición</span></div>
+      <div class="hstat"><b>2 días</b><span>Sábado 6 y domingo 7 de marzo, de 9 a 20 hs</span></div>
       <div class="hstat"><b>Bs. As.</b><span>Capital Federal. La dirección exacta llega al confirmar</span></div>
     </div>
   </div>
 </header>
 
-<!-- ============ PUNTO DE ENTRADA ============ -->
-<section class="sec" id="reservar">
+<!-- ============ ES PARA VOS ============ -->
+<section class="sec tight" id="para-vos">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow center">¿Es para vos?</div>
+      <h2>Esto es para vos si…</h2>
+    </div>
+    <ul class="fit rv">
+      <li>Sabés que estás para más, pero algo no termina de encajar.</li>
+      <li>Querés dejar de postergarte y empezar a elegirte.</li>
+      <li>Estás cansada de rodearte de conversaciones que no te suman.</li>
+      <li>Querés un entorno de mujeres que te sostengan y te impulsen.</li>
+      <li>Sentís que llegó el momento de mirar tu historia con otros ojos.</li>
+      <li>Vas sola y te da un poco de miedo: tranqui, la mayoría llega así y se va con amigas.</li>
+    </ul>
+    <div class="center rv" style="text-align:center;margin-top:34px">
+      <a href="#entradas" class="btn btn-dark">Quiero mi lugar <span class="arw">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AGENDA ============ -->
+<section class="sec tight" id="el-dia" style="background:var(--arena);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="entry-flag">◆ Punto de entrada</div>
-      <h2>Empezás por acá.</h2>
-      <p class="lead">
-        en 5 minutos vas a conocer los 5 pilares que estan limitando tu potencial
-      </p>
+      <div class="eyebrow">Dos días · Sábado y domingo</div>
+      <h2>Qué vas a vivir.</h2>
+      <p class="lead">Sábado y domingo, de 9 a 20. Es mucho tiempo: tenés derecho a saber en qué lo vas a invertir.</p>
     </div>
 
-    <!-- VSL solo, a todo el ancho -->
+    <style>
+      .days{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:1000px;margin:0 auto 18px}
+      @media (max-width:760px){.days{grid-template-columns:1fr}}
+      .day{background:var(--papel);border:1px solid var(--linea);border-radius:var(--r);padding:30px;text-align:left}
+      .day-tag{font-family:var(--mono,monospace);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronce)}
+      .day h3{margin:8px 0 10px}
+      .day p{margin:0;color:var(--gris)}
+      .voices{max-width:820px;margin:28px auto 0;text-align:center;font-family:var(--display,serif);font-style:italic;font-size:1.35rem;line-height:1.45}
+      .voices span{display:block;margin-top:10px;font-family:var(--body,sans-serif);font-style:normal;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+    </style>
+    <div class="days rv">
+      <div class="day">
+        <div class="day-tag">Día 1 · Sábado 6 de marzo</div>
+        <h3>Tu transformación personal.</h3>
+        <p>Coaching vivencial para trabajar tu identidad y tu historia, y empezar a mirar el mundo con otra percepción. Para que la vida se vuelva más sencilla.</p>
+      </div>
+      <div class="day">
+        <div class="day-tag">Día 2 · Domingo 7 de marzo</div>
+        <h3>Tu nuevo entorno.</h3>
+        <p>Construís un entorno de alto valor: amigas, socias y mujeres que te sostienen y te impulsan a ir por más.</p>
+      </div>
+    </div>
+    <p class="voices rv">“Fue algo extraordinario, algo mágico. Se sintió mucho la unión y mucho amor.”<span>Lo que más nos dijeron en la primera edición</span></p>
+
+    
+    <div class="center rv" style="text-align:center;margin-top:30px">
+      <a href="#entradas" class="btn btn-primary">Reservar mi lugar <span class="arw">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERÍA 1.ª EDICIÓN ============ -->
+<section class="sec" id="galeria">
+  <style>
+    .gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:300px;gap:14px;max-width:1124px;margin:0 auto}
+    .gal img{width:100%;height:100%;object-fit:cover;display:block;border-radius:var(--r)}
+    .gal img:first-child{grid-column:span 2}
+    @media (max-width:760px){
+      .gal{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:200px;gap:10px}
+      .gal img:last-child{display:none}
+    }
+  </style>
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow center">Primera edición · 20 de septiembre de 2026</div>
+      <h2>Así se vivió.</h2>
+      <p class="lead">Más de 70 mujeres, un mismo salón y un día que no se olvida. Ahora vamos por 500.</p>
+    </div>
+    <div class="gal rv">
+      <img src="/assets/img/evento/vale-escenario-logo.jpg" alt="Valentina sonriendo en el escenario de Estoy Para Más" loading="lazy">
+      <img src="/assets/img/evento/abrazo-escenario.jpg" alt="Valentina abraza a una asistente emocionada en el escenario" loading="lazy">
+      <img src="/assets/img/evento/manos-arriba.jpg" alt="Ronda de mujeres con las manos en alto durante una dinámica" loading="lazy">
+      <img src="/assets/img/evento/abrazo.jpg" alt="Dos asistentes abrazadas al cierre de una dinámica" loading="lazy">
+      <img src="/assets/img/evento/baile.jpg" alt="Asistentes bailando y riendo juntas" loading="lazy">
+      <img src="/assets/img/evento/panel-escenario.jpg" alt="Valentina conversa con tres invitadas en el escenario" loading="lazy">
+      <img src="/assets/img/evento/encuentro-1.jpg" alt="Dos mujeres se miran y sonríen durante una dinámica" loading="lazy">
+      <img src="/assets/img/evento/aplausos.jpg" alt="El público aplaude de pie una charla" loading="lazy">
+    </div>
+    <div class="agenda rv" style="padding: 56px 0 0; text-align: center;">
+      <div style="max-width: 1100px; margin: 0 auto 40px;">
+        <h3 style="font-size: 1.5rem; margin-bottom: 20px;">Ellas lo cuentan.</h3>
+        <p class="lead" style="margin-bottom: 40px;">Mujeres de la primera edición, en sus propias palabras.</p>
+        <div style="display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;">
+          <div class="testimonio-vertical">
+            <iframe
+              src="https://www.youtube.com/embed/fVW3-b3I75M"
+              title="Testimonio — Estoy Para Más"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              loading="lazy"
+              allowfullscreen></iframe>
+          </div>
+          <div class="testimonio-vertical">
+            <iframe
+              src="https://www.youtube.com/embed/he1j5ZRV1aI"
+              title="Testimonio — Estoy Para Más"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              loading="lazy"
+              allowfullscreen></iframe>
+          </div>
+          <div class="testimonio-vertical">
+            <iframe
+              src="https://www.youtube.com/embed/fC5wXJQtM9I"
+              title="Testimonio — Estoy Para Más"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              loading="lazy"
+              allowfullscreen></iframe>
+          </div>
+          <div class="testimonio-vertical">
+            <iframe
+              src="https://www.youtube.com/embed/66V1BXa4UEw"
+              title="Testimonio — Estoy Para Más"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              loading="lazy"
+              allowfullscreen></iframe>
+          </div>
+          <div class="testimonio-vertical">
+            <iframe
+              src="https://www.youtube.com/embed/msqPPY2VJOA"
+              title="Testimonio — Estoy Para Más"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              loading="lazy"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sec-head center rv" style="margin-top:72px">
+      <div class="eyebrow center">Lo que nos escribieron después</div>
+      <h2>En sus palabras.</h2>
+    </div>
+    <div class="quotes rv" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">
+      <figure class="quote" style="margin:0"><span class="q-result">Un lugar seguro</span><blockquote class="q-text" style="margin:0 0 18px">“Logré conectar con Dios, con todas las mujeres que estaban ahí y permitirme sentir todas las emociones sin juzgarme ni tener miedo a la mirada del otro. Sin dudas, un lugar SEGURO donde pude ser yo misma.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Julieta Flores</b> · Asistente 1.ª edición</figcaption></figure>
+      <figure class="quote" style="margin:0"><span class="q-result">Mágico y transformador</span><blockquote class="q-text" style="margin:0 0 18px">“Muchas gracias, sin dudas fue mágico y transformador. 💜🫂”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Malena Aranda</b> · Asistente 1.ª edición</figcaption></figure>
+      <figure class="quote" style="margin:0"><span class="q-result">Sos luz</span><blockquote class="q-text" style="margin:0 0 18px">“Fue increíble. Sos luz, te admiro… Estuve ahí de pasar al frente.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Lucía</b> · Asistente 1.ª edición</figcaption></figure>
+      <figure class="quote" style="margin:0"><span class="q-result">Un día increíble</span><blockquote class="q-text" style="margin:0 0 18px">“Gracias por semejante evento ❤️ Fue un día increíble, con personas maravillosas. Muy productivo.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Gladys</b> · Asistente 1.ª edición</figcaption></figure>
+    </div>
+    <div class="center rv" style="text-align:center;margin-top:36px">
+      <a href="#entradas" class="btn btn-dark">Quiero vivirlo <span class="arw">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HISTORIA ============ -->
+<section class="sec dark" id="historia">
+  <div class="wrap">
+    <div class="story-grid">
+      <div class="story-photo rv" style="background-image:url('assets/img/vale-escenario.jpg')"></div>
+      <div class="story-body rv">
+        <div class="pull" style="margin-top: 0;">
+          “Mi trabajo no es que me sigas, es que aprendas a confiar en vos misma y construyas tu vida 10/10.”
+        </div>
+        <div class="eyebrow" style="margin-top:34px">Quién te recibe</div>
+        <h2 style="color:#fff;margin:10px 0 16px">Soy Valentina Parodi.</h2>
+        <p style="color:#CBBCC7;line-height:1.7;margin:0 0 14px">Hace no tanto, yo tampoco tenía rumbo. Hoy soy mentora de mujeres: hace más de dos años acompaño procesos de transformación y ya son más de 150 las mujeres que pasaron por mi método.</p>
+        <p style="color:#CBBCC7;line-height:1.7;margin:0 0 22px">Estoy Para Más nació para que lo que yo viví en mi proceso lo puedas vivir vos en dos días, rodeada de mujeres que van para el mismo lado.</p>
+        <a href="/" class="btn btn-ghost-light">Conocé mi historia <span class="arw">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENTRADAS ============ -->
+<section class="sec" id="entradas">
+  <span id="reservar"></span>
+  <div class="wrap">
+
+    <!-- Video de la edición anterior: oculto hasta tener el nuevo de 2027.
+     VSL solo, a todo el ancho 
     <div class="vsl-frame rv">
       <iframe
         src="https://www.youtube.com/embed/3tW3DW93VUk"
@@ -819,6 +1023,8 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         loading="lazy"
         allowfullscreen></iframe>
     </div>
+
+    -->
 
     <!-- Banner de ponentes: oculto hasta anunciar las ponentes de la 2.ª edición (2027).
     <figure class="ponentes rv">
@@ -854,10 +1060,10 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
     <div class="tiers-head rv" style="text-align:center;max-width:720px;margin:0 auto 26px">
       <div class="eyebrow center">Elegí tu experiencia</div>
       <h2 style="margin:10px 0 8px">Tres formas de vivir Estoy Para Más.</h2>
-      <p class="lead" style="margin:0">Preventa de la entrada general hasta el 15 de diciembre. Después, el valor sube.</p>
+      <p class="lead" style="margin:0">Asegurá tu lugar antes de que suba el precio: la preventa termina el 15 de diciembre.</p>
       <p class="voices" style="font-size:1.1rem;margin-top:18px">“Sin dudas fue mágico y transformador.”<span>Malena Aranda · Asistente de la primera edición</span></p>
     </div>
-    <p class="rv" style="max-width:760px;margin:0 auto 34px;text-align:center;font-family:var(--display,serif);font-style:italic;font-size:1.3rem;line-height:1.45">“Veo tu valor y todo lo que generás en mí y en miles de chicas: un movimiento hermoso para tener una mentalidad expansiva.”<span style="display:block;margin-top:10px;font-family:var(--body,sans-serif);font-style:normal;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)">Mensaje que le llegó a Valentina</span></p>
+
     <div class="tiers rv">
       <div class="tier">
         <div class="tier-name">General · Preventa</div>
@@ -904,21 +1110,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
       </div>
     </div>
 
-    <!-- Checkout: precio + cupos + reserva -->
-    <div class="entry-buy checkout-solo rv">
-
-        <div class="price-row">
-          <div class="price">$40.000</div>
-          <div class="price-alt">preventa · los dos días · hasta el 15/12</div>
-        </div>
-        <p class="anchor">
-          Dos días completos por menos de lo que gastás en un fin de semana de salidas. La diferencia
-          es que de acá salís con la decisión tomada, no dentro de dos años.
-        </p>
-
-        <a href="#comprar" class="btn btn-dark btn-block">Reservo mi lugar <span class="arw">→</span></a>
-        <p class="pay">Pago por transferencia. General en pesos; VIP y Platino en dólares o en pesos al dólar blue del día (promedio entre compra y venta).<br>Capital Federal, Buenos Aires. La dirección exacta se envía al confirmar.</p>
-    </div>
+    <p class="pay-line">Pago por transferencia. General en pesos; VIP y Platino en dólares o en pesos al dólar blue del día. VIP y Platino también en cuotas hasta el 15/12.</p>
   </div>
 </section>
 
@@ -961,7 +1153,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
     <div class="sec-head center rv">
       <div class="eyebrow center">Reservá tu lugar</div>
       <h2>Comprá tu entrada.</h2>
-      <p class="lead">Elegís tu entrada, completás tus datos y te escribo por WhatsApp para coordinar el pago por transferencia. Tu lugar queda reservado cuando se acredita.</p>
+      <p class="lead">Elegís tu entrada, completás tus datos y al instante ves cómo transferir. Nos mandás el comprobante por WhatsApp y tu lugar queda confirmado.</p>
     </div>
 
     <div class="form-card buy-card rv">
@@ -1047,147 +1239,25 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
   </div>
 </section>
 
-<!-- ============ AGENDA ============ -->
-<section class="sec tight" id="el-dia" style="background:var(--arena);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="eyebrow">Dos días</div>
-      <h2>Qué pasa esos días.</h2>
-      <p class="lead">Sábado y domingo, de 9 a 20. Es mucho tiempo: tenés derecho a saber en qué lo vas a invertir.</p>
-    </div>
-
-    <style>
-      .days{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:1000px;margin:0 auto 18px}
-      @media (max-width:760px){.days{grid-template-columns:1fr}}
-      .day{background:var(--papel);border:1px solid var(--linea);border-radius:var(--r);padding:30px;text-align:left}
-      .day-tag{font-family:var(--mono,monospace);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronce)}
-      .day h3{margin:8px 0 10px}
-      .day p{margin:0;color:var(--gris)}
-      .voices{max-width:820px;margin:28px auto 0;text-align:center;font-family:var(--display,serif);font-style:italic;font-size:1.35rem;line-height:1.45}
-      .voices span{display:block;margin-top:10px;font-family:var(--body,sans-serif);font-style:normal;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
-    </style>
-    <div class="days rv">
-      <div class="day">
-        <div class="day-tag">Día 1 · Sábado 6 de marzo</div>
-        <h3>Tu transformación personal.</h3>
-        <p>Coaching vivencial para trabajar tu identidad y tu historia, y empezar a mirar el mundo con otra percepción. Para que la vida se vuelva más sencilla.</p>
-      </div>
-      <div class="day">
-        <div class="day-tag">Día 2 · Domingo 7 de marzo</div>
-        <h3>Tu nuevo entorno.</h3>
-        <p>Construís un entorno de alto valor: amigas, socias y mujeres que te sostienen y te impulsan a ir por más.</p>
-      </div>
-    </div>
-    <p class="voices rv">“Fue algo extraordinario, algo mágico. Se sintió mucho la unión y mucho amor.”<span>Lo que más nos dijeron en la primera edición</span></p>
-
-    
-    <div class="agenda rv" style="padding: 40px 0; text-align: center;">
-      <div style="max-width: 1100px; margin: 0 auto 40px;">
-        <h3 style="font-size: 1.5rem; margin-bottom: 20px;">¿Que pasa ese día?</h3>
-        <p class="lead" style="margin-bottom: 40px;">Esto se vuelve tu estado natural.</p>
-        <div style="display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;">
-          <div class="testimonio-vertical">
-            <iframe
-              src="https://www.youtube.com/embed/fVW3-b3I75M"
-              title="Testimonio — Estoy Para Más"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-          <div class="testimonio-vertical">
-            <iframe
-              src="https://www.youtube.com/embed/he1j5ZRV1aI"
-              title="Testimonio — Estoy Para Más"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-          <div class="testimonio-vertical">
-            <iframe
-              src="https://www.youtube.com/embed/fC5wXJQtM9I"
-              title="Testimonio — Estoy Para Más"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-          <div class="testimonio-vertical">
-            <iframe
-              src="https://www.youtube.com/embed/66V1BXa4UEw"
-              title="Testimonio — Estoy Para Más"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-          <div class="testimonio-vertical">
-            <iframe
-              src="https://www.youtube.com/embed/msqPPY2VJOA"
-              title="Testimonio — Estoy Para Más"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ GALERÍA 1.ª EDICIÓN ============ -->
-<section class="sec" id="galeria">
-  <style>
-    .gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:300px;gap:14px;max-width:1124px;margin:0 auto}
-    .gal img{width:100%;height:100%;object-fit:cover;display:block;border-radius:var(--r)}
-    .gal img:first-child{grid-column:span 2}
-    @media (max-width:760px){
-      .gal{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:200px;gap:10px}
-      .gal img:last-child{display:none}
-    }
-  </style>
-  <div class="wrap">
+<!-- ============ PREGUNTAS FRECUENTES ============ -->
+<section class="sec" id="faq" style="background:var(--arena);border-top:1px solid var(--linea)">
+  <div class="narrow">
     <div class="sec-head center rv">
-      <div class="eyebrow center">Primera edición · 20 de septiembre de 2026</div>
-      <h2>Así se vivió.</h2>
-      <p class="lead">Más de 70 mujeres, un mismo salón y un día que no se olvida.</p>
+      <div class="eyebrow center">Preguntas frecuentes</div>
+      <h2>Lo que más nos preguntan.</h2>
     </div>
-    <div class="gal rv">
-      <img src="/assets/img/evento/vale-escenario-logo.jpg" alt="Valentina sonriendo en el escenario de Estoy Para Más" loading="lazy">
-      <img src="/assets/img/evento/abrazo-escenario.jpg" alt="Valentina abraza a una asistente emocionada en el escenario" loading="lazy">
-      <img src="/assets/img/evento/manos-arriba.jpg" alt="Ronda de mujeres con las manos en alto durante una dinámica" loading="lazy">
-      <img src="/assets/img/evento/abrazo.jpg" alt="Dos asistentes abrazadas al cierre de una dinámica" loading="lazy">
-      <img src="/assets/img/evento/baile.jpg" alt="Asistentes bailando y riendo juntas" loading="lazy">
-      <img src="/assets/img/evento/panel-escenario.jpg" alt="Valentina conversa con tres invitadas en el escenario" loading="lazy">
-      <img src="/assets/img/evento/encuentro-1.jpg" alt="Dos mujeres se miran y sonríen durante una dinámica" loading="lazy">
-      <img src="/assets/img/evento/aplausos.jpg" alt="El público aplaude de pie una charla" loading="lazy">
+    <div class="faq rv">
+      <details><summary>¿Cuándo y dónde es?</summary><p>Sábado 6 y domingo 7 de marzo de 2027, de 9 a 20 hs, en un salón de Capital Federal, Buenos Aires. La dirección exacta te la mandamos cuando se confirma tu pago.</p></details>
+      <details><summary>¿Puedo ir un solo día?</summary><p>Sí. Igual te recomendamos vivir los dos: el sábado trabajás tu transformación personal y el domingo construís tu nuevo entorno. Juntos son la experiencia completa.</p></details>
+      <details><summary>¿Hay comida?</summary><p>Sí, va a haber catering. También podés llevar cosas para comer y compartir con las demás.</p></details>
+      <details><summary>Voy sola, ¿está bien?</summary><p>Totalmente. Muchas llegan solas y se van con amigas nuevas: el evento está pensado para que conectes desde el primer momento.</p></details>
+      <details><summary>Si no puedo ir, ¿pierdo la entrada?</summary><p>No. La entrada no tiene devolución, pero podés transferírsela a una amiga, una conocida o alguien de tu familia. Solo avisanos por WhatsApp a nombre de quién queda.</p></details>
+      <details><summary>¿Cómo pago?</summary><p>Por transferencia. La General es en pesos. VIP y Platino son en dólares, o en pesos al dólar blue del día (el promedio entre compra y venta). Al reservar te mostramos los datos al instante.</p></details>
+      <details><summary>¿Puedo pagar en cuotas?</summary><p>Sí, VIP y Platino: dejás una seña al reservar y completás el resto en cuotas hasta el 15 de diciembre. La seña confirma tu lugar y no es reembolsable.</p></details>
+      <details><summary>¿Qué es la promo “Venite con una amiga”?</summary><p>Dos entradas generales por $55.500 en vez de $80.000, durante la preventa. Elegís 2 entradas en el formulario y se aplica sola.</p></details>
+      <details><summary>¿Cuántos lugares hay?</summary><p>Vamos por 500 mujeres y los cupos son limitados. Platino tiene solo 10 lugares y se accede por aplicación.</p></details>
     </div>
-    <div class="sec-head center rv" style="margin-top:72px">
-      <div class="eyebrow center">Lo que nos escribieron después</div>
-      <h2>En sus palabras.</h2>
-    </div>
-    <div class="quotes rv" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">
-      <figure class="quote" style="margin:0"><span class="q-result">Un lugar seguro</span><blockquote class="q-text" style="margin:0 0 18px">“Logré conectar con Dios, con todas las mujeres que estaban ahí y permitirme sentir todas las emociones sin juzgarme ni tener miedo a la mirada del otro. Sin dudas, un lugar SEGURO donde pude ser yo misma.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Julieta Flores</b> · Asistente 1.ª edición</figcaption></figure>
-      <figure class="quote" style="margin:0"><span class="q-result">Mágico y transformador</span><blockquote class="q-text" style="margin:0 0 18px">“Muchas gracias, sin dudas fue mágico y transformador. 💜🫂”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Malena Aranda</b> · Asistente 1.ª edición</figcaption></figure>
-      <figure class="quote" style="margin:0"><span class="q-result">Sos luz</span><blockquote class="q-text" style="margin:0 0 18px">“Fue increíble. Sos luz, te admiro… Estuve ahí de pasar al frente.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Lucía</b> · Asistente 1.ª edición</figcaption></figure>
-      <figure class="quote" style="margin:0"><span class="q-result">Un día increíble</span><blockquote class="q-text" style="margin:0 0 18px">“Gracias por semejante evento ❤️ Fue un día increíble, con personas maravillosas. Muy productivo.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Gladys</b> · Asistente 1.ª edición</figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<!-- ============ HISTORIA ============ -->
-<section class="sec dark" id="historia">
-  <div class="wrap">
-    <div class="story-grid">
-      <div class="story-photo rv" style="background-image:url('assets/img/historia-valentina.jpg')"></div>
-      <div class="story-body rv">
-        <div class="pull" style="margin-top: 0;">
-          “Mi trabajo no es que me sigas, es que aprendas a confiar en vos misma y construyas tu vida 10/10.”
-        </div>
-      </div>
-    </div>
+    <p class="center rv" style="text-align:center;margin-top:28px;color:var(--gris)">¿Otra duda? <a href="https://api.whatsapp.com/send?phone=5493541694363&amp;text=Hola%20Vale!%20Tengo%20una%20duda%20sobre%20Estoy%20Para%20M%C3%A1s" target="_blank" rel="noopener" style="color:var(--bronce);text-decoration:underline">Escribime por WhatsApp</a> y te contesto yo.</p>
   </div>
 </section>
 
@@ -1215,16 +1285,17 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
 
 <!-- ============ BANDA FINAL ============ -->
 <section class="band">
-  <div class="band-bg" style="background-image:url('assets/img/banda-final.jpg')"></div>
+  <div class="band-bg" style="background-image:url('assets/img/evento/manos-arriba.jpg')"></div>
   <div class="wrap band-in">
     <div class="eyebrow center">Última llamada</div>
     <h2>El 6 de marzo pasa igual.</h2>
     <p>La única diferencia es si estás adentro o mirando desde afuera.</p>
 
+    <p style="margin:0 auto 12px;font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:#E8CFA9">La preventa termina en</p>
     <div class="countdown" id="cd">
-      <div class="cd"><b id="d">--</b><span>Días</span></div>
-      <div class="cd"><b id="h">--</b><span>Horas</span></div>
-      <div class="cd"><b id="m">--</b><span>Minutos</span></div>
+      <div class="cd"><b id="d" data-cd="d">--</b><span>Días</span></div>
+      <div class="cd"><b id="h" data-cd="h">--</b><span>Horas</span></div>
+      <div class="cd"><b id="m" data-cd="m">--</b><span>Minutos</span></div>
     </div>
 
     <div class="band-perks">
@@ -1233,12 +1304,14 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
       <div class="perk"><b>¿Dudás? Escribime</b>Por WhatsApp, antes de pagar. Te contesto yo</div>
     </div>
 
-    <a href="#comprar" class="btn btn-primary" style="padding:19px 44px;font-size:1rem">
+    <a href="#entradas" class="btn btn-primary" style="padding:19px 44px;font-size:1rem">
       Reservo mi lugar <span class="arw">→</span>
     </a>
-    <p class="band-last">Los lugares son limitados. Cuando se completen, la próxima edición es el año que viene.</p>
+    <p class="band-last">Vamos por 500 mujeres y los cupos son limitados. Cuando se completen, la próxima edición es el año que viene.</p>
   </div>
 </section>
+
+<a href="#entradas" class="sticky-cta" id="sticky-cta">Reservar mi lugar · preventa $40.000 <span class="arw">→</span></a>
 
 <!-- ============ FOOTER ============ -->
 <footer class="foot">
@@ -1254,14 +1327,14 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           <a href="https://www.instagram.com/soyvalentinaparodi?igsh=cHdpaXQwY21iZzhs" class="soc" aria-label="Instagram" target="_blank" rel="noopener">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
           </a>
-          <a href="https://wa.me/5493541694363" class="soc" aria-label="WhatsApp" target="_blank" rel="noopener">
+          <a href="https://api.whatsapp.com/send?phone=5493541694363" class="soc" aria-label="WhatsApp" target="_blank" rel="noopener">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M21 11.5a8.4 8.4 0 01-12.6 7.3L3 21l2.3-5.3A8.4 8.4 0 1121 11.5z"/></svg>
           </a>
         </div>
       </div>
     </div>
     <div class="foot-bot">
-      <div>© 2026 Estoy Para Más · Términos · Privacidad</div>
+      <div>© 2026 Estoy Para Más · <a href="/terminos" style="color:inherit">Términos</a> · <a href="/privacidad" style="color:inherit">Privacidad</a></div>
       <span>Hay una forma de vivir que todavía no conocés.</span>
     </div>
   </div>
@@ -1277,17 +1350,26 @@ addEventListener('scroll',()=>{
   });tick=true;}
 },{passive:true});
 
-/* contador al 20/09/2026 */
-const target=new Date('2027-03-06T09:00:00-03:00');
+/* cuenta regresiva: fin de la preventa (15/12, 23:59 hora argentina) */
+const target=new Date('2026-12-15T23:59:00-03:00');
 function tickCd(){
-  const now=new Date(), diff=target-now;
-  if(diff>0){
-    document.getElementById('d').textContent=Math.floor(diff/864e5);
-    document.getElementById('h').textContent=Math.floor(diff/36e5)%24;
-    document.getElementById('m').textContent=Math.floor(diff/6e4)%60;
-  }
+  const diff=target-new Date();
+  const v = diff>0 ? {d:Math.floor(diff/864e5), h:Math.floor(diff/36e5)%24, m:Math.floor(diff/6e4)%60} : {d:0,h:0,m:0};
+  document.querySelectorAll('[data-cd]').forEach(el=>{ el.textContent = v[el.getAttribute('data-cd')]; });
 }
 tickCd();setInterval(tickCd,30000);
+
+/* botón fijo en celular: aparece después del inicio y se oculta en entradas/formulario */
+(function(){
+  const b=document.getElementById('sticky-cta'); if(!b) return;
+  const hide=['entradas','comprar'].map(id=>document.getElementById(id)).filter(Boolean);
+  function upd(){
+    const past = scrollY > window.innerHeight*0.8;
+    const over = hide.some(el=>{ const r=el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; });
+    b.classList.toggle('show', past && !over);
+  }
+  addEventListener('scroll', upd, {passive:true}); upd();
+})();
 
 /* reveal on scroll */
 const io=new IntersectionObserver(es=>{

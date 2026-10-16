@@ -80,7 +80,7 @@ window.epmTrack = function(event, meta){
 <meta name="description" content="Una experiencia de expansión de identidad para mujeres que saben que su vida puede ser más grande. Sábado 6 y domingo 7 de marzo de 2027, Buenos Aires.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Estoy Para Más · 6 y 7 de marzo 2027 · Buenos Aires">
-<meta property="og:description" content="Dos días para mujeres que saben que su vida puede ser más grande. Preventa hasta el 15 de diciembre.">
+<meta property="og:description" content="Dos días para mujeres que saben que su vida puede ser más grande. 6 y 7 de marzo de 2027, Buenos Aires. Cupos limitados.">
 <meta property="og:image" content="/assets/img/evento/manos-arriba.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -821,9 +821,9 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           <a href="#el-dia" class="btn btn-ghost-light">Qué vas a vivir</a>
         </div>
         <div class="presale" aria-live="polite">
-          <span class="presale-lbl">La preventa termina en</span>
+          <span class="presale-lbl" data-post="El evento empieza en">La preventa termina en</span>
           <span class="presale-cd"><b data-cd="d">--</b> días <b data-cd="h">--</b> h <b data-cd="m">--</b> min</span>
-          <span class="presale-note">$40.000 los dos días · después sube el precio</span>
+          <span class="presale-note" data-post="$55.500 los dos días · 2 amigas por $80.000 · cupos limitados">$40.000 los dos días · después sube el precio</span>
         </div>
       </div>
     </div>
@@ -1073,24 +1073,24 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
     <div class="tiers-head rv" style="text-align:center;max-width:720px;margin:0 auto 26px">
       <div class="eyebrow center">Elegí tu experiencia</div>
       <h2 style="margin:10px 0 8px">Tres formas de vivir Estoy Para Más.</h2>
-      <p class="lead" style="margin:0">Asegurá tu lugar antes de que suba el precio: la preventa termina el 15 de diciembre.</p>
+      <p class="lead" style="margin:0" data-post="Vamos por 500 mujeres y los cupos son limitados. Asegurá tu lugar.">Asegurá tu lugar antes de que suba el precio: la preventa termina el 15 de diciembre.</p>
       <p class="voices" style="font-size:1.1rem;margin-top:18px">“Sin dudas fue mágico y transformador.”<span>Malena Aranda · Asistente de la primera edición</span></p>
     </div>
 
     <div class="tiers rv">
       <div class="tier">
-        <div class="tier-name">General · Preventa</div>
-        <div class="tier-price">$40.000</div>
-        <p class="tier-note">Hasta el 15/12 · los dos días</p>
+        <div class="tier-name" data-post="General">General · Preventa</div>
+        <div class="tier-price" data-post="$55.500">$40.000</div>
+        <p class="tier-note" data-post="Los dos días">Hasta el 15/12 · los dos días</p>
         <ul class="tier-list">
           <li>Sábado y domingo, de 9 a 20 hs</li>
           <li>Sábado: transformación personal con coaching vivencial</li>
           <li>Domingo: construir un entorno de alto valor</li>
-          <li><b>Bonus preventa:</b> una clase online con Valentina por mes hasta el evento</li>
-          <li><b>Venite con una amiga:</b> 2 entradas por $55.500 (ahorrás $24.500)</li>
+          <li data-post=""><b>Bonus preventa:</b> una clase online con Valentina por mes hasta el evento</li>
+          <li data-post="<b>Venite con una amiga:</b> 2 entradas por $80.000 (ahorrás $31.000)"><b>Venite con una amiga:</b> 2 entradas por $55.500 (ahorrás $24.500)</li>
         </ul>
         <a href="#comprar" data-tier="general" class="btn btn-dark btn-block">Reservar General <span class="arw">→</span></a>
-        <a href="#comprar" data-tier="general" data-qty="2" class="tier-pair">Venimos dos amigas · $55.500 <span class="arw">→</span></a>
+        <a href="#comprar" data-tier="general" data-qty="2" class="tier-pair" data-post="Venimos dos amigas · $80.000 <span class=&quot;arw&quot;>→</span>">Venimos dos amigas · $55.500 <span class="arw">→</span></a>
       </div>
       <div class="tier feat">
         <div class="tier-badge">Recomendada</div>
@@ -1206,7 +1206,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         <div class="field">
           <label for="buy-tipo">Tipo de entrada</label>
           <select id="buy-tipo" name="ticketType" required>
-            <option value="general">General · Preventa — $40.000 (2 por $55.500)</option>
+            <option value="general" data-post="General — $55.500 (2 por $80.000)">General · Preventa — $40.000 (2 por $55.500)</option>
             <option value="vip">VIP — USD 200</option>
           </select>
           <p class="f-err" id="err-ticketType" role="alert"></p>
@@ -1267,7 +1267,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
       <details><summary>Si no puedo ir, ¿pierdo la entrada?</summary><p>No. La entrada no tiene devolución, pero podés transferírsela a una amiga, una conocida o alguien de tu familia. Solo avisanos por WhatsApp a nombre de quién queda.</p></details>
       <details><summary>¿Cómo pago?</summary><p>Por transferencia. La General es en pesos. VIP y Platino son en dólares, o en pesos al dólar blue del día (el promedio entre compra y venta). Al reservar te mostramos los datos al instante.</p></details>
       <details><summary>¿Puedo pagar en cuotas?</summary><p>Sí, VIP y Platino: dejás una seña al reservar y completás el resto en cuotas hasta el 15 de diciembre. La seña confirma tu lugar y no es reembolsable.</p></details>
-      <details><summary>¿Qué es la promo “Venite con una amiga”?</summary><p>Dos entradas generales por $55.500 en vez de $80.000, durante la preventa. Elegís 2 entradas en el formulario y se aplica sola.</p></details>
+      <details><summary>¿Qué es la promo “Venite con una amiga”?</summary><p data-post="Dos entradas generales por $80.000 en vez de $111.000. Elegís 2 entradas en el formulario y se aplica sola.">Dos entradas generales por $55.500 en vez de $80.000, durante la preventa. Elegís 2 entradas en el formulario y se aplica sola.</p></details>
       <details><summary>¿Cuántos lugares hay?</summary><p>Vamos por 500 mujeres y los cupos son limitados. Platino tiene solo 10 lugares y se accede por aplicación.</p></details>
     </div>
     <p class="center rv" style="text-align:center;margin-top:28px;color:var(--gris)">¿Otra duda? <a href="https://api.whatsapp.com/send?phone=5493541694363&amp;text=Hola%20Vale!%20Tengo%20una%20duda%20sobre%20Estoy%20Para%20M%C3%A1s" target="_blank" rel="noopener" style="color:var(--bronce);text-decoration:underline">Escribime por WhatsApp</a> y te contesto yo.</p>
@@ -1281,7 +1281,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
       <div class="lc-copy">
         <div class="eyebrow">¿Todavía lo estás pensando?</div>
         <h2>Recibí gratis una clase de Valentina.</h2>
-        <p class="lead">Dejame tus datos y te la mando por WhatsApp. Además, te enterás primero de las novedades del evento, antes de que suba la preventa.</p>
+        <p class="lead">Dejame tus datos y te la mando por WhatsApp. Además, te enterás primero de las novedades del evento, antes que nadie.</p>
       </div>
       <form class="lc-form" data-lead-form data-source="inline_evento" novalidate>
         <div class="field"><label for="lc-nombre">Nombre</label><input id="lc-nombre" name="firstName" autocomplete="given-name" required></div>
@@ -1304,7 +1304,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
     <h2>El 6 de marzo pasa igual.</h2>
     <p>La única diferencia es si estás adentro o mirando desde afuera.</p>
 
-    <p style="margin:0 auto 12px;font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:#E8CFA9">La preventa termina en</p>
+    <p data-post="El evento empieza en" style="margin:0 auto 12px;font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:#E8CFA9">La preventa termina en</p>
     <div class="countdown" id="cd">
       <div class="cd"><b id="d" data-cd="d">--</b><span>Días</span></div>
       <div class="cd"><b id="h" data-cd="h">--</b><span>Horas</span></div>
@@ -1313,7 +1313,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
 
     <div class="band-perks">
       <div class="perk"><b>Es fin de semana</b>Sábado y domingo: no pedís el día ni avisás en el trabajo</div>
-      <div class="perk"><b>Preventa $40.000</b>Los dos días, hasta el 15 de diciembre. Pagás por transferencia</div>
+      <div class="perk" data-post="<b>General $55.500</b>Los dos días. 2 amigas por $80.000. Pagás por transferencia"><b>Preventa $40.000</b>Los dos días, hasta el 15 de diciembre. Pagás por transferencia</div>
       <div class="perk"><b>¿Dudás? Escribime</b>Por WhatsApp, antes de pagar. Te contesto yo</div>
     </div>
 
@@ -1324,7 +1324,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
   </div>
 </section>
 
-<a href="#entradas" class="sticky-cta" id="sticky-cta">Reservar mi lugar · preventa $40.000 <span class="arw">→</span></a>
+<a href="#entradas" class="sticky-cta" id="sticky-cta" data-post="Reservar mi lugar <span class=&quot;arw&quot;>→</span>">Reservar mi lugar · preventa $40.000 <span class="arw">→</span></a>
 
 <!-- ============ FOOTER ============ -->
 <footer class="foot">
@@ -1363,8 +1363,17 @@ addEventListener('scroll',()=>{
   });tick=true;}
 },{passive:true});
 
-/* cuenta regresiva: fin de la preventa (15/12, 23:59 hora argentina) */
-const target=new Date('2026-12-15T23:59:00-03:00');
+/* Preventa: hasta el 15/12 a las 23:59 (hora argentina). Desde el 16/12 la
+   página cambia sola los textos y precios (atributos data-post) y la cuenta
+   regresiva pasa a contar hasta el evento. */
+const PRESALE_END=new Date('2026-12-15T23:59:59-03:00');
+const target = (Date.now() > PRESALE_END.getTime()) ? new Date('2027-03-06T09:00:00-03:00') : PRESALE_END;
+if(Date.now() > PRESALE_END.getTime()){
+  document.querySelectorAll('[data-post]').forEach(el=>{
+    const v=el.getAttribute('data-post');
+    if(v===''){ el.remove(); } else if(el.tagName==='OPTION'){ el.textContent=v; } else { el.innerHTML=v; }
+  });
+}
 function tickCd(){
   const diff=target-new Date();
   const v = diff>0 ? {d:Math.floor(diff/864e5), h:Math.floor(diff/36e5)%24, m:Math.floor(diff/6e4)%60} : {d:0,h:0,m:0};
@@ -1537,7 +1546,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
     }).catch(()=>{
       /* Sin servidor, seguimos con los precios publicados: la reserva viaja por WhatsApp. */
       eventInfo = { maxTicketsPerPurchase: 5, whatsappNumber: '5493541694363', tiers: {
-        general: { label: 'General · Preventa', price: 40000, currency: 'ARS', pairPrice: 55500 },
+        general: (Date.now() > new Date('2026-12-15T23:59:59-03:00').getTime()) ? { label: 'General', price: 55500, currency: 'ARS', pairPrice: 80000 } : { label: 'General · Preventa', price: 40000, currency: 'ARS', pairPrice: 55500 },
         vip: { label: 'VIP', price: 200, currency: 'USD', maxInstallments: 2 },
         platino: { label: 'Platino', price: 750, currency: 'USD', maxInstallments: 3 }
       }, installmentsDeadline: '2026-12-15', paymentAccounts: FALLBACK_ACCOUNTS };
@@ -1841,7 +1850,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
     <div class="lm-body">
       <div class="eyebrow">Un regalo antes de seguir</div>
       <h2 id="lm-title">Recibí gratis una clase de Valentina.</h2>
-      <p class="lead">Dejame tus datos y te la mando por WhatsApp. Y te enterás primero de las novedades de Estoy Para Más, antes de que suba la preventa.</p>
+      <p class="lead">Dejame tus datos y te la mando por WhatsApp. Y te enterás primero de las novedades de Estoy Para Más, antes que nadie.</p>
       <form class="lc-form" data-lead-form data-source="popup_evento" novalidate>
         <div class="field"><label for="lm-nombre">Nombre</label><input id="lm-nombre" name="firstName" autocomplete="given-name" required></div>
         <div class="field"><label for="lm-wp">WhatsApp</label><input id="lm-wp" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+54 9 11 ..." required></div>

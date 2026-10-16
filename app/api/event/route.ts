@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { eventConfig } from "@/config/event";
+import { eventConfig, getCurrentTiers, isPresaleOver } from "@/config/event";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
@@ -43,7 +43,8 @@ export async function GET() {
     presaleEndsAt: eventConfig.presaleEndsAt,
     installmentsDeadline: eventConfig.installmentsDeadline,
     whatsappNumber: eventConfig.whatsappNumber,
-    tiers: eventConfig.tiers,
+    tiers: getCurrentTiers(),
+    presaleOver: isPresaleOver(),
     paymentAccounts: eventConfig.paymentAccounts,
     platinoLeft: taken === null ? null : Math.max(0, limit - taken),
   });

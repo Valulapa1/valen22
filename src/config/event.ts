@@ -40,6 +40,11 @@ export const eventConfig = {
     vip: { label: "VIP", price: 200, currency: "USD", maxInstallments: 2 },
     platino: { label: "Platino", price: 750, currency: "USD", limited: 10, maxInstallments: 3 },
   },
+  /**
+   * Precio de la General después de la preventa (desde el 16/12). Se aplica
+   * solo según la fecha: no hay que tocar nada ese día.
+   */
+  generalAfterPresale: { label: "General", price: 55500, pairPrice: 80000 },
   /** Las cuotas (VIP y Platino) se completan hasta esta fecha, inclusive. */
   installmentsDeadline: "2026-12-15",
   /** Datos de transferencia que ve la persona apenas reserva. */
@@ -92,12 +97,35 @@ export function getUnitPriceForOrder(quantity: number): number {
 
 type TierKey = keyof typeof eventConfig.tiers;
 
+/** ¿Ya terminó la preventa? (después del 15/12 a las 23:59, hora argentina) */
+export function isPresaleOver(at: Date = new Date()): boolean {
+  return at.getTime() > new Date(`${eventConfig.presaleEndsAt}T23:59:59-03:00`).getTime();
+}
+
+/** El tipo de entrada con el precio vigente hoy. */
+export function getCurrentTier(ticketType: TierKey, at: Date = new Date()) {
+  const tier = eventConfig.tiers[ticketType];
+  if (ticketType === "general" && isPresaleOver(at)) {
+    return { ...tier, ...eventConfig.generalAfterPresale };
+  }
+  return tier;
+}
+
+/** Todos los tipos de entrada con el precio vigente hoy. */
+export function getCurrentTiers(at: Date = new Date()) {
+  return {
+    general: getCurrentTier("general", at),
+    vip: getCurrentTier("vip", at),
+    platino: getCurrentTier("platino", at),
+  };
+}
+
 /**
  * Total de una reserva según tipo y cantidad. En la General, cada par de
  * entradas va al precio "Venite con una amiga"; la entrada suelta, a precio normal.
  */
 export function getTierTotal(ticketType: TierKey, quantity: number): number {
-  const tier = eventConfig.tiers[ticketType];
+  const tier = getCurrentTier(ticketType);
   if ("pairPrice" in tier) {
     return Math.floor(quantity / 2) * tier.pairPrice + (quantity % 2) * tier.price;
   }

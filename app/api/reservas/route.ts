@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { eventConfig, getPaymentSchedule, getTierTotal } from "@/config/event";
+import { eventConfig, getCurrentTier, getPaymentSchedule, getTierTotal } from "@/config/event";
 import { registrationSchema } from "@/lib/validation";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
   }
 
   const data = parsed.data;
-  const tier = eventConfig.tiers[data.ticketType];
+  const tier = getCurrentTier(data.ticketType);
   const total = getTierTotal(data.ticketType, data.quantity);
   const schedule = getPaymentSchedule(data.ticketType, data.quantity, data.paymentPlan);
   const plan = schedule.length > 1 ? "cuotas" : "unico";

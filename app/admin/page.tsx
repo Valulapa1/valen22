@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { Funnel } from "./funnel";
-import { RegistrationsTable, paidOf, type AdminRow } from "./registrations-table";
+import { RegistrationsTable } from "./registrations-table";
+import { paidOf, type AdminRow } from "./paid";
 import { LeadsTable, type LeadRow } from "./leads-table";
 
 export const metadata: Metadata = {

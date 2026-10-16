@@ -1554,7 +1554,16 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
           '<p class="ok-fine">La seña confirma tu lugar y <b>no es reembolsable</b>. Las cuotas se completan antes del 15 de diciembre; cada mes te escribimos para recordártelo.</p>';
       }
       if(info.currency === 'USD'){
-        html += accBlock(accounts.usdAr) + accBlock(accounts.usdExt) + accBlock(accounts.ars, usdRate ? 'al dólar blue del día' : 'en pesos');
+        const pesosAmt = usdRate ? fmtARS(first.amount * usdRate) : null;
+        html += '<p style="margin:16px 0 8px;font-weight:600;font-size:.92rem">¿Cómo vas a pagar?</p>' +
+          '<div class="pay-pick" role="tablist">' +
+          '<button type="button" class="pay-opt on" data-pay="ars">En pesos' + (pesosAmt ? '<small>' + pesosAmt + '</small>' : '') + '</button>' +
+          '<button type="button" class="pay-opt" data-pay="usdAr">Dólares<small>cuenta argentina</small></button>' +
+          '<button type="button" class="pay-opt" data-pay="usdExt">Dólares<small>desde el exterior</small></button>' +
+          '</div>' +
+          '<div data-acc="ars">' + accBlock(accounts.ars, pesosAmt ? 'transferí ' + pesosAmt : 'al dólar blue del día') + '</div>' +
+          '<div data-acc="usdAr" hidden>' + accBlock(accounts.usdAr, 'transferí ' + fmt(first.amount, 'USD')) + '</div>' +
+          '<div data-acc="usdExt" hidden>' + accBlock(accounts.usdExt, 'transferí ' + fmt(first.amount, 'USD')) + '</div>';
       } else {
         html += accBlock(accounts.ars);
       }
@@ -1578,6 +1587,10 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       document.querySelector('#comprar .form-card:not(.ok-card)').hidden = true;
       box.hidden = false;
       box.scrollIntoView({behavior:'smooth', block:'start'});
+      box.querySelectorAll('[data-pay]').forEach(b => b.addEventListener('click', () => {
+        box.querySelectorAll('[data-pay]').forEach(x => x.classList.toggle('on', x === b));
+        box.querySelectorAll('[data-acc]').forEach(a => a.hidden = a.getAttribute('data-acc') !== b.getAttribute('data-pay'));
+      }));
       box.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => {
         const v = b.getAttribute('data-copy');
         (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(()=>{ b.textContent = '¡Copiado!'; setTimeout(()=>b.textContent='Copiar', 1600); }).catch(()=>{ b.textContent = v; });
@@ -1686,6 +1699,10 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 .ok-amount{font-family:var(--display);font-size:2rem;line-height:1.1}
 .ok-sched{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:6px;font-size:.9rem}
 .ok-sched li{display:flex;justify-content:space-between;border-bottom:1px dashed var(--linea);padding-bottom:6px}
+.pay-pick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pay-opt{border:1px solid var(--linea);background:var(--papel);border-radius:var(--r);padding:10px 6px;font-family:var(--body);font-size:.86rem;font-weight:600;cursor:pointer;color:var(--tinta);line-height:1.25}
+.pay-opt small{display:block;font-weight:400;font-size:.74rem;color:var(--gris);margin-top:2px}
+.pay-opt.on{border-color:var(--bronce);background:#fff;box-shadow:0 0 0 2px rgba(168,124,79,.18)}
 .acc{border:1px solid var(--linea);border-radius:var(--r);padding:12px 14px;margin-top:10px;background:var(--papel)}
 .acc-t{font-weight:600;font-size:.9rem;margin-bottom:6px}
 .acc-r{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.88rem;padding:4px 0}

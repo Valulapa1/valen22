@@ -898,7 +898,9 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           <li>Kit especial: journal y regalos exclusivos</li>
           <li><b>Mastermind</b> el lunes 8 de marzo, Día de la Mujer: jornada completa en una casa exclusiva</li>
         </ul>
-        <a href="#comprar" data-tier="platino" class="btn btn-block" style="border:1px solid var(--tinta)">Reservar Platino <span class="arw">→</span></a>
+        <p class="platino-left" id="platino-left"></p>
+        <button type="button" data-apply-platino class="btn btn-block" style="border:1px solid #F4ECE6;color:#F4ECE6;background:transparent">Aplicar a Platino <span class="arw">→</span></button>
+        <p class="tier-note" style="color:#d9c9d3!important;text-align:center">Lugares limitados: cada aplicación la revisa Valentina.</p>
       </div>
     </div>
 
@@ -1001,7 +1003,6 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           <select id="buy-tipo" name="ticketType" required>
             <option value="general">General · Preventa — $40.000 (2 por $55.500)</option>
             <option value="vip">VIP — USD 200</option>
-            <option value="platino">Platino — USD 750 (solo 10 lugares)</option>
           </select>
           <p class="f-err" id="err-ticketType" role="alert"></p>
         </div>
@@ -1011,6 +1012,14 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
             <option value="1">1 entrada</option>
           </select>
           <p class="f-err" id="err-quantity" role="alert"></p>
+        </div>
+        <div class="field" id="plan-field" style="display:none">
+          <label>Forma de pago</label>
+          <div class="plan-opts">
+            <label class="plan-opt"><input type="radio" name="paymentPlan" value="unico" checked><span><b>Pago único</b><small id="plan-unico-txt"></small></span></label>
+            <label class="plan-opt"><input type="radio" name="paymentPlan" value="cuotas"><span><b>En cuotas hasta el 15/12</b><small id="plan-cuotas-txt"></small></span></label>
+          </div>
+          <p class="plan-note">La seña (primera cuota) confirma tu lugar y <b>no es reembolsable</b>. El resto se completa antes del 15 de diciembre.</p>
         </div>
 
         <div class="buy-summary" aria-live="polite">
@@ -1031,9 +1040,10 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         <button type="submit" class="btn btn-primary btn-block" id="buy-submit">
           Reservar mi lugar <span class="arw">→</span>
         </button>
-        <p class="form-note">Al reservar se abre WhatsApp con tus datos listos para enviar.<br>Te pasamos los datos para transferir en pesos o en dólares.</p>
+        <p class="form-note">Al reservar te mostramos al instante los datos para transferir.<br>Después nos mandás el comprobante por WhatsApp y listo.</p>
       </form>
     </div>
+    <div class="form-card buy-card ok-card" id="reserva-ok" hidden></div>
   </div>
 </section>
 
@@ -1326,6 +1336,33 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
     return tiers ? tiers[tipoSelect.value] : null;
   }
 
+  const FALLBACK_ACCOUNTS = {
+    ars: { title: 'Pesos · transferencia', rows: [['Alias','logratusmetas.arq'],['CVU','0000069703936376541146'],['Titular','Valentina Parodi']] },
+    usdAr: { title: 'Dólares · desde una cuenta argentina', rows: [['Banco','Coinag'],['Alias','ARQ.FINANCE.USD'],['CBU','4310009942700000131448']] },
+    usdExt: { title: 'Dólares · desde el exterior (ACH)', rows: [['Banco','Lead Bank'],['Titular','Valentina Parodi'],['Cuenta','213859836972'],['Routing','101019644']] }
+  };
+  const planField = document.getElementById('plan-field');
+  const currentPlan = () => (form.querySelector('input[name="paymentPlan"]:checked') || {}).value || 'unico';
+  const fmtDate = iso => { const [y,m,d] = iso.split('-'); return d + '/' + m; };
+
+  /* Mismo cálculo que getPaymentSchedule() del servidor. */
+  function schedule(t, q, plan){
+    const total = tierTotal(t, q);
+    const today = new Date().toISOString().slice(0,10);
+    const max = t.maxInstallments || 1;
+    if(plan !== 'cuotas' || max < 2) return [{date: today, amount: total}];
+    const deadline = (eventInfo && eventInfo.installmentsDeadline) || '2026-12-15';
+    const now = new Date(); const later = [];
+    const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 15));
+    if(now.getUTCDate() >= 15) d.setUTCMonth(d.getUTCMonth()+1);
+    for(let i=0;i<12;i++){ const iso = d.toISOString().slice(0,10); if(iso > deadline) break; if(iso > today) later.push(iso); d.setUTCMonth(d.getUTCMonth()+1); }
+    const dates = [today].concat(later.slice(-(max-1)));
+    const n = dates.length;
+    if(n < 2) return [{date: today, amount: total}];
+    const base = Math.floor(total/n);
+    return dates.map((date,i)=>({date, amount: i===0 ? total - base*(n-1) : base}));
+  }
+
   /* Mismo cálculo que getTierTotal() del servidor: en la General, cada par va a precio amiga. */
   function tierTotal(t, q){
     return t.pairPrice ? Math.floor(q/2)*t.pairPrice + (q%2)*t.price : t.price*q;
@@ -1338,6 +1375,15 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
     unitEl.textContent = fmt(t.price, t.currency) + (t.pairPrice && q >= 2 ? ' · 2 por ' + fmt(t.pairPrice, t.currency) : '');
     qtyEl.textContent = q;
     totalEl.textContent = fmt(tierTotal(t, q), t.currency);
+    if(t.maxInstallments){
+      const q2 = parseInt(qtySelect.value,10) || 1;
+      const sc = schedule(t, q2, 'cuotas');
+      document.getElementById('plan-unico-txt').textContent = fmt(tierTotal(t,q2), t.currency) + ' hoy';
+      document.getElementById('plan-cuotas-txt').textContent = sc.length > 1
+        ? sc.map((x,i)=> fmt(x.amount, t.currency) + (i===0 ? ' de seña hoy' : ' el ' + fmtDate(x.date))).join(' + ')
+        : 'Ya no quedan fechas para cuotas: pago único.';
+      planField.style.display = '';
+    } else { planField.style.display = 'none'; }
     if(t.currency === 'USD' && usdRate){
       arsEl.textContent = fmtARS(tierTotal(t, q) * usdRate) + ' (blue ' + fmtARS(usdRate) + ')';
       arsRow.style.display = '';
@@ -1353,6 +1399,12 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       renderTotals();
     });
   });
+  try{
+    if(new URLSearchParams(location.search).get('entrada') === 'platino'){
+      const o = document.createElement('option'); o.value = 'platino'; o.textContent = 'Platino — USD 750 (aplicación aprobada)';
+      tipoSelect.appendChild(o);
+    }
+  }catch(e){}
   try{
     const pre = new URLSearchParams(location.search).get('entrada');
     if(pre && tipoSelect.querySelector('option[value="'+pre+'"]')) tipoSelect.value = pre;
@@ -1372,15 +1424,17 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
         qtySelect.appendChild(opt);
       }
       if(pendingQty && qtySelect.querySelector('option[value="'+pendingQty+'"]')) qtySelect.value = pendingQty;
+      const pl = document.getElementById('platino-left');
+      if(pl && typeof info.platinoLeft === 'number') pl.textContent = info.platinoLeft > 0 ? 'Quedan ' + info.platinoLeft + ' de 10 lugares' : 'Lugares agotados · lista de espera';
       renderTotals();
       submitBtn.disabled = false;
     }).catch(()=>{
       /* Sin servidor, seguimos con los precios publicados: la reserva viaja por WhatsApp. */
       eventInfo = { maxTicketsPerPurchase: 5, whatsappNumber: '5493541694363', tiers: {
         general: { label: 'General · Preventa', price: 40000, currency: 'ARS', pairPrice: 55500 },
-        vip: { label: 'VIP', price: 200, currency: 'USD' },
-        platino: { label: 'Platino', price: 750, currency: 'USD' }
-      }};
+        vip: { label: 'VIP', price: 200, currency: 'USD', maxInstallments: 2 },
+        platino: { label: 'Platino', price: 750, currency: 'USD', maxInstallments: 3 }
+      }, installmentsDeadline: '2026-12-15', paymentAccounts: FALLBACK_ACCOUNTS };
       renderTotals();
       submitBtn.disabled = false;
     });
@@ -1438,6 +1492,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       documentNumber: form.elements.documentNumber.value.trim(),
       quantity: parseInt(qtySelect.value,10),
       ticketType: tipoSelect.value,
+      paymentPlan: (currentTier() && currentTier().maxInstallments) ? currentPlan() : 'unico',
       acceptTerms: form.elements.acceptTerms.checked,
       visitorId: window.__epmVisitorId
     };
@@ -1460,26 +1515,102 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
     const t = currentTier() || {label: tipoSelect.options[tipoSelect.selectedIndex].text, price: 0, currency: 'ARS'};
     const waNumber = (eventInfo && eventInfo.whatsappNumber) || '5493541694363';
 
-    function openWhatsApp(ref){
+    function waLines(info){
       const lines = [
-        'Hola Vale! Quiero reservar mi lugar en Estoy Para Más ✨',
+        'Hola Vale! Ya reservé mi lugar en Estoy Para Más ✨',
         '',
-        'Entrada: ' + t.label,
-        'Cantidad: ' + data.quantity,
-        'Total: ' + fmt(tierTotal(t, data.quantity), t.currency) + (t.pairPrice && data.quantity >= 2 ? ' (precio amigas)' : ''),
-        ...(t.currency === 'USD' && usdRate ? ['En pesos hoy: ' + fmtARS(tierTotal(t, data.quantity) * usdRate) + ' (dólar blue promedio ' + fmtARS(usdRate) + ')'] : []),
-        'Nombre: ' + data.firstName + ' ' + data.lastName,
-        'Email: ' + data.email,
-        'WhatsApp: ' + data.phone
+        'Entrada: ' + info.ticketLabel,
+        'Cantidad: ' + info.quantity,
+        'Total: ' + fmt(info.total, info.currency) + (info.ticketType === 'general' && info.quantity >= 2 ? ' (precio amigas)' : '')
       ];
-      if(ref) lines.push('Código de reserva: ' + ref);
-      lines.push('', '¿Me pasás los datos para la transferencia?');
-      if(typeof window.epmTrack === 'function') window.epmTrack('checkout_initiated', { quantity: data.quantity, ticketType: data.ticketType });
-      try{ if(typeof fbq === 'function') fbq('track','InitiateCheckout',{ value: tierTotal(t, data.quantity), currency: t.currency, num_items: data.quantity }); }catch(err){}
-      alertBox.textContent = '¡Listo! Se abrió WhatsApp con tu reserva: solo tenés que enviar el mensaje. Si no se abrió, escribinos al +54 9 3541 69-4363.';
-      alertBox.classList.add('show','ok');
-      submitBtn.innerHTML = 'Reserva enviada ✓';
-      window.location.href = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(lines.join('\n'));
+      if(info.schedule.length > 1) lines.push('Forma de pago: ' + info.schedule.length + ' cuotas · seña ' + fmt(info.schedule[0].amount, info.currency));
+      if(info.currency === 'USD' && usdRate) lines.push('En pesos hoy: ' + fmtARS(info.schedule[0].amount * usdRate) + ' (dólar blue promedio ' + fmtARS(usdRate) + ')');
+      lines.push('Nombre: ' + data.firstName + ' ' + data.lastName, 'Email: ' + data.email, 'WhatsApp: ' + data.phone);
+      if(info.reference) lines.push('Código de reserva: ' + info.reference);
+      lines.push('', 'Te mando el comprobante de la transferencia 👇');
+      return lines.join('\n');
+    }
+
+    function accBlock(acc, extra){
+      const esc = v => String(v).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+      return '<div class="acc"><div class="acc-t">' + esc(acc.title) + (extra ? ' · <span style="font-weight:400">' + esc(extra) + '</span>' : '') + '</div>' +
+        acc.rows.map(r => '<div class="acc-r"><span>' + esc(r[0]) + '</span><code>' + esc(r[1]) + '</code>' +
+          (/Alias|CVU|CBU|Cuenta|Routing/.test(r[0]) ? '<button type="button" class="copy" data-copy="' + esc(r[1]) + '">Copiar</button>' : '') + '</div>').join('') + '</div>';
+    }
+
+    function showOk(info){
+      const box = document.getElementById('reserva-ok');
+      const accounts = (eventInfo && eventInfo.paymentAccounts) || FALLBACK_ACCOUNTS;
+      const first = info.schedule[0];
+      const cuotas = info.schedule.length > 1;
+      let html = '<div class="ok-ref">Reserva' + (info.reference ? ' · ' + info.reference : '') + '</div>' +
+        '<h3>¡Tu lugar está reservado, ' + data.firstName.split(' ')[0] + '! 🤍</h3>' +
+        '<p style="margin:0">' + info.ticketLabel + ' · ' + info.quantity + (info.quantity > 1 ? ' entradas' : ' entrada') + ' · Total ' + fmt(info.total, info.currency) + '</p>' +
+        '<div class="ok-step"><h4>1 · ' + (cuotas ? 'Transferí la seña' : 'Transferí el total') + '</h4>' +
+        '<div class="ok-amount">' + fmt(first.amount, info.currency) + '</div>' +
+        (info.currency === 'USD' && usdRate ? '<p style="margin:4px 0 0;color:var(--gris);font-size:.88rem">o ' + fmtARS(first.amount * usdRate) + ' en pesos (dólar blue promedio de hoy, ' + fmtARS(usdRate) + ')</p>' : '');
+      if(cuotas){
+        html += '<ul class="ok-sched">' + info.schedule.map((x,i) => '<li><span>' + (i===0 ? 'Seña · hoy' : 'Cuota ' + (i+1) + ' · antes del ' + fmtDate(x.date)) + '</span><b>' + fmt(x.amount, info.currency) + '</b></li>').join('') + '</ul>' +
+          '<p class="ok-fine">La seña confirma tu lugar y <b>no es reembolsable</b>. Las cuotas se completan antes del 15 de diciembre; cada mes te escribimos para recordártelo.</p>';
+      }
+      if(info.currency === 'USD'){
+        html += accBlock(accounts.usdAr) + accBlock(accounts.usdExt) + accBlock(accounts.ars, usdRate ? 'al dólar blue del día' : 'en pesos');
+      } else {
+        html += accBlock(accounts.ars);
+      }
+      html += '<p class="ok-fine">Te guardamos el lugar 48 hs para que hagas la transferencia.</p></div>';
+      const wa = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(waLines(info));
+      html += '<div class="ok-step"><h4>2 · Mandanos el comprobante</h4>' +
+        '<a class="btn btn-primary btn-block" href="' + wa + '" target="_blank" rel="noopener">Enviar comprobante por WhatsApp <span class="arw">→</span></a>' +
+        '<p class="ok-fine">Cuando se acredita, te confirmamos tu lugar y te pasamos la dirección del salón.</p></div>';
+      if(info.ticketType === 'general' && info.reference){
+        const vip = eventInfo && eventInfo.tiers && eventInfo.tiers.vip;
+        const vipTotal = vip ? vip.price * info.quantity : 200 * info.quantity;
+        html += '<div class="upsell"><h4 style="font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px;font-weight:500">✨ Antes de transferir</h4>' +
+          '<p style="font-family:var(--display);font-size:1.35rem;color:#fff;margin-bottom:8px">¿Querés vivirlo en VIP?</p>' +
+          '<p>Zona preferencial, desayuno los dos días, merienda exclusiva antes del evento y tu invitación en una caja de regalo, entregada en mano.</p>' +
+          '<p><b>USD ' + vipTotal + '</b>' + (usdRate ? ' (≈ ' + fmtARS(vipTotal * usdRate) + ')' : '') + ' · también en 2 cuotas hasta el 15/12.</p>' +
+          '<button type="button" class="btn btn-block" data-upgrade="unico" style="background:#E8CFA9;color:#33202F">Pasar a VIP · pago único</button>' +
+          '<button type="button" class="btn btn-block" data-upgrade="cuotas" style="border:1px solid #E8CFA9;color:#F4ECE6;background:transparent">Pasar a VIP en cuotas</button>' +
+          '<p class="ok-fine" id="upgrade-msg" style="color:#eadde5"></p></div>';
+      }
+      box.innerHTML = html;
+      document.querySelector('#comprar .form-card:not(.ok-card)').hidden = true;
+      box.hidden = false;
+      box.scrollIntoView({behavior:'smooth', block:'start'});
+      box.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => {
+        const v = b.getAttribute('data-copy');
+        (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(()=>{ b.textContent = '¡Copiado!'; setTimeout(()=>b.textContent='Copiar', 1600); }).catch(()=>{ b.textContent = v; });
+      }));
+      box.querySelectorAll('[data-upgrade]').forEach(b => b.addEventListener('click', () => {
+        const msg = document.getElementById('upgrade-msg');
+        box.querySelectorAll('[data-upgrade]').forEach(x => x.disabled = true);
+        msg.textContent = 'Cambiando tu entrada…';
+        fetch('/api/reservas/upgrade', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({reference: info.reference, paymentPlan: b.getAttribute('data-upgrade')})})
+          .then(r => r.json().then(j => ({ok: r.ok, j})))
+          .then(({ok, j}) => {
+            if(!ok) throw new Error(j.error || 'No se pudo cambiar.');
+            try{ if(typeof window.epmTrack === 'function') window.epmTrack('checkout_initiated', { upgrade: 'vip' }); }catch(e){}
+            showOk(j);
+          })
+          .catch(err => { msg.textContent = err.message + ' Escribinos por WhatsApp y lo cambiamos.'; box.querySelectorAll('[data-upgrade]').forEach(x => x.disabled = false); });
+      }));
+    }
+
+    function finish(body){
+      const sc = body && body.schedule ? body.schedule : schedule(t, data.quantity, data.paymentPlan);
+      const info = {
+        reference: body && body.reference || null,
+        ticketType: data.ticketType,
+        ticketLabel: (body && body.ticketLabel) || t.label,
+        currency: (body && body.currency) || t.currency,
+        quantity: data.quantity,
+        total: (body && body.total) || tierTotal(t, data.quantity),
+        schedule: sc
+      };
+      if(typeof window.epmTrack === 'function') window.epmTrack('checkout_initiated', { quantity: data.quantity, ticketType: data.ticketType, plan: data.paymentPlan });
+      try{ if(typeof fbq === 'function') fbq('track','InitiateCheckout',{ value: info.total, currency: info.currency, num_items: data.quantity }); }catch(err){}
+      showOk(info);
     }
 
     const ctrl = ('AbortController' in window) ? new AbortController() : null;
@@ -1496,7 +1627,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
         Object.keys(body.fieldErrors).forEach(k=>setFieldError(k, body.fieldErrors[k]));
         throw Object.assign(new Error(body.error || 'Revisá los datos del formulario.'), {validation:true});
       }
-      openWhatsApp(body.reference);
+      finish(body);
     }).catch(err=>{
       clearTimeout(timer);
       if(err && err.validation){
@@ -1506,8 +1637,9 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
         showAlert(err.message);
         return;
       }
-      /* Si el servidor no responde, la reserva igual viaja completa por WhatsApp. */
-      openWhatsApp(null);
+      /* Si el servidor no responde, igual mostramos los datos para transferir:
+         la reserva viaja completa en el mensaje de WhatsApp. */
+      finish(null);
     });
   });
 })();
@@ -1539,6 +1671,32 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 .lc-form label{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);margin-bottom:6px}
 .lc-msg{min-height:1.2em;margin:0 0 12px;font-size:.9rem;color:#B0473E}
 .lc-msg.ok{color:#2F4F2B}
+.plan-opts{display:grid;gap:10px}
+.plan-opt{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--linea);border-radius:var(--r);padding:12px 14px;cursor:pointer;background:var(--papel);text-transform:none!important;letter-spacing:0!important;font-family:var(--body)!important;font-size:.92rem!important;color:var(--tinta)!important}
+.plan-opt input{margin-top:3px;accent-color:var(--bronce)}
+.plan-opt b{display:block}
+.plan-opt small{display:block;color:var(--gris);font-size:.82rem;margin-top:2px}
+.plan-opt:has(input:checked){border-color:var(--bronce);background:#fff}
+.plan-note{font-size:.8rem;color:var(--gris);margin:8px 0 0;line-height:1.5}
+.platino-left{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#E8CFA9!important;margin:0 0 4px!important;min-height:1em}
+.ok-card h3{font-family:var(--display);font-weight:400;font-size:1.9rem;margin:0 0 6px}
+.ok-card .ok-ref{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;color:var(--gris);text-transform:uppercase}
+.ok-step{border-top:1px solid var(--linea);padding-top:18px;margin-top:18px}
+.ok-step h4{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronce);margin:0 0 10px;font-weight:500}
+.ok-amount{font-family:var(--display);font-size:2rem;line-height:1.1}
+.ok-sched{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:6px;font-size:.9rem}
+.ok-sched li{display:flex;justify-content:space-between;border-bottom:1px dashed var(--linea);padding-bottom:6px}
+.acc{border:1px solid var(--linea);border-radius:var(--r);padding:12px 14px;margin-top:10px;background:var(--papel)}
+.acc-t{font-weight:600;font-size:.9rem;margin-bottom:6px}
+.acc-r{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.88rem;padding:4px 0}
+.acc-r span{color:var(--gris)}
+.acc-r code{font-family:var(--mono);font-size:.84rem;word-break:break-all;text-align:right}
+.copy{border:1px solid var(--linea);background:#fff;border-radius:999px;font-size:.72rem;padding:4px 10px;cursor:pointer;flex:none}
+.upsell{margin-top:22px;background:var(--berenjena,#33202F);color:#F4ECE6;border-radius:var(--r);padding:20px}
+.upsell h4{color:#E8CFA9}
+.upsell p{margin:0 0 12px;font-size:.92rem;color:#eadde5}
+.upsell .btn{margin-top:8px}
+.ok-fine{font-size:.8rem;color:var(--gris);margin-top:14px;line-height:1.55}
 .tier-ars{margin:-4px 0 0!important;font-size:.84rem!important;opacity:.75;min-height:1em}
 .tier-pair{display:block;text-align:center;margin-top:10px;font-size:.88rem;color:var(--bronce);text-decoration:underline;text-underline-offset:3px}
 .lm-backdrop{position:fixed;inset:0;background:rgba(26,16,23,.62);display:none;align-items:center;justify-content:center;padding:16px;z-index:200;backdrop-filter:blur(3px)}
@@ -1647,6 +1805,58 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
     var h=document.documentElement; var pct=(h.scrollTop||document.body.scrollTop)/((h.scrollHeight-h.clientHeight)||1);
     if(pct>0.4){ window.removeEventListener('scroll',onS); clearTimeout(timer); openModal(); }
   },{passive:true});
+})();
+</script>
+
+<!-- ============ APLICACIÓN PLATINO ============ -->
+<div class="lm-backdrop" id="platino-modal" aria-hidden="true">
+  <div class="lm" role="dialog" aria-modal="true" aria-labelledby="pa-title" style="grid-template-columns:1fr;max-width:520px">
+    <button type="button" class="lm-close" aria-label="Cerrar" data-pa-close>×</button>
+    <div class="lm-body">
+      <div class="eyebrow">Platino · 10 lugares</div>
+      <h2 id="pa-title">Aplicá a Platino.</h2>
+      <p class="lead">Contame un poco de vos. Leo cada aplicación y te escribo por WhatsApp para charlar y confirmar tu lugar.</p>
+      <form class="lc-form" id="pa-form" novalidate>
+        <div class="field"><label for="pa-n">Nombre y apellido</label><input id="pa-n" name="nombre" autocomplete="name" required></div>
+        <div class="field"><label for="pa-w">WhatsApp</label><input id="pa-w" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="+54 9 11 ..." required></div>
+        <div class="field"><label for="pa-e">Email</label><input id="pa-e" name="email" type="email" inputmode="email" autocomplete="email" required></div>
+        <div class="field"><label for="pa-q1">¿Qué querés que cambie en tu vida o tu negocio este año?</label><textarea id="pa-q1" name="q1" rows="3" required></textarea></div>
+        <div class="field"><label for="pa-q2">¿Por qué Platino y no VIP?</label><textarea id="pa-q2" name="q2" rows="2" required></textarea></div>
+        <div class="field"><label for="pa-q3">¿Cómo preferís pagar?</label>
+          <select id="pa-q3" name="q3"><option>Pago único (USD 750)</option><option>En 3 cuotas hasta el 15/12</option><option>Quiero consultarlo</option></select></div>
+        <p class="lc-msg" id="pa-msg" role="status" aria-live="polite"></p>
+        <button type="submit" class="btn btn-primary btn-block">Enviar mi aplicación <span class="arw">→</span></button>
+      </form>
+    </div>
+  </div>
+</div>
+<style>#pa-form textarea{width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid var(--linea);border-radius:var(--r);font-family:var(--body);font-size:.95rem;background:var(--papel);resize:vertical}
+#platino-modal .lm{max-height:92vh;overflow:auto}</style>
+<script>
+(function(){
+  var bg=document.getElementById('platino-modal'), f=document.getElementById('pa-form');
+  if(!bg||!f) return;
+  function open(){ bg.style.display='flex'; bg.setAttribute('aria-hidden','false'); setTimeout(function(){ f.nombre.focus(); },50);
+    if(typeof window.epmTrack==='function') window.epmTrack('checkout_viewed',{tier:'platino'}); }
+  function close(){ bg.style.display='none'; bg.setAttribute('aria-hidden','true'); }
+  document.querySelectorAll('[data-apply-platino]').forEach(function(b){ b.addEventListener('click', open); });
+  bg.addEventListener('click', function(e){ if(e.target===bg || e.target.hasAttribute('data-pa-close')) close(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    var d={n:f.nombre.value.trim(), w:f.whatsapp.value.trim(), e:f.email.value.trim(), q1:f.q1.value.trim(), q2:f.q2.value.trim(), q3:f.q3.value};
+    var msg=document.getElementById('pa-msg');
+    if(d.n.length<2){ msg.textContent='Decime tu nombre.'; return; }
+    if(!/^\+?[\d\s\-().]{8,20}$/.test(d.w)){ msg.textContent='Revisá tu WhatsApp.'; return; }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.e)){ msg.textContent='Revisá tu email.'; return; }
+    if(d.q1.length<3||d.q2.length<3){ msg.textContent='Contame un poquito más en las preguntas.'; return; }
+    var notes='Qué quiere cambiar: '+d.q1+'\nPor qué Platino: '+d.q2+'\nPago: '+d.q3;
+    try{ fetch('/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},keepalive:true,
+      body:JSON.stringify({firstName:d.n,phone:d.w,email:d.e,interest:'platino',source:'aplicacion_platino',notes:notes,visitorId:window.__epmVisitorId||''})}).catch(function(){}); }catch(err){}
+    try{ localStorage.setItem('epm_lead_2027','1'); }catch(err){}
+    var text='Hola Vale! Apliqué a Platino de Estoy Para Más ✨\n\nSoy '+d.n+'\n'+notes;
+    f.innerHTML='<p style="font-family:var(--display);font-size:1.4rem;margin:0 0 8px">¡Gracias, '+d.n.split(' ')[0].replace(/[<>&]/g,'')+'! 🤍</p><p style="margin:0 0 16px">Recibí tu aplicación. Te escribo por WhatsApp para charlar y, si es para vos, te paso el link para confirmar tu lugar.</p><a class="btn btn-primary btn-block" target="_blank" rel="noopener" href="https://wa.me/5493541694363?text='+encodeURIComponent(text)+'">Avisarle a Vale por WhatsApp <span class="arw">→</span></a>';
+  });
 })();
 </script>
 </body>

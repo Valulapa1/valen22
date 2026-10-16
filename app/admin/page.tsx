@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { Funnel } from "./funnel";
-import { RegistrationsTable, type AdminRow } from "./registrations-table";
+import { RegistrationsTable, paidOf, type AdminRow } from "./registrations-table";
 import { LeadsTable, type LeadRow } from "./leads-table";
 
 export const metadata: Metadata = {
@@ -33,9 +33,16 @@ export default async function AdminPage() {
   // no se corrió, leemos igual las columnas de siempre.
   let { data, error } = await supabase
     .from("event_registrations")
-    .select(`${BASE_COLUMNS}, ticket_type, payment_method`)
+    .select(`${BASE_COLUMNS}, ticket_type, payment_method, payment_plan, installments, amount_paid`)
     .order("created_at", { ascending: false })
     .returns<AdminRow[]>();
+  if (error) {
+    ({ data, error } = await supabase
+      .from("event_registrations")
+      .select(`${BASE_COLUMNS}, ticket_type, payment_method`)
+      .order("created_at", { ascending: false })
+      .returns<AdminRow[]>());
+  }
   if (error) {
     ({ data, error } = await supabase
       .from("event_registrations")
@@ -51,12 +58,10 @@ export default async function AdminPage() {
   const confirmed = rows.filter((r) => r.status === "confirmed");
   const pending = rows.filter((r) => r.status === "pending");
   const tickets = (list: AdminRow[]) => list.reduce((s, r) => s + Number(r.quantity), 0);
-  const revenueARS = confirmed
-    .filter((r) => r.currency !== "USD")
-    .reduce((sum, r) => sum + Number(r.total_amount), 0);
-  const revenueUSD = confirmed
-    .filter((r) => r.currency === "USD")
-    .reduce((sum, r) => sum + Number(r.total_amount), 0);
+  // Recaudado real: incluye señas y cuotas ya cobradas.
+  const active = rows.filter((r) => r.status !== "payment_failed");
+  const revenueARS = active.filter((r) => r.currency !== "USD").reduce((sum, r) => sum + paidOf(r), 0);
+  const revenueUSD = active.filter((r) => r.currency === "USD").reduce((sum, r) => sum + paidOf(r), 0);
 
   const byTier = TIERS.map((t) => {
     const ofTier = rows.filter((r) => (r.ticket_type ?? "general") === t.key);
@@ -69,12 +74,22 @@ export default async function AdminPage() {
 
   const { data: leadsData, error: leadsError } = await supabase
     .from("leads")
-    .select("id, first_name, email, phone, interest, source, created_at")
+    .select("id, first_name, email, phone, interest, source, notes, created_at")
     .order("created_at", { ascending: false })
     .limit(2000)
     .returns<LeadRow[]>();
+  let leadsFinal = leadsData;
+  if (leadsError) {
+    const retry = await supabase
+      .from("leads")
+      .select("id, first_name, email, phone, interest, source, created_at")
+      .order("created_at", { ascending: false })
+      .limit(2000)
+      .returns<LeadRow[]>();
+    leadsFinal = retry.data;
+  }
   if (leadsError) console.error("[admin] Error consultando contactos:", leadsError.message);
-  const leads = leadsData ?? [];
+  const leads = leadsFinal ?? [];
 
   // Contador de visitas propio (ver /api/track-visit). "24 hs" y "7 días"
   // son ventanas de tiempo, no días de calendario.

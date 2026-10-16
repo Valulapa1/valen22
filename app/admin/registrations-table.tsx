@@ -18,7 +18,17 @@ export type AdminRow = {
   created_at: string;
   ticket_type?: string | null;
   payment_method?: string | null;
+  payment_plan?: string | null;
+  installments?: number | null;
+  amount_paid?: number | null;
 };
+
+/** Lo cobrado: si la reserva es anterior a las cuotas, pagada = total. */
+export function paidOf(r: AdminRow): number {
+  const paid = Number(r.amount_paid ?? 0);
+  if (paid > 0) return paid;
+  return r.status === "confirmed" ? Number(r.total_amount) : 0;
+}
 
 const STATUS_LABEL: Record<string, string> = {
   confirmed: "Pagado",
@@ -74,7 +84,7 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
     });
   }, [rows, search, status, tier]);
 
-  async function setRowStatus(id: string, next: "confirmed" | "pending" | "payment_failed") {
+  async function setRowStatus(id: string, next: "confirmed" | "installment" | "pending" | "payment_failed") {
     setBusy(id);
     try {
       const res = await fetch("/api/admin/registrations", {
@@ -83,7 +93,8 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
         body: JSON.stringify({ id, status: next }),
       });
       if (!res.ok) throw new Error();
-      setRows((prev) => prev.map((r) => (r.id === id ? { ...r, status: next } : r)));
+      const j = (await res.json()) as { status: string; amountPaid: number };
+      setRows((prev) => prev.map((r) => (r.id === id ? { ...r, status: j.status, amount_paid: j.amountPaid } : r)));
     } catch {
       alert("No se pudo actualizar. Probá de nuevo.");
     } finally {
@@ -130,6 +141,7 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
                 <th>Email</th>
                 <th>Cant.</th>
                 <th>Total</th>
+                <th>Pagado</th>
                 <th>Estado</th>
                 <th>Acción</th>
                 <th>Fecha</th>
@@ -156,9 +168,30 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
                   <td>{r.quantity}</td>
                   <td>{formatMoney(r.total_amount, r.currency)}</td>
                   <td>
-                    <span className={`admin-badge ${r.status}`}>{STATUS_LABEL[r.status] ?? r.status}</span>
+                    {formatMoney(paidOf(r), r.currency)}
+                    {Number(r.installments ?? 1) > 1 && (
+                      <div className="admin-sub">
+                        En {r.installments} cuotas
+                      </div>
+                    )}
                   </td>
                   <td>
+                    <span className={`admin-badge ${r.status === "pending" && paidOf(r) > 0 ? "partial" : r.status}`}>
+                      {r.status === "pending" && paidOf(r) > 0 ? "Señada" : STATUS_LABEL[r.status] ?? r.status}
+                    </span>
+                  </td>
+                  <td>
+                    {r.status !== "confirmed" && r.status !== "payment_failed" && Number(r.installments ?? 1) > 1 && (
+                      <button
+                        type="button"
+                        className="admin-action"
+                        disabled={busy === r.id}
+                        onClick={() => setRowStatus(r.id, "installment")}
+                        style={{ marginBottom: 6 }}
+                      >
+                        {paidOf(r) > 0 ? "+ Cuota pagada" : "Seña pagada"}
+                      </button>
+                    )}
                     {r.status === "confirmed" ? (
                       <button
                         type="button"
@@ -175,7 +208,7 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
                         disabled={busy === r.id}
                         onClick={() => setRowStatus(r.id, "confirmed")}
                       >
-                        Marcar pagado
+                        {Number(r.installments ?? 1) > 1 ? "Pagó todo" : "Marcar pagado"}
                       </button>
                     )}
                   </td>

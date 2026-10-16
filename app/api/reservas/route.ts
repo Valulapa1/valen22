@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { eventConfig, getTierTotal } from "@/config/event";
+import { eventConfig, getPaymentSchedule, getTierTotal } from "@/config/event";
 import { registrationSchema } from "@/lib/validation";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -14,6 +14,7 @@ const reservaSchema = registrationSchema.extend({
   ticketType: z.enum(tierKeys, {
     errorMap: () => ({ message: "Elegí un tipo de entrada." }),
   }),
+  paymentPlan: z.enum(["unico", "cuotas"]).default("unico"),
 });
 
 /**
@@ -48,6 +49,8 @@ export async function POST(request: Request) {
   const data = parsed.data;
   const tier = eventConfig.tiers[data.ticketType];
   const total = getTierTotal(data.ticketType, data.quantity);
+  const schedule = getPaymentSchedule(data.ticketType, data.quantity, data.paymentPlan);
+  const plan = schedule.length > 1 ? "cuotas" : "unico";
   const reference = `EPM27-${Date.now().toString(36).toUpperCase()}-${Math.random()
     .toString(36)
     .slice(2, 6)
@@ -74,9 +77,16 @@ export async function POST(request: Request) {
     };
     let { error } = await supabase
       .from("event_registrations")
-      .insert({ ...row, ticket_type: data.ticketType, payment_method: "transferencia" });
-    // Si todavía no se corrió la migración de ticket_type, guardamos igual.
-    if (error && /ticket_type|payment_method/.test(error.message)) {
+      .insert({
+        ...row,
+        ticket_type: data.ticketType,
+        payment_method: "transferencia",
+        payment_plan: plan,
+        installments: schedule.length,
+        amount_paid: 0,
+      });
+    // Si todavía no se corrieron las migraciones nuevas, guardamos igual.
+    if (error && /ticket_type|payment_method|payment_plan|installments|amount_paid/.test(error.message)) {
       ({ error } = await supabase.from("event_registrations").insert(row));
     }
     if (error) {
@@ -107,6 +117,8 @@ export async function POST(request: Request) {
     currency: tier.currency,
     quantity: data.quantity,
     total,
+    paymentPlan: plan,
+    schedule,
     whatsappNumber: eventConfig.whatsappNumber,
   });
 }

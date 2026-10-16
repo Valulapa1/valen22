@@ -37,8 +37,38 @@ export const eventConfig = {
       /** "Venite con una amiga": cada par de entradas generales cuesta esto. */
       pairPrice: 55500,
     },
-    vip: { label: "VIP", price: 200, currency: "USD" },
-    platino: { label: "Platino", price: 750, currency: "USD", limited: 10 },
+    vip: { label: "VIP", price: 200, currency: "USD", maxInstallments: 2 },
+    platino: { label: "Platino", price: 750, currency: "USD", limited: 10, maxInstallments: 3 },
+  },
+  /** Las cuotas (VIP y Platino) se completan hasta esta fecha, inclusive. */
+  installmentsDeadline: "2026-12-15",
+  /** Datos de transferencia que ve la persona apenas reserva. */
+  paymentAccounts: {
+    ars: {
+      title: "Pesos · transferencia",
+      rows: [
+        ["Alias", "logratusmetas.arq"],
+        ["CVU", "0000069703936376541146"],
+        ["Titular", "Valentina Parodi"],
+      ],
+    },
+    usdAr: {
+      title: "Dólares · desde una cuenta argentina",
+      rows: [
+        ["Banco", "Coinag"],
+        ["Alias", "ARQ.FINANCE.USD"],
+        ["CBU", "4310009942700000131448"],
+      ],
+    },
+    usdExt: {
+      title: "Dólares · desde el exterior (ACH)",
+      rows: [
+        ["Banco", "Lead Bank"],
+        ["Titular", "Valentina Parodi"],
+        ["Cuenta", "213859836972"],
+        ["Routing", "101019644"],
+      ],
+    },
   },
   /** Aparece en el resumen de la tarjeta del comprador (máx. 22 caracteres). */
   statementDescriptor: "ESTASPARAMAS",
@@ -72,4 +102,42 @@ export function getTierTotal(ticketType: TierKey, quantity: number): number {
     return Math.floor(quantity / 2) * tier.pairPrice + (quantity % 2) * tier.price;
   }
   return tier.price * quantity;
+}
+
+export type PaymentPlan = "unico" | "cuotas";
+
+/**
+ * Cronograma de pagos. Pago único: todo hoy. En cuotas (solo VIP y Platino):
+ * la seña hoy y el resto el día 15 de los meses siguientes, hasta la fecha
+ * límite. Cuantas menos fechas quedan, menos cuotas. La landing replica este
+ * mismo cálculo para mostrarlo antes de confirmar.
+ */
+export function getPaymentSchedule(
+  ticketType: TierKey,
+  quantity: number,
+  plan: PaymentPlan,
+  from: Date = new Date(),
+): { date: string; amount: number }[] {
+  const tier = eventConfig.tiers[ticketType];
+  const total = getTierTotal(ticketType, quantity);
+  const today = from.toISOString().slice(0, 10);
+  const max = "maxInstallments" in tier ? tier.maxInstallments : 1;
+  if (plan !== "cuotas" || max < 2) return [{ date: today, amount: total }];
+
+  const deadline = eventConfig.installmentsDeadline;
+  const later: string[] = [];
+  const d = new Date(Date.UTC(from.getUTCFullYear(), from.getUTCMonth(), 15));
+  if (from.getUTCDate() >= 15) d.setUTCMonth(d.getUTCMonth() + 1);
+  for (let i = 0; i < 12; i++) {
+    const iso = d.toISOString().slice(0, 10);
+    if (iso > deadline) break;
+    if (iso > today) later.push(iso);
+    d.setUTCMonth(d.getUTCMonth() + 1);
+  }
+  // Seña hoy + las últimas fechas disponibles, hasta el máximo de cuotas.
+  const dates = [today, ...later.slice(-(max - 1))];
+  const n = dates.length;
+  if (n < 2) return [{ date: today, amount: total }];
+  const base = Math.floor(total / n);
+  return dates.map((date, i) => ({ date, amount: i === 0 ? total - base * (n - 1) : base }));
 }

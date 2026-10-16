@@ -9,6 +9,7 @@ export type LeadRow = {
   phone: string;
   interest: string | null;
   source: string;
+  notes?: string | null;
   created_at: string;
 };
 
@@ -18,6 +19,7 @@ const SOURCE_LABEL: Record<string, string> = {
   home_clase: "Clase de regalo",
   home_transformarte: "Quiere Transformarte",
   home_adn: "Quiere agendar ADN",
+  aplicacion_platino: "Aplicó a Platino",
   reserva: "Reserva",
 };
 
@@ -48,7 +50,7 @@ function waLink(phone: string, name: string): string {
 
 function toCsv(rows: LeadRow[]): string {
   const esc = (v: string | null) => `"${(v ?? "").replace(/"/g, '""')}"`;
-  const header = ["Nombre", "WhatsApp", "Email", "Interés", "Origen", "Fecha"].join(",");
+  const header = ["Nombre", "WhatsApp", "Email", "Interés", "Origen", "Notas", "Fecha"].join(",");
   const lines = rows.map((r) =>
     [
       esc(r.first_name),
@@ -56,6 +58,7 @@ function toCsv(rows: LeadRow[]): string {
       esc(r.email),
       esc(r.interest ? INTEREST_LABEL[r.interest] ?? r.interest : ""),
       esc(SOURCE_LABEL[r.source] ?? r.source),
+      esc(r.notes ?? ""),
       esc(formatDate(r.created_at)),
     ].join(","),
   );
@@ -102,6 +105,7 @@ export function LeadsTable({ rows }: { rows: LeadRow[] }) {
           <option value="home_clase">Clase de regalo</option>
           <option value="home_transformarte">Quiere Transformarte</option>
           <option value="home_adn">Quiere agendar ADN</option>
+          <option value="aplicacion_platino">Aplicó a Platino</option>
           <option value="reserva">Reserva</option>
         </select>
         <button type="button" className="admin-action" onClick={download} disabled={filtered.length === 0}>
@@ -123,6 +127,7 @@ export function LeadsTable({ rows }: { rows: LeadRow[] }) {
                 <th>Email</th>
                 <th>Interés</th>
                 <th>Origen</th>
+                <th>Notas</th>
                 <th>Fecha</th>
               </tr>
             </thead>
@@ -138,6 +143,7 @@ export function LeadsTable({ rows }: { rows: LeadRow[] }) {
                   <td>{r.email ?? "—"}</td>
                   <td>{r.interest ? INTEREST_LABEL[r.interest] ?? r.interest : "—"}</td>
                   <td>{SOURCE_LABEL[r.source] ?? r.source}</td>
+                  <td style={{ whiteSpace: "pre-line", maxWidth: 320, fontSize: ".82rem" }}>{r.notes ?? "—"}</td>
                   <td>{formatDate(r.created_at)}</td>
                 </tr>
               ))}

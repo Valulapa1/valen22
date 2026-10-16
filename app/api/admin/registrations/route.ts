@@ -9,13 +9,13 @@ export const dynamic = "force-dynamic";
 
 const bodySchema = z.object({
   id: z.string().uuid(),
-  status: z.enum(["confirmed", "pending", "payment_failed"]),
+  // confirmed = pagó todo · installment = llegó una cuota · pending = deshacer · payment_failed = cancelar
+  status: z.enum(["confirmed", "installment", "pending", "payment_failed"]),
 });
 
 /**
- * PATCH /api/admin/registrations — cambia el estado de una reserva desde el
- * panel (por ejemplo, "pago confirmado" cuando llega la transferencia).
- * Solo para la sesión de administradora.
+ * PATCH /api/admin/registrations — registra pagos desde el panel: una cuota,
+ * el pago completo, deshacer o cancelar. Solo para la sesión de administradora.
  */
 export async function PATCH(request: Request) {
   const token = (await cookies()).get(ADMIN_SESSION_COOKIE)?.value;
@@ -27,24 +27,54 @@ export async function PATCH(request: Request) {
   if (!parsed.success) {
     return NextResponse.json({ error: "Datos inválidos." }, { status: 400 });
   }
-
   const { id, status } = parsed.data;
-  const paymentStatus =
-    status === "confirmed" ? "approved" : status === "payment_failed" ? "cancelled" : "pending";
-
   const supabase = getSupabaseAdmin();
-  const { error } = await supabase
+
+  const { data: row, error: readErr } = await supabase
+    .from("event_registrations")
+    .select("total_amount, installments, amount_paid")
+    .eq("id", id)
+    .maybeSingle();
+  if (readErr || !row) {
+    return NextResponse.json({ error: "No encontramos la reserva." }, { status: 404 });
+  }
+
+  const total = Number(row.total_amount);
+  const n = Math.max(1, Number(row.installments ?? 1));
+  let amountPaid = Number(row.amount_paid ?? 0);
+  let next: "confirmed" | "pending" | "payment_failed" = "pending";
+
+  if (status === "confirmed") amountPaid = total;
+  if (status === "pending") amountPaid = 0;
+  if (status === "installment") {
+    const base = Math.floor(total / n);
+    const firstAmount = total - base * (n - 1);
+    amountPaid = Math.min(total, amountPaid + (amountPaid === 0 ? firstAmount : base));
+  }
+  if (status === "payment_failed") next = "payment_failed";
+  else next = amountPaid >= total ? "confirmed" : "pending";
+
+  const paymentStatus =
+    next === "confirmed" ? "approved" : next === "payment_failed" ? "cancelled" : amountPaid > 0 ? "in_process" : "pending";
+
+  let { error } = await supabase
     .from("event_registrations")
     .update({
-      status,
+      status: next,
       payment_status: paymentStatus,
-      paid_at: status === "confirmed" ? new Date().toISOString() : null,
+      amount_paid: amountPaid,
+      paid_at: next === "confirmed" ? new Date().toISOString() : null,
     })
     .eq("id", id);
-
+  if (error && /amount_paid/.test(error.message)) {
+    ({ error } = await supabase
+      .from("event_registrations")
+      .update({ status: next, payment_status: paymentStatus, paid_at: next === "confirmed" ? new Date().toISOString() : null })
+      .eq("id", id));
+  }
   if (error) {
     console.error("[admin/registrations] Error actualizando:", error.message);
     return NextResponse.json({ error: "No se pudo actualizar." }, { status: 500 });
   }
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, status: next, amountPaid });
 }

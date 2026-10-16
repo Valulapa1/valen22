@@ -626,3 +626,5 @@ a {
   border-color: var(--berenjena);
   color: #fff;
 }
+.admin-sub{font-size:.75rem;opacity:.7;margin-top:2px}
+.admin-badge.partial{background:#F3E6CF;color:#7A5418}

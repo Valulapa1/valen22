@@ -21,8 +21,9 @@ const leadSchema = z.object({
     .or(z.literal("").transform(() => undefined)),
   interest: z.enum(["general", "vip", "platino", "transformarte", "adn"]).optional(),
   source: z
-    .enum(["popup_evento", "inline_evento", "home_clase", "home_transformarte", "home_adn", "reserva"])
+    .enum(["popup_evento", "inline_evento", "home_clase", "home_transformarte", "home_adn", "aplicacion_platino", "reserva"])
     .default("popup_evento"),
+  notes: z.string().trim().max(2000).optional(),
   visitorId: z.string().uuid().optional().or(z.literal("").transform(() => undefined)),
 });
 
@@ -60,6 +61,7 @@ export async function POST(request: Request) {
       interest: d.interest ?? null,
       source: d.source,
       visitor_id: d.visitorId ?? null,
+      ...(d.notes ? { notes: d.notes } : {}),
     });
     if (error) {
       console.error("[leads] Error guardando contacto:", error.message);

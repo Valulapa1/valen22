@@ -8,7 +8,9 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
  * policies, así que este cliente es la única vía de lectura/escritura.
  */
 export function getSupabaseAdmin(): SupabaseClient {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  // La integración de Supabase en Vercel carga SUPABASE_URL y también
+  // NEXT_PUBLIC_SUPABASE_URL; aceptamos cualquiera de las dos.
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!url || !serviceRoleKey) {

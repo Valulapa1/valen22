@@ -48,7 +48,7 @@ export default async function PagoPendientePage({
           </p>
         )}
         <div className="pago-actions">
-          <a className="btn btn-primary" href="/">
+          <a className="btn btn-primary" href="/estoy-para-mas">
             Volver al inicio
           </a>
         </div>

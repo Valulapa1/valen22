@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estoy Para Más — Una vida 7 no se arregla sola</title>
+<title>Estoy Para Más · 6 y 7 de marzo 2027 · Buenos Aires</title>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -77,7 +77,12 @@ window.epmTrack = function(event, meta){
   }catch(e){}
 })();
 </script>
-<meta name="description" content="Una experiencia de expansión de identidad para mujeres que saben que su vida puede ser más grande. 20 de septiembre de 2026, Buenos Aires.">
+<meta name="description" content="Una experiencia de expansión de identidad para mujeres que saben que su vida puede ser más grande. Sábado 6 y domingo 7 de marzo de 2027, Buenos Aires.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Estoy Para Más · 6 y 7 de marzo 2027 · Buenos Aires">
+<meta property="og:description" content="Dos días para mujeres que saben que su vida puede ser más grande. Preventa hasta el 15 de diciembre.">
+<meta property="og:image" content="/assets/img/evento/manos-arriba.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -754,8 +759,10 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
 <nav class="nav" id="nav">
   <div class="wrap nav-in">
     <a href="#top" class="logo">ESTOY PARA MÁS</a>
-    
-    <a href="#reservar" class="nav-cta">Reservar mi lugar</a>
+    <div style="display:flex;align-items:center;gap:22px">
+      <style>@media (max-width:560px){.nav-home{display:none}}</style><div class="nav-links nav-home"><a href="/">Conocé a Valentina</a></div>
+      <a href="#reservar" class="nav-cta">Reservar mi lugar</a>
+    </div>
   </div>
 </nav>
 
@@ -766,26 +773,26 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
     <div class="hero-grid">
       <div>
         <div class="eyebrow">Evento presencial · Buenos Aires</div>
-        <h1>Hay una forma de vivir que todavía no conoces</h1>
+        <h1>Hay una forma de vivir que todavía no conocés</h1>
         <p class="hero-sub">
-          Un solo dia, una sola decision para reconocer que estas para mas
+          Dos días, una sola decisión para reconocer que estás para más
         </p>
         <div class="hero-story">
-          <b>El 20 de septiembre dejas de esperar.</b>
+          <b>El 6 de marzo dejás de esperar.</b>
         </div>
         <div class="hero-ctas">
           <a href="#reservar" class="btn btn-primary">Ver qué pasa ese día <span class="arw">→</span></a>
         </div>
-        <div class="hero-micro"><span class="dot"></span> Domingo 20 de septiembre · $45.000</div>
+        <div class="hero-micro"><span class="dot"></span> Sábado 6 y domingo 7 de marzo · Preventa $40.000 hasta el 15/12</div>
       </div>
 
     </div>
 
     <!-- stats de confianza -->
     <div class="hero-stats">
-      <div class="hstat"><b>11 hs</b><span>Una transformación de verdad de 9 am a 8 pm</span></div>
-      <div class="hstat"><b>Domingo</b><span>20 de septiembre</span></div>
-      <div class="hstat"><b>150</b><span>Mujeres en un mismo salón premium</span></div>
+      <div class="hstat"><b>2 días</b><span>Una transformación de verdad, de 9 am a 8 pm sábado y domingo</span></div>
+      <div class="hstat"><b>6 y 7</b><span>de marzo de 2027</span></div>
+      <div class="hstat"><b>2.ª edición</b><span>Mujeres en un mismo salón premium · lugares limitados</span></div>
       <div class="hstat"><b>Bs. As.</b><span>Capital Federal. La dirección exacta llega al confirmar</span></div>
     </div>
   </div>
@@ -813,7 +820,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         allowfullscreen></iframe>
     </div>
 
-    <!-- Banner de ponentes -->
+    <!-- Banner de ponentes: oculto hasta anunciar las ponentes de la 2.ª edición (2027).
     <figure class="ponentes rv">
       <img
         src="assets/img/ponentes-horizontal.jpeg"
@@ -823,21 +830,94 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         alt="Ponentes de Estoy Para Más: Trinidad Kuroki, Valentina Parodi, Analuz Torres y Melany Costanzi"
         loading="lazy">
     </figure>
+    -->
+
+    <!-- Tipos de entrada 2027 -->
+    <style>
+      .tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:1124px;margin:0 auto 32px}
+      @media (max-width:860px){.tiers{grid-template-columns:1fr}}
+      .tier{border:1px solid var(--linea);border-radius:var(--r);padding:26px;background:var(--papel);display:flex;flex-direction:column;gap:10px}
+      .tier.feat{border-color:var(--bronce)}
+      .tier-name{font-family:var(--mono,monospace);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronce)}
+      .tier-price{font-family:var(--display,serif);font-size:2.2rem;line-height:1}
+      .tier p{margin:0;font-size:.92rem}
+      .tier .btn{margin-top:auto}
+      .tier{position:relative}
+      .tier.feat{box-shadow:0 18px 40px -24px rgba(51,32,47,.45)}
+      .tier-badge{position:absolute;top:-12px;left:26px;background:var(--bronce);color:#fff;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
+      .tier-note{color:var(--gris);font-size:.86rem!important}
+      .tier-list{margin:4px 0 14px;padding-left:18px;display:flex;flex-direction:column;gap:7px;font-size:.92rem;line-height:1.45}
+      .tier-platino{background:var(--berenjena,#33202F);color:#F4ECE6;border-color:transparent}
+      .tier-platino .tier-note{color:#CDBBC6}
+      .tier-platino .btn{color:#F4ECE6;border-color:#F4ECE6!important}
+    </style>
+    <div class="tiers-head rv" style="text-align:center;max-width:720px;margin:0 auto 26px">
+      <div class="eyebrow center">Elegí tu experiencia</div>
+      <h2 style="margin:10px 0 8px">Tres formas de vivir Estoy Para Más.</h2>
+      <p class="lead" style="margin:0">Preventa de la entrada general hasta el 15 de diciembre. Después, el valor sube.</p>
+      <p class="voices" style="font-size:1.1rem;margin-top:18px">“Sin dudas fue mágico y transformador.”<span>Malena Aranda · Asistente de la primera edición</span></p>
+    </div>
+    <p class="rv" style="max-width:760px;margin:0 auto 34px;text-align:center;font-family:var(--display,serif);font-style:italic;font-size:1.3rem;line-height:1.45">“Veo tu valor y todo lo que generás en mí y en miles de chicas: un movimiento hermoso para tener una mentalidad expansiva.”<span style="display:block;margin-top:10px;font-family:var(--body,sans-serif);font-style:normal;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)">Mensaje que le llegó a Valentina</span></p>
+    <div class="tiers rv">
+      <div class="tier">
+        <div class="tier-name">General · Preventa</div>
+        <div class="tier-price">$40.000</div>
+        <p class="tier-note">Hasta el 15/12 · los dos días</p>
+        <ul class="tier-list">
+          <li>Sábado y domingo, de 9 a 20 hs</li>
+          <li>Sábado: transformación personal con coaching vivencial</li>
+          <li>Domingo: construir un entorno de alto valor</li>
+          <li><b>Bonus preventa:</b> una clase online con Valentina por mes hasta el evento</li>
+          <li><b>Venite con una amiga:</b> 2 entradas por $55.500 (ahorrás $24.500)</li>
+        </ul>
+        <a href="#comprar" data-tier="general" class="btn btn-dark btn-block">Reservar General <span class="arw">→</span></a>
+        <a href="#comprar" data-tier="general" data-qty="2" class="tier-pair">Venimos dos amigas · $55.500 <span class="arw">→</span></a>
+      </div>
+      <div class="tier feat">
+        <div class="tier-badge">Recomendada</div>
+        <div class="tier-name">VIP</div>
+        <div class="tier-price">USD 200</div>
+        <p class="tier-ars" data-usd="200"></p>
+        <p class="tier-note">Todo lo de la General, más:</p>
+        <ul class="tier-list">
+          <li>Zona preferencial, en las primeras filas</li>
+          <li>Desayuno incluido los dos días</li>
+          <li>Invitación especial entregada en mano: una caja de regalo</li>
+          <li>Merienda exclusiva los días previos al evento</li>
+        </ul>
+        <a href="#comprar" data-tier="vip" class="btn btn-dark btn-block">Reservar VIP <span class="arw">→</span></a>
+      </div>
+      <div class="tier tier-platino">
+        <div class="tier-name">Platino · Solo 10 lugares</div>
+        <div class="tier-price">USD 750</div>
+        <p class="tier-ars" data-usd="750"></p>
+        <p class="tier-note">Todo lo de la VIP, más:</p>
+        <ul class="tier-list">
+          <li>Primera fila, con mesa propia</li>
+          <li>Comida incluida, con desayuno y cena privados</li>
+          <li>Kit especial: journal y regalos exclusivos</li>
+          <li><b>Mastermind</b> el lunes 8 de marzo, Día de la Mujer: jornada completa en una casa exclusiva</li>
+        </ul>
+        <p class="platino-left" id="platino-left"></p>
+        <button type="button" data-apply-platino class="btn btn-block" style="border:1px solid #F4ECE6;color:#F4ECE6;background:transparent">Aplicar a Platino <span class="arw">→</span></button>
+        <p class="tier-note" style="color:#d9c9d3!important;text-align:center">Lugares limitados: cada aplicación la revisa Valentina.</p>
+      </div>
+    </div>
 
     <!-- Checkout: precio + cupos + reserva -->
     <div class="entry-buy checkout-solo rv">
 
         <div class="price-row">
-          <div class="price">$45.000</div>
-          <div class="price-alt">o en cuotas</div>
+          <div class="price">$40.000</div>
+          <div class="price-alt">preventa · los dos días · hasta el 15/12</div>
         </div>
         <p class="anchor">
-          Once horas por menos de lo que gastás en dos salidas. La diferencia es que de acá
-          salís con la decisión tomada el mismo día, no dentro de dos años.
+          Dos días completos por menos de lo que gastás en un fin de semana de salidas. La diferencia
+          es que de acá salís con la decisión tomada, no dentro de dos años.
         </p>
 
         <a href="#comprar" class="btn btn-dark btn-block">Reservo mi lugar <span class="arw">→</span></a>
-        <p class="pay">Cuotas con Mercado Pago · transferencia o dólares.<br>Capital Federal, Buenos Aires. La dirección exacta se envía al confirmar.</p>
+        <p class="pay">Pago por transferencia. General en pesos; VIP y Platino en dólares o en pesos al dólar blue del día (promedio entre compra y venta).<br>Capital Federal, Buenos Aires. La dirección exacta se envía al confirmar.</p>
     </div>
   </div>
 </section>
@@ -870,6 +950,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
     .form-alert{display:none;background:#F6EBE9;border:1px solid #B0473E;color:#7C2F28;
       padding:14px 16px;border-radius:var(--r);font-size:.88rem;line-height:1.55;margin-bottom:16px}
     .form-alert.show{display:block}
+    .form-alert.ok{background:#EEF4EC;border-color:#4F7A4A;color:#2F4F2B}
     .btn[disabled]{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
     .btn[disabled]:hover{transform:none;box-shadow:none}
     .buy-spin{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);
@@ -880,12 +961,12 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
     <div class="sec-head center rv">
       <div class="eyebrow center">Reservá tu lugar</div>
       <h2>Comprá tu entrada.</h2>
-      <p class="lead">Completás tus datos, pagás con Mercado Pago y tu lugar queda reservado. Te llega la confirmación por correo.</p>
+      <p class="lead">Elegís tu entrada, completás tus datos y te escribo por WhatsApp para coordinar el pago por transferencia. Tu lugar queda reservado cuando se acredita.</p>
     </div>
 
     <div class="form-card buy-card rv">
       <h3>Datos de la asistente</h3>
-      <p>La entrada llega al correo que cargues acá. Revisalo dos veces.</p>
+      <p>Con estos datos te contactamos y te enviamos la confirmación. Revisalos dos veces.</p>
 
       <form id="buy-form" novalidate>
         <div class="buy-grid">
@@ -918,17 +999,34 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           </div>
         </div>
         <div class="field">
+          <label for="buy-tipo">Tipo de entrada</label>
+          <select id="buy-tipo" name="ticketType" required>
+            <option value="general">General · Preventa — $40.000 (2 por $55.500)</option>
+            <option value="vip">VIP — USD 200</option>
+          </select>
+          <p class="f-err" id="err-ticketType" role="alert"></p>
+        </div>
+        <div class="field">
           <label for="buy-cantidad">Cantidad de entradas</label>
           <select id="buy-cantidad" name="quantity" required>
             <option value="1">1 entrada</option>
           </select>
           <p class="f-err" id="err-quantity" role="alert"></p>
         </div>
+        <div class="field" id="plan-field" style="display:none">
+          <label>Forma de pago</label>
+          <div class="plan-opts">
+            <label class="plan-opt"><input type="radio" name="paymentPlan" value="unico" checked><span><b>Pago único</b><small id="plan-unico-txt"></small></span></label>
+            <label class="plan-opt"><input type="radio" name="paymentPlan" value="cuotas"><span><b>En cuotas hasta el 15/12</b><small id="plan-cuotas-txt"></small></span></label>
+          </div>
+          <p class="plan-note">La seña (primera cuota) confirma tu lugar y <b>no es reembolsable</b>. El resto se completa antes del 15 de diciembre.</p>
+        </div>
 
         <div class="buy-summary" aria-live="polite">
           <div><span class="lbl">Precio por entrada</span><span id="buy-unit">—</span></div>
           <div><span class="lbl">Cantidad</span><span id="buy-qty">1</span></div>
           <div class="buy-total-row"><span class="lbl">Total</span><b id="buy-total">—</b></div>
+          <div id="buy-ars-row" style="display:none"><span class="lbl">En pesos hoy</span><span id="buy-ars">—</span></div>
         </div>
 
         <div class="terms-row" id="terms-row">
@@ -940,11 +1038,12 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         <div class="form-alert" id="buy-alert" role="alert"></div>
 
         <button type="submit" class="btn btn-primary btn-block" id="buy-submit">
-          Comprar entrada <span class="arw">→</span>
+          Reservar mi lugar <span class="arw">→</span>
         </button>
-        <p class="form-note">Pago seguro procesado por Mercado Pago. Tarjetas, cuotas y dinero en cuenta.<br>Tu entrada se confirma cuando el pago es aprobado.</p>
+        <p class="form-note">Al reservar te mostramos al instante los datos para transferir.<br>Después nos mandás el comprobante por WhatsApp y listo.</p>
       </form>
     </div>
+    <div class="form-card buy-card ok-card" id="reserva-ok" hidden></div>
   </div>
 </section>
 
@@ -952,10 +1051,34 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
 <section class="sec tight" id="el-dia" style="background:var(--arena);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="eyebrow">Once horas</div>
-      <h2>Qué pasa ese día.</h2>
-      <p class="lead">De 9 a 20. Once horas es mucho tiempo: tenés derecho a saber en qué las vas a invertir.</p>
+      <div class="eyebrow">Dos días</div>
+      <h2>Qué pasa esos días.</h2>
+      <p class="lead">Sábado y domingo, de 9 a 20. Es mucho tiempo: tenés derecho a saber en qué lo vas a invertir.</p>
     </div>
+
+    <style>
+      .days{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:1000px;margin:0 auto 18px}
+      @media (max-width:760px){.days{grid-template-columns:1fr}}
+      .day{background:var(--papel);border:1px solid var(--linea);border-radius:var(--r);padding:30px;text-align:left}
+      .day-tag{font-family:var(--mono,monospace);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronce)}
+      .day h3{margin:8px 0 10px}
+      .day p{margin:0;color:var(--gris)}
+      .voices{max-width:820px;margin:28px auto 0;text-align:center;font-family:var(--display,serif);font-style:italic;font-size:1.35rem;line-height:1.45}
+      .voices span{display:block;margin-top:10px;font-family:var(--body,sans-serif);font-style:normal;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+    </style>
+    <div class="days rv">
+      <div class="day">
+        <div class="day-tag">Día 1 · Sábado 6 de marzo</div>
+        <h3>Tu transformación personal.</h3>
+        <p>Coaching vivencial para trabajar tu identidad y tu historia, y empezar a mirar el mundo con otra percepción. Para que la vida se vuelva más sencilla.</p>
+      </div>
+      <div class="day">
+        <div class="day-tag">Día 2 · Domingo 7 de marzo</div>
+        <h3>Tu nuevo entorno.</h3>
+        <p>Construís un entorno de alto valor: amigas, socias y mujeres que te sostienen y te impulsan a ir por más.</p>
+      </div>
+    </div>
+    <p class="voices rv">“Fue algo extraordinario, algo mágico. Se sintió mucho la unión y mucho amor.”<span>Lo que más nos dijeron en la primera edición</span></p>
 
     
     <div class="agenda rv" style="padding: 40px 0; text-align: center;">
@@ -974,7 +1097,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           </div>
           <div class="testimonio-vertical">
             <iframe
-              src="https://www.youtube.com/embed/gD0U2y6btmM"
+              src="https://www.youtube.com/embed/he1j5ZRV1aI"
               title="Testimonio — Estoy Para Más"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerpolicy="strict-origin-when-cross-origin"
@@ -983,7 +1106,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           </div>
           <div class="testimonio-vertical">
             <iframe
-              src="https://www.youtube.com/embed/Iq-Fy6IpFWM"
+              src="https://www.youtube.com/embed/fC5wXJQtM9I"
               title="Testimonio — Estoy Para Más"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerpolicy="strict-origin-when-cross-origin"
@@ -992,7 +1115,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           </div>
           <div class="testimonio-vertical">
             <iframe
-              src="https://www.youtube.com/embed/4JPM13cVXus"
+              src="https://www.youtube.com/embed/66V1BXa4UEw"
               title="Testimonio — Estoy Para Más"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerpolicy="strict-origin-when-cross-origin"
@@ -1014,6 +1137,46 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
   </div>
 </section>
 
+<!-- ============ GALERÍA 1.ª EDICIÓN ============ -->
+<section class="sec" id="galeria">
+  <style>
+    .gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:300px;gap:14px;max-width:1124px;margin:0 auto}
+    .gal img{width:100%;height:100%;object-fit:cover;display:block;border-radius:var(--r)}
+    .gal img:first-child{grid-column:span 2}
+    @media (max-width:760px){
+      .gal{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:200px;gap:10px}
+      .gal img:last-child{display:none}
+    }
+  </style>
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow center">Primera edición · 20 de septiembre de 2026</div>
+      <h2>Así se vivió.</h2>
+      <p class="lead">Más de 70 mujeres, un mismo salón y un día que no se olvida.</p>
+    </div>
+    <div class="gal rv">
+      <img src="/assets/img/evento/vale-escenario-logo.jpg" alt="Valentina sonriendo en el escenario de Estoy Para Más" loading="lazy">
+      <img src="/assets/img/evento/abrazo-escenario.jpg" alt="Valentina abraza a una asistente emocionada en el escenario" loading="lazy">
+      <img src="/assets/img/evento/manos-arriba.jpg" alt="Ronda de mujeres con las manos en alto durante una dinámica" loading="lazy">
+      <img src="/assets/img/evento/abrazo.jpg" alt="Dos asistentes abrazadas al cierre de una dinámica" loading="lazy">
+      <img src="/assets/img/evento/baile.jpg" alt="Asistentes bailando y riendo juntas" loading="lazy">
+      <img src="/assets/img/evento/panel-escenario.jpg" alt="Valentina conversa con tres invitadas en el escenario" loading="lazy">
+      <img src="/assets/img/evento/encuentro-1.jpg" alt="Dos mujeres se miran y sonríen durante una dinámica" loading="lazy">
+      <img src="/assets/img/evento/aplausos.jpg" alt="El público aplaude de pie una charla" loading="lazy">
+    </div>
+    <div class="sec-head center rv" style="margin-top:72px">
+      <div class="eyebrow center">Lo que nos escribieron después</div>
+      <h2>En sus palabras.</h2>
+    </div>
+    <div class="quotes rv" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">
+      <figure class="quote" style="margin:0"><span class="q-result">Un lugar seguro</span><blockquote class="q-text" style="margin:0 0 18px">“Logré conectar con Dios, con todas las mujeres que estaban ahí y permitirme sentir todas las emociones sin juzgarme ni tener miedo a la mirada del otro. Sin dudas, un lugar SEGURO donde pude ser yo misma.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Julieta Flores</b> · Asistente 1.ª edición</figcaption></figure>
+      <figure class="quote" style="margin:0"><span class="q-result">Mágico y transformador</span><blockquote class="q-text" style="margin:0 0 18px">“Muchas gracias, sin dudas fue mágico y transformador. 💜🫂”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Malena Aranda</b> · Asistente 1.ª edición</figcaption></figure>
+      <figure class="quote" style="margin:0"><span class="q-result">Sos luz</span><blockquote class="q-text" style="margin:0 0 18px">“Fue increíble. Sos luz, te admiro… Estuve ahí de pasar al frente.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Lucía</b> · Asistente 1.ª edición</figcaption></figure>
+      <figure class="quote" style="margin:0"><span class="q-result">Un día increíble</span><blockquote class="q-text" style="margin:0 0 18px">“Gracias por semejante evento ❤️ Fue un día increíble, con personas maravillosas. Muy productivo.”</blockquote><figcaption style="font-size:.8rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase"><b style="color:var(--tinta)">Gladys</b> · Asistente 1.ª edición</figcaption></figure>
+    </div>
+  </div>
+</section>
+
 <!-- ============ HISTORIA ============ -->
 <section class="sec dark" id="historia">
   <div class="wrap">
@@ -1028,12 +1191,34 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
   </div>
 </section>
 
+<!-- ============ CAPTURA DE CONTACTO (inline) ============ -->
+<section class="sec tight lead-capture" id="regalo">
+  <div class="wrap">
+    <div class="lc-card rv">
+      <div class="lc-copy">
+        <div class="eyebrow">¿Todavía lo estás pensando?</div>
+        <h2>Recibí gratis una clase de Valentina.</h2>
+        <p class="lead">Dejame tus datos y te la mando por WhatsApp. Además, te enterás primero de las novedades del evento, antes de que suba la preventa.</p>
+      </div>
+      <form class="lc-form" data-lead-form data-source="inline_evento" novalidate>
+        <div class="field"><label for="lc-nombre">Nombre</label><input id="lc-nombre" name="firstName" autocomplete="given-name" required></div>
+        <div class="field"><label for="lc-wp">WhatsApp</label><input id="lc-wp" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+54 9 11 ..." required></div>
+        <div class="field"><label for="lc-email">Email <span style="text-transform:none;letter-spacing:0">(opcional)</span></label><input id="lc-email" name="email" type="email" inputmode="email" autocomplete="email"></div>
+        <div class="field"><label for="lc-interes">¿Qué entrada te interesa?</label>
+          <select id="lc-interes" name="interest"><option value="">Todavía no sé</option><option value="general">General</option><option value="vip">VIP</option><option value="platino">Platino</option></select></div>
+        <p class="lc-msg" role="status" aria-live="polite"></p>
+        <button type="submit" class="btn btn-primary btn-block">Quiero mi clase de regalo <span class="arw">→</span></button>
+      </form>
+    </div>
+  </div>
+</section>
+
 <!-- ============ BANDA FINAL ============ -->
 <section class="band">
   <div class="band-bg" style="background-image:url('assets/img/banda-final.jpg')"></div>
   <div class="wrap band-in">
     <div class="eyebrow center">Última llamada</div>
-    <h2>El 20 de septiembre pasa igual.</h2>
+    <h2>El 6 de marzo pasa igual.</h2>
     <p>La única diferencia es si estás adentro o mirando desde afuera.</p>
 
     <div class="countdown" id="cd">
@@ -1043,15 +1228,15 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
     </div>
 
     <div class="band-perks">
-      <div class="perk"><b>Es domingo</b>No pedís el día ni avisás en el trabajo: ya lo tenés libre</div>
-      <div class="perk"><b>$45.000 la entrada</b>Pago único o en cuotas con Mercado Pago</div>
+      <div class="perk"><b>Es fin de semana</b>Sábado y domingo: no pedís el día ni avisás en el trabajo</div>
+      <div class="perk"><b>Preventa $40.000</b>Los dos días, hasta el 15 de diciembre. Pagás por transferencia</div>
       <div class="perk"><b>¿Dudás? Escribime</b>Por WhatsApp, antes de pagar. Te contesto yo</div>
     </div>
 
     <a href="#comprar" class="btn btn-primary" style="padding:19px 44px;font-size:1rem">
       Reservo mi lugar <span class="arw">→</span>
     </a>
-    <p class="band-last">Cuando se llenen los 150 lugares, la próxima edición es el año que viene.</p>
+    <p class="band-last">Los lugares son limitados. Cuando se completen, la próxima edición es el año que viene.</p>
   </div>
 </section>
 
@@ -1093,7 +1278,7 @@ addEventListener('scroll',()=>{
 },{passive:true});
 
 /* contador al 20/09/2026 */
-const target=new Date('2026-09-20T09:00:00-03:00');
+const target=new Date('2027-03-06T09:00:00-03:00');
 function tickCd(){
   const now=new Date(), diff=target-now;
   if(diff>0){
@@ -1121,22 +1306,109 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
   const submitBtn = document.getElementById('buy-submit');
   const alertBox = document.getElementById('buy-alert');
   const qtySelect = document.getElementById('buy-cantidad');
+  const tipoSelect = document.getElementById('buy-tipo');
   const unitEl = document.getElementById('buy-unit');
   const qtyEl = document.getElementById('buy-qty');
   const totalEl = document.getElementById('buy-total');
 
   let eventInfo = null;
   let submitting = false;
+  let pendingQty = null;
+  let usdRate = null; // dólar blue, promedio entre compra y venta
+  const arsRow = document.getElementById('buy-ars-row');
+  const arsEl = document.getElementById('buy-ars');
+  const fmtARS = n => n.toLocaleString('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0});
+  fetch('/api/dolar').then(r=>r.json()).then(d=>{
+    if(!d || !d.promedio) return;
+    usdRate = d.promedio;
+    document.querySelectorAll('.tier-ars').forEach(el=>{
+      el.textContent = '≈ ' + fmtARS(Number(el.getAttribute('data-usd'))*usdRate) + ' al dólar blue de hoy';
+    });
+    renderTotals();
+  }).catch(()=>{});
 
-  const fmt = n => n.toLocaleString('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0});
+  const fmt = (n, cur) => cur === 'USD'
+    ? 'USD ' + n.toLocaleString('es-AR',{maximumFractionDigits:0})
+    : n.toLocaleString('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0});
+
+  function currentTier(){
+    const tiers = eventInfo && eventInfo.tiers;
+    return tiers ? tiers[tipoSelect.value] : null;
+  }
+
+  const FALLBACK_ACCOUNTS = {
+    ars: { title: 'Pesos · transferencia', rows: [['Alias','logratusmetas.arq'],['CVU','0000069703936376541146'],['Titular','Valentina Parodi']] },
+    usdAr: { title: 'Dólares · desde una cuenta argentina', rows: [['Banco','Coinag'],['Alias','ARQ.FINANCE.USD'],['CBU','4310009942700000131448']] },
+    usdExt: { title: 'Dólares · desde el exterior (ACH)', rows: [['Banco','Lead Bank'],['Titular','Valentina Parodi'],['Cuenta','213859836972'],['Routing','101019644']] }
+  };
+  const planField = document.getElementById('plan-field');
+  const currentPlan = () => (form.querySelector('input[name="paymentPlan"]:checked') || {}).value || 'unico';
+  const fmtDate = iso => { const [y,m,d] = iso.split('-'); return d + '/' + m; };
+
+  /* Mismo cálculo que getPaymentSchedule() del servidor. */
+  function schedule(t, q, plan){
+    const total = tierTotal(t, q);
+    const today = new Date().toISOString().slice(0,10);
+    const max = t.maxInstallments || 1;
+    if(plan !== 'cuotas' || max < 2) return [{date: today, amount: total}];
+    const deadline = (eventInfo && eventInfo.installmentsDeadline) || '2026-12-15';
+    const now = new Date(); const later = [];
+    const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 15));
+    if(now.getUTCDate() >= 15) d.setUTCMonth(d.getUTCMonth()+1);
+    for(let i=0;i<12;i++){ const iso = d.toISOString().slice(0,10); if(iso > deadline) break; if(iso > today) later.push(iso); d.setUTCMonth(d.getUTCMonth()+1); }
+    const dates = [today].concat(later.slice(-(max-1)));
+    const n = dates.length;
+    if(n < 2) return [{date: today, amount: total}];
+    const base = Math.floor(total/n);
+    return dates.map((date,i)=>({date, amount: i===0 ? total - base*(n-1) : base}));
+  }
+
+  /* Mismo cálculo que getTierTotal() del servidor: en la General, cada par va a precio amiga. */
+  function tierTotal(t, q){
+    return t.pairPrice ? Math.floor(q/2)*t.pairPrice + (q%2)*t.price : t.price*q;
+  }
 
   function renderTotals(){
-    if(!eventInfo) return;
+    const t = currentTier();
+    if(!t) return;
     const q = parseInt(qtySelect.value,10) || 1;
-    unitEl.textContent = fmt(eventInfo.ticketPrice);
+    unitEl.textContent = fmt(t.price, t.currency) + (t.pairPrice && q >= 2 ? ' · 2 por ' + fmt(t.pairPrice, t.currency) : '');
     qtyEl.textContent = q;
-    totalEl.textContent = fmt(eventInfo.ticketPrice * q);
+    totalEl.textContent = fmt(tierTotal(t, q), t.currency);
+    if(t.maxInstallments){
+      const q2 = parseInt(qtySelect.value,10) || 1;
+      const sc = schedule(t, q2, 'cuotas');
+      document.getElementById('plan-unico-txt').textContent = fmt(tierTotal(t,q2), t.currency) + ' hoy';
+      document.getElementById('plan-cuotas-txt').textContent = sc.length > 1
+        ? sc.map((x,i)=> fmt(x.amount, t.currency) + (i===0 ? ' de seña hoy' : ' el ' + fmtDate(x.date))).join(' + ')
+        : 'Ya no quedan fechas para cuotas: pago único.';
+      planField.style.display = '';
+    } else { planField.style.display = 'none'; }
+    if(t.currency === 'USD' && usdRate){
+      arsEl.textContent = fmtARS(tierTotal(t, q) * usdRate) + ' (blue ' + fmtARS(usdRate) + ')';
+      arsRow.style.display = '';
+    } else { arsRow.style.display = 'none'; }
   }
+
+  /* Los botones de cada tipo de entrada preseleccionan el tipo en el formulario. */
+  document.querySelectorAll('[data-tier]').forEach(function(a){
+    a.addEventListener('click', function(){
+      tipoSelect.value = a.getAttribute('data-tier');
+      const wantQty = a.getAttribute('data-qty');
+      if(wantQty){ pendingQty = wantQty; if(qtySelect.querySelector('option[value="'+wantQty+'"]')) qtySelect.value = wantQty; }
+      renderTotals();
+    });
+  });
+  try{
+    if(new URLSearchParams(location.search).get('entrada') === 'platino'){
+      const o = document.createElement('option'); o.value = 'platino'; o.textContent = 'Platino — USD 750 (aplicación aprobada)';
+      tipoSelect.appendChild(o);
+    }
+  }catch(e){}
+  try{
+    const pre = new URLSearchParams(location.search).get('entrada');
+    if(pre && tipoSelect.querySelector('option[value="'+pre+'"]')) tipoSelect.value = pre;
+  }catch(e){}
 
   function loadEvent(){
     fetch('/api/event').then(r=>{
@@ -1151,17 +1423,26 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
         opt.textContent = i === 1 ? '1 entrada' : i+' entradas';
         qtySelect.appendChild(opt);
       }
+      if(pendingQty && qtySelect.querySelector('option[value="'+pendingQty+'"]')) qtySelect.value = pendingQty;
+      const pl = document.getElementById('platino-left');
+      if(pl && typeof info.platinoLeft === 'number') pl.textContent = info.platinoLeft > 0 ? 'Quedan ' + info.platinoLeft + ' de 10 lugares' : 'Lugares agotados · lista de espera';
       renderTotals();
       submitBtn.disabled = false;
     }).catch(()=>{
-      unitEl.textContent = totalEl.textContent = 'No disponible';
-      submitBtn.disabled = true;
-      showAlert('No pudimos cargar el precio de la entrada. Recargá la página para intentar de nuevo.');
+      /* Sin servidor, seguimos con los precios publicados: la reserva viaja por WhatsApp. */
+      eventInfo = { maxTicketsPerPurchase: 5, whatsappNumber: '5493541694363', tiers: {
+        general: { label: 'General · Preventa', price: 40000, currency: 'ARS', pairPrice: 55500 },
+        vip: { label: 'VIP', price: 200, currency: 'USD', maxInstallments: 2 },
+        platino: { label: 'Platino', price: 750, currency: 'USD', maxInstallments: 3 }
+      }, installmentsDeadline: '2026-12-15', paymentAccounts: FALLBACK_ACCOUNTS };
+      renderTotals();
+      submitBtn.disabled = false;
     });
   }
   submitBtn.disabled = true;
   loadEvent();
   qtySelect.addEventListener('change', renderTotals);
+  tipoSelect.addEventListener('change', renderTotals);
 
   function showAlert(msg){ alertBox.textContent = msg; alertBox.classList.add('show'); }
   function hideAlert(){ alertBox.textContent = ''; alertBox.classList.remove('show'); }
@@ -1179,7 +1460,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
   }
 
   function clearErrors(){
-    ['firstName','lastName','email','phone','documentNumber','quantity','acceptTerms']
+    ['firstName','lastName','email','phone','documentNumber','ticketType','quantity','acceptTerms']
       .forEach(n=>setFieldError(n,''));
     hideAlert();
   }
@@ -1210,6 +1491,8 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       phone: form.elements.phone.value.trim(),
       documentNumber: form.elements.documentNumber.value.trim(),
       quantity: parseInt(qtySelect.value,10),
+      ticketType: tipoSelect.value,
+      paymentPlan: (currentTier() && currentTier().maxInstallments) ? currentPlan() : 'unico',
       acceptTerms: form.elements.acceptTerms.checked,
       visitorId: window.__epmVisitorId
     };
@@ -1227,38 +1510,149 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
     submitting = true;
     submitBtn.disabled = true;
     const originalHtml = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span class="buy-spin" aria-hidden="true"></span> Creando tu pago…';
+    submitBtn.innerHTML = '<span class="buy-spin" aria-hidden="true"></span> Reservando tu lugar…';
 
-    fetch('/api/mercadopago/create-preference',{
+    const t = currentTier() || {label: tipoSelect.options[tipoSelect.selectedIndex].text, price: 0, currency: 'ARS'};
+    const waNumber = (eventInfo && eventInfo.whatsappNumber) || '5493541694363';
+
+    function waLines(info){
+      const lines = [
+        'Hola Vale! Ya reservé mi lugar en Estoy Para Más ✨',
+        '',
+        'Entrada: ' + info.ticketLabel,
+        'Cantidad: ' + info.quantity,
+        'Total: ' + fmt(info.total, info.currency) + (info.ticketType === 'general' && info.quantity >= 2 ? ' (precio amigas)' : '')
+      ];
+      if(info.schedule.length > 1) lines.push('Forma de pago: ' + info.schedule.length + ' cuotas · seña ' + fmt(info.schedule[0].amount, info.currency));
+      if(info.currency === 'USD' && usdRate) lines.push('En pesos hoy: ' + fmtARS(info.schedule[0].amount * usdRate) + ' (dólar blue promedio ' + fmtARS(usdRate) + ')');
+      lines.push('Nombre: ' + data.firstName + ' ' + data.lastName, 'Email: ' + data.email, 'WhatsApp: ' + data.phone);
+      if(info.reference) lines.push('Código de reserva: ' + info.reference);
+      lines.push('', 'Te mando el comprobante de la transferencia 👇');
+      return lines.join('\n');
+    }
+
+    function accBlock(acc, extra){
+      const esc = v => String(v).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+      return '<div class="acc"><div class="acc-t">' + esc(acc.title) + (extra ? ' · <span style="font-weight:400">' + esc(extra) + '</span>' : '') + '</div>' +
+        acc.rows.map(r => '<div class="acc-r"><span>' + esc(r[0]) + '</span><code>' + esc(r[1]) + '</code>' +
+          (/Alias|CVU|CBU|Cuenta|Routing/.test(r[0]) ? '<button type="button" class="copy" data-copy="' + esc(r[1]) + '">Copiar</button>' : '') + '</div>').join('') + '</div>';
+    }
+
+    function showOk(info){
+      const box = document.getElementById('reserva-ok');
+      const accounts = (eventInfo && eventInfo.paymentAccounts) || FALLBACK_ACCOUNTS;
+      const first = info.schedule[0];
+      const cuotas = info.schedule.length > 1;
+      let html = '<div class="ok-ref">Reserva' + (info.reference ? ' · ' + info.reference : '') + '</div>' +
+        '<h3>¡Tu lugar está reservado, ' + data.firstName.split(' ')[0] + '! 🤍</h3>' +
+        '<p style="margin:0">' + info.ticketLabel + ' · ' + info.quantity + (info.quantity > 1 ? ' entradas' : ' entrada') + ' · Total ' + fmt(info.total, info.currency) + '</p>' +
+        '<div class="ok-step"><h4>1 · ' + (cuotas ? 'Transferí la seña' : 'Transferí el total') + '</h4>' +
+        '<div class="ok-amount">' + fmt(first.amount, info.currency) + '</div>' +
+        (info.currency === 'USD' && usdRate ? '<p style="margin:4px 0 0;color:var(--gris);font-size:.88rem">o ' + fmtARS(first.amount * usdRate) + ' en pesos (dólar blue promedio de hoy, ' + fmtARS(usdRate) + ')</p>' : '');
+      if(cuotas){
+        html += '<ul class="ok-sched">' + info.schedule.map((x,i) => '<li><span>' + (i===0 ? 'Seña · hoy' : 'Cuota ' + (i+1) + ' · antes del ' + fmtDate(x.date)) + '</span><b>' + fmt(x.amount, info.currency) + '</b></li>').join('') + '</ul>' +
+          '<p class="ok-fine">La seña confirma tu lugar y <b>no es reembolsable</b>. Las cuotas se completan antes del 15 de diciembre; cada mes te escribimos para recordártelo.</p>';
+      }
+      if(info.currency === 'USD'){
+        const pesosAmt = usdRate ? fmtARS(first.amount * usdRate) : null;
+        html += '<p style="margin:16px 0 8px;font-weight:600;font-size:.92rem">¿Cómo vas a pagar?</p>' +
+          '<div class="pay-pick" role="tablist">' +
+          '<button type="button" class="pay-opt on" data-pay="ars">En pesos' + (pesosAmt ? '<small>' + pesosAmt + '</small>' : '') + '</button>' +
+          '<button type="button" class="pay-opt" data-pay="usdAr">Dólares<small>cuenta argentina</small></button>' +
+          '<button type="button" class="pay-opt" data-pay="usdExt">Dólares<small>desde el exterior</small></button>' +
+          '</div>' +
+          '<div data-acc="ars">' + accBlock(accounts.ars, pesosAmt ? 'transferí ' + pesosAmt : 'al dólar blue del día') + '</div>' +
+          '<div data-acc="usdAr" hidden>' + accBlock(accounts.usdAr, 'transferí ' + fmt(first.amount, 'USD')) + '</div>' +
+          '<div data-acc="usdExt" hidden>' + accBlock(accounts.usdExt, 'transferí ' + fmt(first.amount, 'USD')) + '</div>';
+      } else {
+        html += accBlock(accounts.ars);
+      }
+      html += '<p class="ok-fine">Te guardamos el lugar 48 hs para que hagas la transferencia.</p></div>';
+      const wa = 'https://api.whatsapp.com/send?phone=' + waNumber + '&text=' + encodeURIComponent(waLines(info));
+      html += '<div class="ok-step"><h4>2 · Mandanos el comprobante</h4>' +
+        '<a class="btn btn-primary btn-block" href="' + wa + '" target="_blank" rel="noopener">Enviar comprobante por WhatsApp <span class="arw">→</span></a>' +
+        '<p class="ok-fine">Cuando se acredita, te confirmamos tu lugar y te pasamos la dirección del salón.</p></div>';
+      if(info.ticketType === 'general' && info.reference){
+        const vip = eventInfo && eventInfo.tiers && eventInfo.tiers.vip;
+        const vipTotal = vip ? vip.price * info.quantity : 200 * info.quantity;
+        html += '<div class="upsell"><h4 style="font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px;font-weight:500">✨ Antes de transferir</h4>' +
+          '<p style="font-family:var(--display);font-size:1.35rem;color:#fff;margin-bottom:8px">¿Querés vivirlo en VIP?</p>' +
+          '<p>Zona preferencial, desayuno los dos días, merienda exclusiva antes del evento y tu invitación en una caja de regalo, entregada en mano.</p>' +
+          '<p><b>USD ' + vipTotal + '</b>' + (usdRate ? ' (≈ ' + fmtARS(vipTotal * usdRate) + ')' : '') + ' · también en 2 cuotas hasta el 15/12.</p>' +
+          '<button type="button" class="btn btn-block" data-upgrade="unico" style="background:#E8CFA9;color:#33202F">Pasar a VIP · pago único</button>' +
+          '<button type="button" class="btn btn-block" data-upgrade="cuotas" style="border:1px solid #E8CFA9;color:#F4ECE6;background:transparent">Pasar a VIP en cuotas</button>' +
+          '<p class="ok-fine" id="upgrade-msg" style="color:#eadde5"></p></div>';
+      }
+      box.innerHTML = html;
+      document.querySelector('#comprar .form-card:not(.ok-card)').hidden = true;
+      box.hidden = false;
+      box.scrollIntoView({behavior:'smooth', block:'start'});
+      box.querySelectorAll('[data-pay]').forEach(b => b.addEventListener('click', () => {
+        box.querySelectorAll('[data-pay]').forEach(x => x.classList.toggle('on', x === b));
+        box.querySelectorAll('[data-acc]').forEach(a => a.hidden = a.getAttribute('data-acc') !== b.getAttribute('data-pay'));
+      }));
+      box.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => {
+        const v = b.getAttribute('data-copy');
+        (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(()=>{ b.textContent = '¡Copiado!'; setTimeout(()=>b.textContent='Copiar', 1600); }).catch(()=>{ b.textContent = v; });
+      }));
+      box.querySelectorAll('[data-upgrade]').forEach(b => b.addEventListener('click', () => {
+        const msg = document.getElementById('upgrade-msg');
+        box.querySelectorAll('[data-upgrade]').forEach(x => x.disabled = true);
+        msg.textContent = 'Cambiando tu entrada…';
+        fetch('/api/reservas/upgrade', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({reference: info.reference, paymentPlan: b.getAttribute('data-upgrade')})})
+          .then(r => r.json().then(j => ({ok: r.ok, j})))
+          .then(({ok, j}) => {
+            if(!ok) throw new Error(j.error || 'No se pudo cambiar.');
+            try{ if(typeof window.epmTrack === 'function') window.epmTrack('checkout_initiated', { upgrade: 'vip' }); }catch(e){}
+            showOk(j);
+          })
+          .catch(err => { msg.textContent = err.message + ' Escribinos por WhatsApp y lo cambiamos.'; box.querySelectorAll('[data-upgrade]').forEach(x => x.disabled = false); });
+      }));
+    }
+
+    function finish(body){
+      const sc = body && body.schedule ? body.schedule : schedule(t, data.quantity, data.paymentPlan);
+      const info = {
+        reference: body && body.reference || null,
+        ticketType: data.ticketType,
+        ticketLabel: (body && body.ticketLabel) || t.label,
+        currency: (body && body.currency) || t.currency,
+        quantity: data.quantity,
+        total: (body && body.total) || tierTotal(t, data.quantity),
+        schedule: sc
+      };
+      if(typeof window.epmTrack === 'function') window.epmTrack('checkout_initiated', { quantity: data.quantity, ticketType: data.ticketType, plan: data.paymentPlan });
+      try{ if(typeof fbq === 'function') fbq('track','InitiateCheckout',{ value: info.total, currency: info.currency, num_items: data.quantity }); }catch(err){}
+      showOk(info);
+    }
+
+    const ctrl = ('AbortController' in window) ? new AbortController() : null;
+    const timer = setTimeout(function(){ if(ctrl) ctrl.abort(); }, 6000);
+    fetch('/api/reservas',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
+      signal: ctrl ? ctrl.signal : undefined
     }).then(async r=>{
+      clearTimeout(timer);
       const body = await r.json().catch(()=>({}));
-      if(!r.ok){
-        if(body.fieldErrors){
-          Object.keys(body.fieldErrors).forEach(k=>setFieldError(k, body.fieldErrors[k]));
-        }
-        throw new Error(body.error || 'No pudimos iniciar el pago.');
+      if(r.status === 400 && body.fieldErrors){
+        Object.keys(body.fieldErrors).forEach(k=>setFieldError(k, body.fieldErrors[k]));
+        throw Object.assign(new Error(body.error || 'Revisá los datos del formulario.'), {validation:true});
       }
-      if(!body.checkoutUrl) throw new Error('Respuesta inválida del servidor.');
-      try{
-        if(typeof fbq === 'function'){
-          fbq('track', 'InitiateCheckout', {
-            value: body.totalAmount,
-            currency: body.currency,
-            num_items: body.quantity
-          });
-        }
-      }catch(err){}
-      if(typeof window.epmTrack === 'function') window.epmTrack('checkout_initiated', { quantity: body.quantity });
-      submitBtn.innerHTML = '<span class="buy-spin" aria-hidden="true"></span> Redirigiendo a Mercado Pago…';
-      window.location.href = body.checkoutUrl;
+      finish(body);
     }).catch(err=>{
-      submitting = false;
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalHtml;
-      showAlert(err.message || 'Algo salió mal. Esperá un momento y volvé a intentar.');
+      clearTimeout(timer);
+      if(err && err.validation){
+        submitting = false;
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHtml;
+        showAlert(err.message);
+        return;
+      }
+      /* Si el servidor no responde, igual mostramos los datos para transferir:
+         la reserva viaja completa en el mensaje de WhatsApp. */
+      finish(null);
     });
   });
 })();
@@ -1274,6 +1668,211 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       tracked = true;
       window.epmTrack('checkout_viewed', {});
     });
+  });
+})();
+</script>
+
+<!-- ============ VENTANA DE BIENVENIDA (captura de contacto) ============ -->
+<style>
+.lead-capture{background:var(--arena);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.lc-card{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+@media (max-width:860px){.lc-card{grid-template-columns:1fr;gap:28px}}
+.lc-form{background:var(--papel);border:1px solid var(--linea);border-radius:var(--r);padding:28px}
+.lc-form .field{margin-bottom:14px}
+.lc-form input,.lc-form select{width:100%;padding:13px 15px;border:1px solid var(--linea);background:#fff;font-family:var(--body);font-size:.96rem;border-radius:var(--r);color:var(--tinta)}
+.lc-form input:focus,.lc-form select:focus{outline:none;border-color:var(--bronce);box-shadow:0 0 0 3px rgba(168,124,79,.13)}
+.lc-form label{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);margin-bottom:6px}
+.lc-msg{min-height:1.2em;margin:0 0 12px;font-size:.9rem;color:#B0473E}
+.lc-msg.ok{color:#2F4F2B}
+.plan-opts{display:grid;gap:10px}
+.plan-opt{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--linea);border-radius:var(--r);padding:12px 14px;cursor:pointer;background:var(--papel);text-transform:none!important;letter-spacing:0!important;font-family:var(--body)!important;font-size:.92rem!important;color:var(--tinta)!important}
+.plan-opt input{margin-top:3px;accent-color:var(--bronce)}
+.plan-opt b{display:block}
+.plan-opt small{display:block;color:var(--gris);font-size:.82rem;margin-top:2px}
+.plan-opt:has(input:checked){border-color:var(--bronce);background:#fff}
+.plan-note{font-size:.8rem;color:var(--gris);margin:8px 0 0;line-height:1.5}
+.platino-left{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#E8CFA9!important;margin:0 0 4px!important;min-height:1em}
+.ok-card h3{font-family:var(--display);font-weight:400;font-size:1.9rem;margin:0 0 6px}
+.ok-card .ok-ref{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;color:var(--gris);text-transform:uppercase}
+.ok-step{border-top:1px solid var(--linea);padding-top:18px;margin-top:18px}
+.ok-step h4{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronce);margin:0 0 10px;font-weight:500}
+.ok-amount{font-family:var(--display);font-size:2rem;line-height:1.1}
+.ok-sched{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:6px;font-size:.9rem}
+.ok-sched li{display:flex;justify-content:space-between;border-bottom:1px dashed var(--linea);padding-bottom:6px}
+.pay-pick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pay-opt{border:1px solid var(--linea);background:var(--papel);border-radius:var(--r);padding:10px 6px;font-family:var(--body);font-size:.86rem;font-weight:600;cursor:pointer;color:var(--tinta);line-height:1.25}
+.pay-opt small{display:block;font-weight:400;font-size:.74rem;color:var(--gris);margin-top:2px}
+.pay-opt.on{border-color:var(--bronce);background:#fff;box-shadow:0 0 0 2px rgba(168,124,79,.18)}
+.acc{border:1px solid var(--linea);border-radius:var(--r);padding:12px 14px;margin-top:10px;background:var(--papel)}
+.acc-t{font-weight:600;font-size:.9rem;margin-bottom:6px}
+.acc-r{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.88rem;padding:4px 0}
+.acc-r span{color:var(--gris)}
+.acc-r code{font-family:var(--mono);font-size:.84rem;word-break:break-all;text-align:right}
+.copy{border:1px solid var(--linea);background:#fff;border-radius:999px;font-size:.72rem;padding:4px 10px;cursor:pointer;flex:none}
+.upsell{margin-top:22px;background:var(--berenjena,#33202F);color:#F4ECE6;border-radius:var(--r);padding:20px}
+.upsell h4{color:#E8CFA9}
+.upsell p{margin:0 0 12px;font-size:.92rem;color:#eadde5}
+.upsell .btn{margin-top:8px}
+.ok-fine{font-size:.8rem;color:var(--gris);margin-top:14px;line-height:1.55}
+.tier-ars{margin:-4px 0 0!important;font-size:.84rem!important;opacity:.75;min-height:1em}
+.tier-pair{display:block;text-align:center;margin-top:10px;font-size:.88rem;color:var(--bronce);text-decoration:underline;text-underline-offset:3px}
+.lm-backdrop{position:fixed;inset:0;background:rgba(26,16,23,.62);display:none;align-items:center;justify-content:center;padding:16px;z-index:200;backdrop-filter:blur(3px)}
+.lm-backdrop.open{display:flex}
+.lm{position:relative;width:100%;max-width:880px;max-height:calc(100svh - 32px);overflow:auto;background:var(--papel);border-radius:14px;display:grid;grid-template-columns:.9fr 1.1fr;box-shadow:0 30px 80px -30px rgba(0,0,0,.55)}
+@media (max-width:760px){.lm{grid-template-columns:1fr}.lm-photo{height:170px!important}}
+.lm-photo{background:url('/assets/img/evento/abrazo.jpg') center 35%/cover;min-height:100%}
+.lm-body{padding:34px 32px 30px}
+.lm-body h2{font-size:clamp(1.6rem,3.2vw,2.2rem);line-height:1.08;margin:10px 0 10px}
+.lm-body p.lead{font-size:1rem;margin:0 0 18px}
+.lm-close{position:absolute;top:10px;right:10px;width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.9);color:var(--tinta);font-size:22px;line-height:1;cursor:pointer}
+.lm .lc-form{background:none;border:none;padding:0}
+.lm-skip{display:block;margin:12px auto 0;background:none;border:none;color:var(--gris);font-size:.85rem;text-decoration:underline;cursor:pointer}
+</style>
+<div class="lm-backdrop" id="lead-modal" aria-hidden="true">
+  <div class="lm" role="dialog" aria-modal="true" aria-labelledby="lm-title">
+    <button type="button" class="lm-close" aria-label="Cerrar" data-lm-close>×</button>
+    <div class="lm-photo" aria-hidden="true"></div>
+    <div class="lm-body">
+      <div class="eyebrow">Un regalo antes de seguir</div>
+      <h2 id="lm-title">Recibí gratis una clase de Valentina.</h2>
+      <p class="lead">Dejame tus datos y te la mando por WhatsApp. Y te enterás primero de las novedades de Estoy Para Más, antes de que suba la preventa.</p>
+      <form class="lc-form" data-lead-form data-source="popup_evento" novalidate>
+        <div class="field"><label for="lm-nombre">Nombre</label><input id="lm-nombre" name="firstName" autocomplete="given-name" required></div>
+        <div class="field"><label for="lm-wp">WhatsApp</label><input id="lm-wp" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+54 9 11 ..." required></div>
+        <div class="field"><label for="lm-email">Email <span style="text-transform:none;letter-spacing:0">(opcional)</span></label><input id="lm-email" name="email" type="email" inputmode="email" autocomplete="email"></div>
+        <p class="lc-msg" role="status" aria-live="polite"></p>
+        <button type="submit" class="btn btn-primary btn-block">Quiero mi clase de regalo <span class="arw">→</span></button>
+      </form>
+      <button type="button" class="lm-skip" data-lm-close>Ahora no, gracias</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY='epm_lead_2027', SEEN='epm_lead_popup_seen';
+  function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function read(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function sread(k){ try{ return sessionStorage.getItem(k); }catch(e){ return null; } }
+  function swrite(k,v){ try{ sessionStorage.setItem(k,v); }catch(e){} }
+
+  /* Si ya dejó sus datos, los usamos para completar el formulario de reserva. */
+  function prefill(){
+    var raw=read(KEY); if(!raw) return;
+    try{
+      var d=JSON.parse(raw);
+      var map={'buy-nombre':d.firstName,'buy-whatsapp':d.phone,'buy-email':d.email};
+      Object.keys(map).forEach(function(id){ var el=document.getElementById(id); if(el && !el.value && map[id]) el.value=map[id]; });
+    }catch(e){}
+  }
+  prefill();
+
+  /* Formularios de contacto (ventana y bloque de la página) */
+  document.querySelectorAll('[data-lead-form]').forEach(function(f){
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var msg=f.querySelector('.lc-msg'), btn=f.querySelector('button[type=submit]');
+      var data={
+        firstName:(f.firstName.value||'').trim(),
+        phone:(f.phone.value||'').trim(),
+        email:(f.email.value||'').trim(),
+        source:f.getAttribute('data-source'),
+        visitorId:window.__epmVisitorId||''
+      };
+      if(f.interest && f.interest.value) data.interest=f.interest.value;
+      msg.className='lc-msg';
+      if(data.firstName.length<2){ msg.textContent='Decinos tu nombre.'; f.firstName.focus(); return; }
+      if(!/^\+?[\d\s\-().]{8,20}$/.test(data.phone)){ msg.textContent='Ingresá un WhatsApp válido, con código de área.'; f.phone.focus(); return; }
+      if(data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)){ msg.textContent='Revisá el email.'; f.email.focus(); return; }
+      btn.disabled=true;
+      fetch('/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),keepalive:true})
+        .catch(function(){})
+        .then(function(){
+          store(KEY, JSON.stringify({firstName:data.firstName,phone:data.phone,email:data.email}));
+          prefill();
+          msg.className='lc-msg ok';
+          msg.textContent='¡Listo, '+data.firstName.split(' ')[0]+'! En breve te escribimos por WhatsApp con tu clase de regalo.';
+          btn.innerHTML='Datos enviados ✓';
+          if(f.getAttribute('data-source')==='popup_evento'){ setTimeout(closeModal, 2600); }
+        });
+    });
+  });
+
+  /* Ventana: aparece una sola vez por visita, a los 12 segundos o al bajar
+     un 40% de la página. No aparece si ya dejó sus datos. */
+  var modal=document.getElementById('lead-modal'); if(!modal) return;
+  var lastFocus=null;
+  function openModal(){
+    if(read(KEY) || sread(SEEN) || modal.classList.contains('open')) return;
+    swrite(SEEN,'1');
+    lastFocus=document.activeElement;
+    modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    setTimeout(function(){ var i=document.getElementById('lm-nombre'); if(i) i.focus(); },50);
+  }
+  function closeModal(){
+    modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  modal.querySelectorAll('[data-lm-close]').forEach(function(b){ b.addEventListener('click',closeModal); });
+  modal.addEventListener('click',function(e){ if(e.target===modal) closeModal(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && modal.classList.contains('open')) closeModal(); });
+  var timer=setTimeout(openModal,12000);
+  window.addEventListener('scroll',function onS(){
+    var h=document.documentElement; var pct=(h.scrollTop||document.body.scrollTop)/((h.scrollHeight-h.clientHeight)||1);
+    if(pct>0.4){ window.removeEventListener('scroll',onS); clearTimeout(timer); openModal(); }
+  },{passive:true});
+})();
+</script>
+
+<!-- ============ APLICACIÓN PLATINO ============ -->
+<div class="lm-backdrop" id="platino-modal" aria-hidden="true">
+  <div class="lm" role="dialog" aria-modal="true" aria-labelledby="pa-title" style="grid-template-columns:1fr;max-width:520px">
+    <button type="button" class="lm-close" aria-label="Cerrar" data-pa-close>×</button>
+    <div class="lm-body">
+      <div class="eyebrow">Platino · 10 lugares</div>
+      <h2 id="pa-title">Aplicá a Platino.</h2>
+      <p class="lead">Contame un poco de vos. Leo cada aplicación y te escribo por WhatsApp para charlar y confirmar tu lugar.</p>
+      <form class="lc-form" id="pa-form" novalidate>
+        <div class="field"><label for="pa-n">Nombre y apellido</label><input id="pa-n" name="nombre" autocomplete="name" required></div>
+        <div class="field"><label for="pa-w">WhatsApp</label><input id="pa-w" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="+54 9 11 ..." required></div>
+        <div class="field"><label for="pa-e">Email</label><input id="pa-e" name="email" type="email" inputmode="email" autocomplete="email" required></div>
+        <div class="field"><label for="pa-q1">¿Qué querés que cambie en tu vida o tu negocio este año?</label><textarea id="pa-q1" name="q1" rows="3" required></textarea></div>
+        <div class="field"><label for="pa-q2">¿Por qué Platino y no VIP?</label><textarea id="pa-q2" name="q2" rows="2" required></textarea></div>
+        <div class="field"><label for="pa-q3">¿Cómo preferís pagar?</label>
+          <select id="pa-q3" name="q3"><option>Pago único (USD 750)</option><option>En 3 cuotas hasta el 15/12</option><option>Quiero consultarlo</option></select></div>
+        <p class="lc-msg" id="pa-msg" role="status" aria-live="polite"></p>
+        <button type="submit" class="btn btn-primary btn-block">Enviar mi aplicación <span class="arw">→</span></button>
+      </form>
+    </div>
+  </div>
+</div>
+<style>#pa-form textarea{width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid var(--linea);border-radius:var(--r);font-family:var(--body);font-size:.95rem;background:var(--papel);resize:vertical}
+#platino-modal .lm{max-height:92vh;overflow:auto}</style>
+<script>
+(function(){
+  var bg=document.getElementById('platino-modal'), f=document.getElementById('pa-form');
+  if(!bg||!f) return;
+  function open(){ bg.style.display='flex'; bg.setAttribute('aria-hidden','false'); setTimeout(function(){ f.nombre.focus(); },50);
+    if(typeof window.epmTrack==='function') window.epmTrack('checkout_viewed',{tier:'platino'}); }
+  function close(){ bg.style.display='none'; bg.setAttribute('aria-hidden','true'); }
+  document.querySelectorAll('[data-apply-platino]').forEach(function(b){ b.addEventListener('click', open); });
+  bg.addEventListener('click', function(e){ if(e.target===bg || e.target.hasAttribute('data-pa-close')) close(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    var d={n:f.nombre.value.trim(), w:f.whatsapp.value.trim(), e:f.email.value.trim(), q1:f.q1.value.trim(), q2:f.q2.value.trim(), q3:f.q3.value};
+    var msg=document.getElementById('pa-msg');
+    if(d.n.length<2){ msg.textContent='Decime tu nombre.'; return; }
+    if(!/^\+?[\d\s\-().]{8,20}$/.test(d.w)){ msg.textContent='Revisá tu WhatsApp.'; return; }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.e)){ msg.textContent='Revisá tu email.'; return; }
+    if(d.q1.length<3||d.q2.length<3){ msg.textContent='Contame un poquito más en las preguntas.'; return; }
+    var notes='Qué quiere cambiar: '+d.q1+'\nPor qué Platino: '+d.q2+'\nPago: '+d.q3;
+    try{ fetch('/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},keepalive:true,
+      body:JSON.stringify({firstName:d.n,phone:d.w,email:d.e,interest:'platino',source:'aplicacion_platino',notes:notes,visitorId:window.__epmVisitorId||''})}).catch(function(){}); }catch(err){}
+    try{ localStorage.setItem('epm_lead_2027','1'); }catch(err){}
+    var text='Hola Vale! Apliqué a Platino de Estoy Para Más ✨\n\nSoy '+d.n+'\n'+notes;
+    f.innerHTML='<p style="font-family:var(--display);font-size:1.4rem;margin:0 0 8px">¡Gracias, '+d.n.split(' ')[0].replace(/[<>&]/g,'')+'! 🤍</p><p style="margin:0 0 16px">Recibí tu aplicación. Te escribo por WhatsApp para charlar y, si es para vos, te paso el link para confirmar tu lugar.</p><a class="btn btn-primary btn-block" target="_blank" rel="noopener" href="https://api.whatsapp.com/send?phone=5493541694363&text='+encodeURIComponent(text)+'">Avisarle a Vale por WhatsApp <span class="arw">→</span></a>';
   });
 })();
 </script>

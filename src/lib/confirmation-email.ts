@@ -29,10 +29,7 @@ export async function sendConfirmationEmail(
     return { sent: false, reason: "email_not_configured" };
   }
 
-  const fecha = new Date(`${eventConfig.eventDate}T00:00:00-03:00`).toLocaleDateString(
-    "es-AR",
-    { weekday: "long", day: "numeric", month: "long", year: "numeric" },
-  );
+  const fecha = eventConfig.eventDateLabel;
 
   const html = `
     <div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#1A1017">

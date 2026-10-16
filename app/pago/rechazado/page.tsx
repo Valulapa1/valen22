@@ -28,7 +28,7 @@ export default function PagoRechazadoPage() {
           <a className="btn btn-primary" href="/#comprar">
             Volver a intentar
           </a>
-          <a className="btn btn-outline" href="/">
+          <a className="btn btn-outline" href="/estoy-para-mas">
             Volver al inicio
           </a>
         </div>

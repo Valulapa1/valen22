@@ -112,7 +112,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
           comprobante.
         </p>
         <div className="pago-actions">
-          <a className="btn btn-primary" href="/">
+          <a className="btn btn-primary" href="/estoy-para-mas">
             Volver al inicio
           </a>
         </div>
@@ -143,7 +143,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
         </div>
         <p className="pago-eyebrow">Pago confirmado</p>
         <h1>Tu lugar está reservado.</h1>
-        <p>El 20 de septiembre te esperamos. Ya no hay vuelta atrás: estás adentro.</p>
+        <p>El sábado 6 y domingo 7 de marzo te esperamos. Ya no hay vuelta atrás: estás adentro.</p>
         <dl className="pago-detail">
           <div>
             <dt>Evento</dt>
@@ -167,7 +167,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
           exacta del salón se envía por correo antes del evento.
         </p>
         <div className="pago-actions">
-          <a className="btn btn-primary" href="/">
+          <a className="btn btn-primary" href="/estoy-para-mas">
             Volver al inicio
           </a>
         </div>
@@ -190,7 +190,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
           <a className="btn btn-primary" href="/#comprar">
             Intentar de nuevo
           </a>
-          <a className="btn btn-outline" href="/">
+          <a className="btn btn-outline" href="/estoy-para-mas">
             Volver al inicio
           </a>
         </div>
@@ -230,7 +230,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
           >
             Volver a verificar
           </button>
-          <a className="btn btn-outline" href="/">
+          <a className="btn btn-outline" href="/estoy-para-mas">
             Volver al inicio
           </a>
         </div>
@@ -254,7 +254,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
         WhatsApp y lo resolvemos.
       </p>
       <div className="pago-actions">
-        <a className="btn btn-primary" href="/">
+        <a className="btn btn-primary" href="/estoy-para-mas">
           Volver al inicio
         </a>
       </div>

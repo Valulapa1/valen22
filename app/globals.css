@@ -557,3 +557,74 @@ a {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ===== panel 2027: entradas, contactos y acciones ===== */
+.admin-stats-tiers {
+  margin-top: -14px;
+}
+.admin-block-title {
+  max-width: 1180px;
+  margin: 36px auto 6px;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.5rem;
+  color: var(--berenjena);
+}
+.admin-block-note {
+  max-width: 1180px;
+  margin: 0 auto 14px;
+  color: var(--gris);
+  font-size: 0.9rem;
+}
+.admin-toolbar button.admin-action {
+  white-space: nowrap;
+}
+.admin-action {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 7px 12px;
+  border-radius: var(--r);
+  border: 1px solid var(--berenjena);
+  background: var(--berenjena);
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.admin-action.ghost {
+  background: none;
+  color: var(--gris);
+  border-color: var(--linea);
+}
+.admin-action:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.admin-table a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.admin-tier {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: var(--r);
+  border: 1px solid var(--linea);
+  color: var(--gris);
+}
+.admin-tier.vip {
+  border-color: var(--bronce);
+  color: var(--bronce);
+}
+.admin-tier.platino {
+  background: var(--berenjena);
+  border-color: var(--berenjena);
+  color: #fff;
+}
+.admin-sub{font-size:.75rem;opacity:.7;margin-top:2px}
+.admin-badge.partial{background:#F3E6CF;color:#7A5418}

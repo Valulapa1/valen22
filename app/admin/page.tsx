@@ -35,7 +35,7 @@ export default async function AdminPage() {
   // no se corrió, leemos igual las columnas de siempre.
   let { data, error } = await supabase
     .from("event_registrations")
-    .select(`${BASE_COLUMNS}, ticket_type, payment_method, payment_plan, installments, amount_paid`)
+    .select(`${BASE_COLUMNS}, ticket_type, payment_method, payment_plan, installments, amount_paid, checkins`)
     .order("created_at", { ascending: false })
     .returns<AdminRow[]>();
   if (error) {

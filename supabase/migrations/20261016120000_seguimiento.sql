@@ -8,3 +8,8 @@ alter table public.event_registrations
 
 alter table public.leads
   add column if not exists followup_sent_at timestamptz;
+
+-- Control de ingreso: cuántas personas de cada entrada entraron cada día,
+-- por ejemplo {"2027-03-06": 1, "2027-03-07": 1}.
+alter table public.event_registrations
+  add column if not exists checkins jsonb not null default '{}'::jsonb;

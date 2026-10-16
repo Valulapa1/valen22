@@ -145,6 +145,7 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
                 <th>Estado</th>
                 <th>Acción</th>
                 <th>Fecha</th>
+                <th>Ingresó</th>
                 <th>Código</th>
                 <th></th>
               </tr>
@@ -230,6 +231,11 @@ export function RegistrationsTable({ rows: initialRows }: { rows: AdminRow[] }) 
                     )}
                   </td>
                   <td>{formatDate(r.created_at)}</td>
+                  <td>
+                    {r.status === "confirmed"
+                      ? `Sáb ${r.checkins?.["2027-03-06"] ?? 0}/${r.quantity} · Dom ${r.checkins?.["2027-03-07"] ?? 0}/${r.quantity}`
+                      : "—"}
+                  </td>
                   <td>{r.external_reference}</td>
                   <td>
                     <button type="button" className="admin-del" disabled={busy === r.id} onClick={() => removeRow(r)} aria-label="Eliminar reserva">

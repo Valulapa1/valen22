@@ -13,3 +13,8 @@ alter table public.leads
 -- por ejemplo {"2027-03-06": 1, "2027-03-07": 1}.
 alter table public.event_registrations
   add column if not exists checkins jsonb not null default '{}'::jsonb;
+
+-- Formulario "Conocerte" (Google Forms): cuándo lo completó y si es candidata a ADN.
+alter table public.event_registrations
+  add column if not exists profile_completed_at timestamptz,
+  add column if not exists profile_candidate boolean not null default false;

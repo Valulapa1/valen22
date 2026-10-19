@@ -9,15 +9,18 @@ var FORM_ID = '1zzekxdZLzDZieOVpmUTsnF1J1wTU0tH66KKhVJWRCQ4';
 function mejorarFormulario() {
   var form = FormApp.openById(FORM_ID);
   var p = PropertiesService.getScriptProperties();
-  var ids = { codigo: p.getProperty('CODIGO'), compromiso: p.getProperty('COMPROMISO'), apertura: p.getProperty('APERTURA') };
+  // Solo el formulario original queda conectado (borra disparadores de copias)
+  ScriptApp.getProjectTriggers().forEach(function (tr) {
+    if (tr.getTriggerSourceId() !== FORM_ID) ScriptApp.deleteTrigger(tr);
+  });
 
   // 1. Conservar los 6 campos clave y borrar el resto
   var keep = {};
   form.getItems().forEach(function (it) {
-    var id = String(it.getId()), t = it.getTitle();
-    if (id === ids.codigo) keep.codigo = it;
-    else if (id === ids.compromiso) keep.compromiso = it;
-    else if (id === ids.apertura) keep.apertura = it;
+    var t = it.getTitle(), ty = it.getType();
+    if (t === 'Código de reserva') keep.codigo = it;
+    else if (ty === FormApp.ItemType.SCALE) keep.compromiso = it;
+    else if (ty === FormApp.ItemType.MULTIPLE_CHOICE && t.indexOf('abierta') >= 0) keep.apertura = it;
     else if (t === 'Nombre y apellido') keep.nombre = it;
     else if (t === 'Email') keep.email = it;
     else if (t === 'WhatsApp') keep.whatsapp = it;
@@ -100,5 +103,6 @@ function mejorarFormulario() {
     s3, compromiso, apertura, cuidarte, mensaje, s4];
   orden.forEach(function (it, i) { form.moveItem(it.getIndex(), i); });
 
+  p.setProperties({ CODIGO: String(codigo.getId()), COMPROMISO: String(compromiso.getId()), APERTURA: String(apertura.getId()) });
   Logger.log('Listo: ' + form.getEditUrl());
 }

@@ -935,17 +935,8 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
     <div class="agenda rv" style="padding: 56px 0 0; text-align: center;">
       <div style="max-width: 1100px; margin: 0 auto 40px;">
         <h3 style="font-size: 1.5rem; margin-bottom: 20px;">Ellas lo cuentan.</h3>
-        <p class="lead" style="margin-bottom: 40px;">Mujeres de la primera edición, en sus propias palabras.</p>
+        <p class="lead" style="margin-bottom: 40px;">Así lo vivieron en la primera edición.</p>
         <div style="display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;">
-          <div class="testimonio-vertical">
-            <iframe
-              src="https://www.youtube.com/embed/fVW3-b3I75M"
-              title="Testimonio — Estoy Para Más"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
           <div class="testimonio-vertical">
             <iframe
               src="https://www.youtube.com/embed/he1j5ZRV1aI"
@@ -967,15 +958,6 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           <div class="testimonio-vertical">
             <iframe
               src="https://www.youtube.com/embed/66V1BXa4UEw"
-              title="Testimonio — Estoy Para Más"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-          <div class="testimonio-vertical">
-            <iframe
-              src="https://www.youtube.com/embed/msqPPY2VJOA"
               title="Testimonio — Estoy Para Más"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerpolicy="strict-origin-when-cross-origin"
@@ -1687,6 +1669,13 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       html += '<div class="ok-step"><h4>2 · Mandanos el comprobante</h4>' +
         '<a class="btn btn-primary btn-block" href="' + wa + '" target="_blank" rel="noopener">Enviar comprobante por WhatsApp <span class="arw">→</span></a>' +
         '<p class="ok-fine">Cuando se acredita, te confirmamos tu lugar y te pasamos la dirección del salón.</p></div>';
+      if(info.reference){
+        const PF = 'https://docs.google.com/forms/d/e/1FAIpQLSeiLVF62OUYAsrLAYjS_RfyfkPRrnadDhBPcinWup6Ip4-7UQ/viewform';
+        const pq = new URLSearchParams({ usp: 'pp_url', 'entry.1486000150': info.reference, 'entry.240262012': data.firstName + ' ' + data.lastName, 'entry.929126682': data.email, 'entry.624773563': data.phone });
+        html += '<div class="ok-step"><h4>3 · Contanos de vos 🤍</h4>' +
+          '<p style="margin:0 0 12px">Así preparo Estoy Para Más pensando en vos. Te lleva 2 minutos.</p>' +
+          '<a class="btn btn-dark btn-block" href="' + PF + '?' + pq.toString() + '" target="_blank" rel="noopener">Completar mi perfil <span class="arw">→</span></a></div>';
+      }
       if(info.ticketType === 'general' && info.reference){
         const vip = eventInfo && eventInfo.tiers && eventInfo.tiers.vip;
         const vipTotal = vip ? vip.price * info.quantity : 200 * info.quantity;

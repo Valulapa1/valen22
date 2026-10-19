@@ -75,6 +75,12 @@ export const eventConfig = {
       ],
     },
   },
+  /** Formulario de Google "Conocerte": se completa después de reservar. */
+  profileForm: {
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSeiLVF62OUYAsrLAYjS_RfyfkPRrnadDhBPcinWup6Ip4-7UQ/viewform",
+    entries: { reference: 1486000150, name: 240262012, email: 929126682, phone: 624773563 },
+    sheetUrl: "https://docs.google.com/spreadsheets/d/1_38z5wBOvP8H9MBjijK8nqq4dSgyJDw5_TsZBsNWXMk/edit",
+  },
   /** Aparece en el resumen de la tarjeta del comprador (máx. 22 caracteres). */
   statementDescriptor: "ESTASPARAMAS",
   contactEmail: "hola@estasparamas.com",
@@ -168,4 +174,17 @@ export function getPaymentSchedule(
   if (n < 2) return [{ date: today, amount: total }];
   const base = Math.floor(total / n);
   return dates.map((date, i) => ({ date, amount: i === 0 ? total - base * (n - 1) : base }));
+}
+
+/** Link al formulario "Conocerte" con sus datos ya completos. */
+export function profileFormUrl(r: { reference: string; name: string; email: string; phone: string }): string {
+  const f = eventConfig.profileForm;
+  const q = new URLSearchParams({
+    usp: "pp_url",
+    [`entry.${f.entries.reference}`]: r.reference,
+    [`entry.${f.entries.name}`]: r.name,
+    [`entry.${f.entries.email}`]: r.email,
+    [`entry.${f.entries.phone}`]: r.phone,
+  });
+  return `${f.url}?${q.toString()}`;
 }

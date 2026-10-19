@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { eventConfig } from "@/config/event";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { cookies } from "next/headers";
 import { ticketToken } from "@/lib/site";
+import { ADMIN_SESSION_COOKIE, isValidSessionToken } from "@/lib/admin-auth";
+import { CheckIn } from "./checkin";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Tu entrada · Estoy Para Más", robots: { index: false, follow: false } };
@@ -13,6 +16,7 @@ type Row = {
   status: string;
   ticket_type: string | null;
   external_reference: string;
+  checkins?: Record<string, number> | null;
 };
 
 const LABEL: Record<string, string> = { general: "General", vip: "VIP", platino: "Platino" };
@@ -33,13 +37,16 @@ export default async function Entrada({
   if (valid) {
     const { data } = await getSupabaseAdmin()
       .from("event_registrations")
-      .select("first_name, last_name, quantity, status, ticket_type, external_reference")
+      .select("first_name, last_name, quantity, status, ticket_type, external_reference, checkins")
       .eq("external_reference", code)
       .maybeSingle<Row>();
     row = data ?? null;
   }
 
   const paid = row?.status === "confirmed";
+  const isStaff = await isValidSessionToken((await cookies()).get(ADMIN_SESSION_COOKIE)?.value);
+  const today = new Date(Date.now() - 3 * 36e5).toISOString().slice(0, 10);
+  const usedToday = Number(row?.checkins?.[today] ?? 0);
   const wrap: React.CSSProperties = { minHeight: "100vh", background: "#33202F", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, fontFamily: "Georgia, serif" };
   const card: React.CSSProperties = { background: "#FAF6F0", borderRadius: 20, maxWidth: 380, width: "100%", padding: "28px 24px", textAlign: "center", color: "#1E1419" };
 
@@ -101,6 +108,12 @@ export default async function Entrada({
           <br />
           9 a 20 hs · Capital Federal, Buenos Aires
         </p>
+        {paid && !isStaff && (
+          <p style={{ fontFamily: "Arial, sans-serif", fontSize: 13, color: "#6E5F69", margin: "16px 0 0" }}>
+            Mostrá este QR en la puerta, desde el celular. Vale para {row.quantity} {row.quantity > 1 ? "personas" : "persona"}, una vez por día.
+          </p>
+        )}
+        {isStaff && <CheckIn reference={row.external_reference} initialUsed={usedToday} quantity={row.quantity} paid={paid} />}
       </div>
     </main>
   );

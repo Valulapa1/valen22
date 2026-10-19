@@ -33,7 +33,7 @@ export async function PATCH(request: Request) {
 
   const { data: row, error: readErr } = await supabase
     .from("event_registrations")
-    .select("total_amount, installments, amount_paid, first_name, last_name, email, phone, quantity, currency, external_reference, ticket_type, confirmation_email_sent_at")
+    .select("total_amount, installments, amount_paid, first_name, last_name, email, phone, quantity, currency, external_reference, ticket_type, confirmation_email_sent_at, profile_completed_at")
     .eq("id", id)
     .maybeSingle();
   if (readErr || !row) {
@@ -91,7 +91,7 @@ export async function PATCH(request: Request) {
       external_reference: row.external_reference,
       ticket_type: row.ticket_type,
       schedule: [],
-    });
+    }, Boolean(row.profile_completed_at));
     ticketSent = await sendEmail({ to: row.email, ...mail });
     if (ticketSent) {
       await supabase

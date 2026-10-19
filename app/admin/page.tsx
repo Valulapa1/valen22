@@ -4,6 +4,7 @@ import { Funnel } from "./funnel";
 import { RegistrationsTable } from "./registrations-table";
 import { paidOf, type AdminRow } from "./paid";
 import { ticketUrl } from "@/lib/site";
+import { eventConfig } from "@/config/event";
 import { LeadsTable, type LeadRow } from "./leads-table";
 
 export const metadata: Metadata = {
@@ -35,7 +36,7 @@ export default async function AdminPage() {
   // no se corrió, leemos igual las columnas de siempre.
   let { data, error } = await supabase
     .from("event_registrations")
-    .select(`${BASE_COLUMNS}, ticket_type, payment_method, payment_plan, installments, amount_paid, checkins`)
+    .select(`${BASE_COLUMNS}, ticket_type, payment_method, payment_plan, installments, amount_paid, checkins, profile_completed_at, profile_candidate`)
     .order("created_at", { ascending: false })
     .returns<AdminRow[]>();
   if (error) {
@@ -208,6 +209,13 @@ export default async function AdminPage() {
       </section>
 
       <h2 className="admin-block-title">Reservas</h2>
+      <p className="admin-block-note">
+        Las respuestas del formulario “Conocerte” están en tu{" "}
+        <a href={eventConfig.profileForm.sheetUrl} target="_blank" rel="noopener noreferrer">
+          planilla de Google
+        </a>
+        . Acá ves solo quién lo completó (⭐ = candidata a ADN: compromiso 9-10 y abierta a seguir).
+      </p>
       <RegistrationsTable rows={rows} />
 
       <h2 className="admin-block-title">Contactos</h2>

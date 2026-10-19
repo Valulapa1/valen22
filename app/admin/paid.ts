@@ -19,6 +19,8 @@ export type AdminRow = {
   amount_paid?: number | null;
   ticket_url?: string;
   checkins?: Record<string, number> | null;
+  profile_completed_at?: string | null;
+  profile_candidate?: boolean | null;
 };
 
 /** Lo cobrado: si la reserva es anterior a las cuotas, pagada = total. */

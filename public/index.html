@@ -1669,6 +1669,13 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       html += '<div class="ok-step"><h4>2 · Mandanos el comprobante</h4>' +
         '<a class="btn btn-primary btn-block" href="' + wa + '" target="_blank" rel="noopener">Enviar comprobante por WhatsApp <span class="arw">→</span></a>' +
         '<p class="ok-fine">Cuando se acredita, te confirmamos tu lugar y te pasamos la dirección del salón.</p></div>';
+      if(info.reference){
+        const PF = 'https://docs.google.com/forms/d/e/1FAIpQLSeiLVF62OUYAsrLAYjS_RfyfkPRrnadDhBPcinWup6Ip4-7UQ/viewform';
+        const pq = new URLSearchParams({ usp: 'pp_url', 'entry.1486000150': info.reference, 'entry.240262012': data.firstName + ' ' + data.lastName, 'entry.929126682': data.email, 'entry.624773563': data.phone });
+        html += '<div class="ok-step"><h4>3 · Contanos de vos 🤍</h4>' +
+          '<p style="margin:0 0 12px">Así preparo Estoy Para Más pensando en vos. Te lleva 2 minutos.</p>' +
+          '<a class="btn btn-dark btn-block" href="' + PF + '?' + pq.toString() + '" target="_blank" rel="noopener">Completar mi perfil <span class="arw">→</span></a></div>';
+      }
       if(info.ticketType === 'general' && info.reference){
         const vip = eventInfo && eventInfo.tiers && eventInfo.tiers.vip;
         const vipTotal = vip ? vip.price * info.quantity : 200 * info.quantity;

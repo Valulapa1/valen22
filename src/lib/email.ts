@@ -1,5 +1,5 @@
 import "server-only";
-import { eventConfig } from "@/config/event";
+import { eventConfig, profileFormUrl } from "@/config/event";
 import { siteUrl, ticketUrl } from "@/lib/site";
 
 /**
@@ -147,6 +147,14 @@ ${r.schedule.map((x, i) => `<tr><td style="padding:6px 0;border-bottom:1px dashe
 </table><p style="font-size:13px;color:#8a7a84;font-family:Arial,sans-serif">La seña confirma tu lugar y no es reembolsable. Las cuotas se completan antes del 15 de diciembre.</p>`;
 }
 
+function profileBlock(r: ReservationForEmail): string {
+  const url = profileFormUrl({ reference: r.external_reference, name: `${r.first_name} ${r.last_name}`, email: r.email, phone: r.phone });
+  return `<table width="100%" cellpadding="0" cellspacing="0" style="background:#FAF6F0;border-radius:12px;margin:22px 0"><tr><td style="padding:18px 20px">
+<p style="margin:0 0 6px;font-weight:bold">Contanos de vos 🤍</p>
+<p style="margin:0 0 4px;font-size:15px">Así preparo Estoy Para Más pensando en vos. Te lleva 2 minutos.</p>
+<a href="${url}" style="color:#A87C4F;font-weight:bold">Completar mi perfil →</a></td></tr></table>`;
+}
+
 function comprobanteButton(r: ReservationForEmail): string {
   return button(
     waLink(`Hola Vale! Te mando el comprobante de mi reserva ${r.external_reference} (${r.first_name} ${r.last_name}) 👇`),
@@ -168,6 +176,7 @@ ${scheduleBlock(r)}
 ${payBlock(r, first, usdRate)}
 <p>Te guardamos el lugar <b>48 hs</b>. Cuando transfieras, mandanos el comprobante y te enviamos tu entrada.</p>
 ${comprobanteButton(r)}
+${profileBlock(r)}
 <p>Nos vemos el 6 de marzo.<br>Vale</p>`,
     ),
   };
@@ -217,7 +226,7 @@ ${comprobanteButton(r)}
 }
 
 /** 4) Pagó todo: la entrada. */
-export function ticketEmail(r: ReservationForEmail) {
+export function ticketEmail(r: ReservationForEmail, profileDone = false) {
   const url = ticketUrl(r.external_reference);
   const qr = `${siteUrl()}/api/entrada/qr?c=${encodeURIComponent(r.external_reference)}&t=${url.split("t=")[1]}`;
   return {
@@ -236,6 +245,7 @@ export function ticketEmail(r: ReservationForEmail) {
 <b>Dónde:</b> Capital Federal, Buenos Aires. Te mandamos la dirección exacta unos días antes.</p>
 ${button(url, "Ver mi entrada")}
 <p>Mostrá el QR en la entrada (desde el celular está perfecto). Si no podés ir, podés transferirla a una amiga: avisanos por WhatsApp.</p>
+${profileDone ? "" : profileBlock(r)}
 <p>Te espero.<br>Vale</p>`,
     ),
   };

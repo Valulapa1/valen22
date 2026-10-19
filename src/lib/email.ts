@@ -95,7 +95,7 @@ export function layout(preheader: string, body: string): string {
 <tr><td style="padding:30px 28px;font-family:Georgia,serif;color:#1E1419;font-size:16px;line-height:1.6">${body}</td></tr>
 <tr><td style="padding:18px 28px 26px;font-family:Arial,sans-serif;color:#8a7a84;font-size:12px;line-height:1.5;border-top:1px solid #EFE6DD">
 Estoy Para Más · ${esc(eventConfig.eventDateLabel)} · Capital Federal, Buenos Aires<br>
-¿Dudas? Respondé este mail o <a href="${waLink("Hola Vale! Tengo una consulta sobre Estoy Para Más")}" style="color:#A87C4F">escribinos por WhatsApp</a>.
+¿Dudas? Respondé este mail o <a href="${waLink("Hola Valen! Tengo una consulta sobre Estoy Para Más")}" style="color:#A87C4F">escribinos por WhatsApp</a>.
 </td></tr></table></td></tr></table></body></html>`;
 }
 
@@ -157,7 +157,7 @@ function profileBlock(r: ReservationForEmail): string {
 
 function comprobanteButton(r: ReservationForEmail): string {
   return button(
-    waLink(`Hola Vale! Te mando el comprobante de mi reserva ${r.external_reference} (${r.first_name} ${r.last_name}) 👇`),
+    waLink(`Hola Valen! Te mando el comprobante de mi reserva ${r.external_reference} (${r.first_name} ${r.last_name}) 👇`),
     "Enviar comprobante por WhatsApp",
   );
 }
@@ -177,7 +177,7 @@ ${payBlock(r, first, usdRate)}
 <p>Te guardamos el lugar <b>48 hs</b>. Cuando transfieras, mandanos el comprobante y te enviamos tu entrada.</p>
 ${comprobanteButton(r)}
 ${profileBlock(r)}
-<p>Nos vemos el 6 de marzo.<br>Vale</p>`,
+<p>Nos vemos el 6 de marzo.<br>Valen</p>`,
     ),
   };
 }
@@ -199,7 +199,7 @@ export function unpaidReminderEmail(r: ReservationForEmail, n: 1 | 2, usdRate: n
 <p>Tu reserva: <b>${esc(tierLabel(r))}</b> · ${r.quantity} ${r.quantity > 1 ? "entradas" : "entrada"} · código <b>${esc(r.external_reference)}</b></p>
 ${payBlock(r, first, usdRate)}
 ${comprobanteButton(r)}
-<p>Si tenés alguna duda o algo te frena, respondé este mail y lo hablamos.<br>Vale</p>`,
+<p>Si tenés alguna duda o algo te frena, respondé este mail y lo hablamos.<br>Valen</p>`,
     ),
   };
 }
@@ -220,7 +220,7 @@ export function installmentReminderEmail(
 <p>Tu cuota <b>${next.index + 1} de ${r.schedule.length}</b> de <b>${esc(tierLabel(r))}</b> vence <b>${when}</b>. Ya pagaste ${money(r.amount_paid ?? 0, r.currency)} de ${money(r.total_amount, r.currency)}.</p>
 ${payBlock(r, next.amount, usdRate)}
 ${comprobanteButton(r)}
-<p>Gracias por apostar por vos.<br>Vale</p>`,
+<p>Gracias por apostar por vos.<br>Valen</p>`,
     ),
   };
 }
@@ -246,7 +246,7 @@ export function ticketEmail(r: ReservationForEmail, profileDone = false) {
 ${button(url, "Ver mi entrada")}
 <p>Mostrá el QR en la entrada (desde el celular está perfecto). Si no podés ir, podés transferirla a una amiga: avisanos por WhatsApp.</p>
 ${profileDone ? "" : profileBlock(r)}
-<p>Te espero.<br>Vale</p>`,
+<p>Te espero con mucho amor 🤍<br>Valen</p>`,
     ),
   };
 }
@@ -265,8 +265,8 @@ export function leadFollowupEmail(lead: { first_name: string; source: string }) 
         `<h1 style="font-weight:400;font-size:24px;margin:0 0 12px">Hola ${esc(name)} 🤍</h1>
 <p>Ayer te interesaste en <b>${prog}</b>. Si la charla quedó a mitad de camino o no llegaste a agendar, acá estoy.</p>
 <p>No hace falta tenerlo todo claro: solo decidir empezar.</p>
-${button(lead.source === "home_adn" ? "https://calendly.com/valentinaparodi/60min" : waLink(`Hola Vale! Soy ${name}, quiero saber más de Transformarte ✨`), lead.source === "home_adn" ? "Agendar mi llamada" : "Hablar con Valentina")}
-<p>Vale</p>`,
+${button(lead.source === "home_adn" ? "https://calendly.com/valentinaparodi/60min" : waLink(`Hola Valen! Soy ${name}, quiero saber más de Transformarte ✨`), lead.source === "home_adn" ? "Agendar mi llamada" : "Hablar con Valentina")}
+<p>Con mucho amor,<br>Valen</p>`,
       ),
     };
   }
@@ -280,7 +280,7 @@ ${button(lead.source === "home_adn" ? "https://calendly.com/valentinaparodi/60mi
 <li>Sábado: tu transformación personal. Domingo: tu nuevo entorno.</li>
 <li>Venite con una amiga: 2 entradas generales a precio especial.</li></ul>
 ${button(`${siteUrl()}/estoy-para-mas#entradas`, "Ver las entradas")}
-<p>Si algo te frena, respondé este mail y lo charlamos.<br>Vale</p>`,
+<p>Si algo te frena, respondé este mail y lo charlamos.<br>Valen</p>`,
     ),
   };
 }

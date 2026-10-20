@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { getPaymentClient } from "@/lib/mercadopago";
 import { getSupabaseAdmin, type RegistrationRow } from "@/lib/supabase-admin";
-import { sendConfirmationEmail } from "@/lib/confirmation-email";
+import { money, notifyAdmin, sendEmail, ticketEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -149,7 +149,12 @@ async function processPayment(paymentId: string): Promise<void> {
   }
 
   // Verificación de importe y moneda contra lo registrado en el servidor.
-  const amountMatches = Number(transactionAmount) === Number(registration.total_amount);
+  // Vale el total o lo que faltaba pagar (si antes dejó una seña por transferencia).
+  const reg = registration as RegistrationRow & { amount_paid?: number | null };
+  const due = Number(registration.total_amount) - Number(reg.amount_paid ?? 0);
+  const amountMatches =
+    Math.round(Number(transactionAmount)) === Math.round(Number(registration.total_amount)) ||
+    Math.round(Number(transactionAmount)) === Math.round(due);
   const currencyMatches = currencyId === registration.currency;
   if (status === "approved" && (!amountMatches || !currencyMatches)) {
     console.error(
@@ -181,10 +186,18 @@ async function processPayment(paymentId: string): Promise<void> {
         ...mpFields,
         status: "confirmed",
         payment_status: "approved",
+        payment_method: "mercadopago",
+        amount_paid: Number(registration.total_amount),
         paid_at: dateApproved,
       })
       .eq("id", registration.id);
     if (error) throw new Error(`Supabase update: ${error.message}`);
+
+    await notifyAdmin(`💳 Pago confirmado: ${registration.first_name} ${registration.last_name}`, [
+      `${registration.first_name} ${registration.last_name} pagó ${money(Number(transactionAmount), currencyId || "ARS")} con Mercado Pago.`,
+      `Código: ${externalReference} · ${registration.quantity} entrada(s).`,
+      `Ya le llegó la entrada con el QR por mail.`,
+    ]);
 
     await maybeSendConfirmationEmail(registration);
     return;
@@ -199,7 +212,17 @@ async function processPayment(paymentId: string): Promise<void> {
     return;
   }
 
-  // rejected, cancelled, refunded, charged_back
+  // Rechazado o cancelado: la reserva sigue en pie (puede reintentar o transferir).
+  if (["rejected", "cancelled"].includes(status)) {
+    const { error } = await supabase
+      .from("event_registrations")
+      .update({ ...mpFields, status: "pending", payment_status: "pending" })
+      .eq("id", registration.id);
+    if (error) throw new Error(`Supabase update: ${error.message}`);
+    return;
+  }
+
+  // refunded, charged_back
   const { error } = await supabase
     .from("event_registrations")
     .update({ ...mpFields, status: "payment_failed", payment_status: status })
@@ -228,8 +251,24 @@ async function maybeSendConfirmationEmail(registration: RegistrationRow): Promis
   }
   if (!claimed) return; // otro webhook ya lo envió
 
-  const result = await sendConfirmationEmail(registration);
-  if (!result.sent && result.reason !== "email_not_configured") {
+  const r = registration as RegistrationRow & { ticket_type?: string | null; profile_completed_at?: string | null };
+  const mail = ticketEmail(
+    {
+      first_name: r.first_name,
+      last_name: r.last_name,
+      email: r.email,
+      phone: r.phone,
+      quantity: Number(r.quantity),
+      total_amount: Number(r.total_amount),
+      currency: r.currency,
+      external_reference: r.external_reference,
+      ticket_type: r.ticket_type ?? null,
+      schedule: [],
+    },
+    Boolean(r.profile_completed_at),
+  );
+  const sent = await sendEmail({ to: r.email, ...mail });
+  if (!sent) {
     // Liberar el lock para que un próximo webhook pueda reintentar el envío.
     await supabase
       .from("event_registrations")

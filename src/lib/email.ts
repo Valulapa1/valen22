@@ -162,7 +162,14 @@ function comprobanteButton(r: ReservationForEmail): string {
   );
 }
 
-/** 1) Apenas reserva: resumen + datos para transferir. */
+function mpBlock(r: ReservationForEmail): string {
+  if (r.currency !== "ARS") return "";
+  const url = `${siteUrl()}/api/mercadopago/pagar?ref=${encodeURIComponent(r.external_reference)}`;
+  return `${button(url, "Pagar ahora con Mercado Pago")}
+<p style="margin:-14px 0 18px;font-size:13px;color:#8a7a84;font-family:Arial,sans-serif">Tarjeta de crédito en cuotas, débito o dinero en cuenta. Tu entrada te llega al instante.</p>`;
+}
+
+/** 1) Apenas reserva: resumen + datos para pagar. */
 export function reservationEmail(r: ReservationForEmail, usdRate: number | null) {
   const first = r.schedule[0]?.amount ?? r.total_amount;
   return {
@@ -173,8 +180,9 @@ export function reservationEmail(r: ReservationForEmail, usdRate: number | null)
 <p>Reservaste <b>${esc(tierLabel(r))}</b> · ${r.quantity} ${r.quantity > 1 ? "entradas" : "entrada"} · total <b>${money(r.total_amount, r.currency)}</b>.<br>
 Código de reserva: <b>${esc(r.external_reference)}</b></p>
 ${scheduleBlock(r)}
+${r.schedule.length < 2 ? `${mpBlock(r)}<p style="margin:18px 0 0"><b>¿Preferís transferir?</b></p>` : ""}
 ${payBlock(r, first, usdRate)}
-<p>Te guardamos el lugar <b>48 hs</b>. Cuando transfieras, mandanos el comprobante y te enviamos tu entrada.</p>
+<p>Te guardamos el lugar <b>48 hs</b>. Si transferís, mandanos el comprobante y te enviamos tu entrada.</p>
 ${comprobanteButton(r)}
 ${profileBlock(r)}
 <p>Nos vemos el 6 de marzo.<br>Valen</p>`,
@@ -188,8 +196,8 @@ export function unpaidReminderEmail(r: ReservationForEmail, n: 1 | 2, usdRate: n
   const title = n === 1 ? `${r.first_name}, tu lugar sigue guardado` : `Último aviso: hoy se libera tu lugar`;
   const intro =
     n === 1
-      ? `Ayer reservaste tu lugar en Estoy Para Más y todavía no nos llegó la transferencia. Te dejo los datos de nuevo para que lo cierres en un minuto.`
-      : `Tu reserva vence hoy. Si querés vivir Estoy Para Más, hacé la transferencia y mandanos el comprobante: si no, el lugar pasa a otra mujer que lo está esperando.`;
+      ? `Ayer reservaste tu lugar en Estoy Para Más y todavía no nos llegó el pago. Podés cerrarlo en un minuto con Mercado Pago (también en cuotas) o por transferencia.`
+      : `Tu reserva vence hoy. Si querés vivir Estoy Para Más, completá el pago hoy: si no, el lugar pasa a otra mujer que lo está esperando.`;
   return {
     subject: n === 1 ? `${r.first_name}, ¿pudiste hacer la transferencia?` : `Hoy se libera tu lugar en Estoy Para Más`,
     html: layout(
@@ -197,6 +205,7 @@ export function unpaidReminderEmail(r: ReservationForEmail, n: 1 | 2, usdRate: n
       `<h1 style="font-weight:400;font-size:24px;margin:0 0 12px">${esc(title)}</h1>
 <p>${esc(intro)}</p>
 <p>Tu reserva: <b>${esc(tierLabel(r))}</b> · ${r.quantity} ${r.quantity > 1 ? "entradas" : "entrada"} · código <b>${esc(r.external_reference)}</b></p>
+${r.schedule.length < 2 ? `${mpBlock(r)}<p style="margin:18px 0 0"><b>¿Preferís transferir?</b></p>` : ""}
 ${payBlock(r, first, usdRate)}
 ${comprobanteButton(r)}
 <p>Si tenés alguna duda o algo te frena, respondé este mail y lo hablamos.<br>Valen</p>`,
@@ -241,7 +250,7 @@ export function ticketEmail(r: ReservationForEmail, profileDone = false) {
 <tr><td style="padding:0 16px 6px" align="center">${esc(tierLabel(r))} · ${r.quantity} ${r.quantity > 1 ? "entradas" : "entrada"}</td></tr>
 <tr><td style="padding:0 16px 16px;font-family:monospace" align="center">${esc(r.external_reference)}</td></tr>
 </table>
-<p><b>Cuándo:</b> ${esc(eventConfig.eventDateLabel)}, de 9 a 20 hs.<br>
+<p><b>Cuándo:</b> ${esc(eventConfig.eventDateLabel)}, de ${esc(eventConfig.eventHours)}.<br>
 <b>Dónde:</b> Capital Federal, Buenos Aires. Te mandamos la dirección exacta unos días antes.</p>
 ${button(url, "Ver mi entrada")}
 <p>Mostrá el QR en la entrada (desde el celular está perfecto). Si no podés ir, podés transferirla a una amiga: avisanos por WhatsApp.</p>

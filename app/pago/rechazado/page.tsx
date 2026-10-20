@@ -4,7 +4,16 @@ export const metadata: Metadata = {
   title: "Pago no completado — Estoy Para Más",
 };
 
-export default function PagoRechazadoPage() {
+export default async function PagoRechazadoPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ ref?: string; external_reference?: string }>;
+}) {
+  const params = await searchParams;
+  const reference = params.ref ?? params.external_reference ?? null;
+  const retry = reference
+    ? `/api/mercadopago/pagar?ref=${encodeURIComponent(reference)}`
+    : "/estoy-para-mas#comprar";
   return (
     <main className="pago-page">
       <span className="pago-logo">ESTOY PARA MÁS</span>
@@ -20,13 +29,13 @@ export default function PagoRechazadoPage() {
           se te cobró nada.
         </p>
         <p>
-          Tu lugar no está reservado todavía: cuando quieras, volvé a la página del
-          evento y completá la compra de nuevo, probando con otro medio de pago si
-          hace falta.
+          Tu reserva sigue guardada: podés intentar de nuevo con otra tarjeta o
+          medio de pago, o pagar por transferencia con los datos que te mandamos
+          por mail.
         </p>
         <div className="pago-actions">
-          <a className="btn btn-primary" href="/#comprar">
-            Volver a intentar
+          <a className="btn btn-primary" href={retry}>
+            Intentar de nuevo
           </a>
           <a className="btn btn-outline" href="/estoy-para-mas">
             Volver al inicio

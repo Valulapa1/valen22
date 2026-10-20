@@ -96,7 +96,7 @@ export async function POST(request: Request) {
     } else {
       saved = true;
       // Mail con los datos para transferir + aviso a Valentina.
-      const usdRate = tier.currency === "USD" ? await getUsdRate() : null;
+      const usdRate = (tier.currency as string) === "USD" ? await getUsdRate() : null;
       const mail = reservationEmail(
         { ...row, ticket_type: data.ticketType, label: tier.label, schedule },
         usdRate,

@@ -13,10 +13,15 @@ export const dynamic = "force-dynamic";
  * para la página de resultado. Nada de datos personales ni internos.
  */
 export async function GET(request: Request) {
-  const ref = new URL(request.url).searchParams.get("ref")?.trim() ?? "";
+  const raw = new URL(request.url).searchParams.get("ref")?.trim() ?? "";
+  const ref = /^epm27-/i.test(raw) ? raw.toUpperCase() : raw;
 
   // epm- + UUID v4. Rechazar cualquier otra forma evita sondeos.
-  if (!/^epm-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(ref)) {
+  // epm-<uuid> (1.ª edición) o EPM27-… (reservas de la 2.ª edición).
+  if (
+    !/^epm-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(ref) &&
+    !/^EPM27-[A-Z0-9-]{6,30}$/.test(ref)
+  ) {
     return NextResponse.json({ error: "Referencia inválida." }, { status: 400 });
   }
 

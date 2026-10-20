@@ -106,7 +106,7 @@ export default async function Entrada({
         <p style={{ fontFamily: "Arial, sans-serif", fontSize: 14, color: "#3a2e35", margin: 0 }}>
           {eventConfig.eventDateLabel}
           <br />
-          9 a 20 hs · Capital Federal, Buenos Aires
+          10:30 a 18:30 hs · Capital Federal, Buenos Aires
         </p>
         {paid && !isStaff && (
           <p style={{ fontFamily: "Arial, sans-serif", fontSize: 13, color: "#6E5F69", margin: "16px 0 0" }}>

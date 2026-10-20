@@ -142,8 +142,11 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
           ✓
         </div>
         <p className="pago-eyebrow">Pago confirmado</p>
-        <h1>Tu lugar está reservado.</h1>
-        <p>El sábado 6 y domingo 7 de marzo te esperamos. Ya no hay vuelta atrás: estás adentro.</p>
+        <h1>¡Ya estás adentro! 🤍</h1>
+        <p>
+          Te mandamos tu entrada con el código QR por mail. El sábado 6 y domingo 7
+          de marzo te esperamos, de 10:30 a 18:30 hs.
+        </p>
         <dl className="pago-detail">
           <div>
             <dt>Evento</dt>
@@ -163,8 +166,8 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
           </div>
         </dl>
         <p className="pago-note">
-          Guardá el código de inscripción: es tu comprobante de entrada. La dirección
-          exacta del salón se envía por correo antes del evento.
+          Si no ves el mail, revisá spam o promociones. La dirección exacta del salón
+          te la mandamos unos días antes. Te espero con mucho amor, Valen.
         </p>
         <div className="pago-actions">
           <a className="btn btn-primary" href="/estoy-para-mas">
@@ -183,11 +186,11 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
         </div>
         <h1>El pago no se completó</h1>
         <p>
-          Mercado Pago informó que este pago fue rechazado o cancelado. Podés volver
-          a intentarlo desde la página del evento.
+          Mercado Pago informó que este pago fue rechazado o cancelado. Tu reserva
+          sigue guardada: podés intentar de nuevo con otro medio de pago.
         </p>
         <div className="pago-actions">
-          <a className="btn btn-primary" href="/#comprar">
+          <a className="btn btn-primary" href={`/api/mercadopago/pagar?ref=${encodeURIComponent(view.data.reference)}`}>
             Intentar de nuevo
           </a>
           <a className="btn btn-outline" href="/estoy-para-mas">

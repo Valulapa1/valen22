@@ -18,7 +18,9 @@ export const eventConfig = {
   eventDate: "2027-03-06",
   /** Texto de fecha que se muestra en correos y pantallas. */
   eventDateLabel: "Sábado 6 y domingo 7 de marzo de 2027",
-  eventTime: "09:00 a 20:00",
+  eventTime: "10:30 a 18:30",
+  /** Horario corto para textos: "de 10:30 a 18:30 hs". */
+  eventHours: "10:30 a 18:30 hs",
   location:
     "Salón privado en Capital Federal, Buenos Aires (la dirección exacta se envía al confirmar)",
   /** Último día de la preventa de la entrada general (inclusive). */
@@ -26,8 +28,9 @@ export const eventConfig = {
   /** WhatsApp al que se deriva cada reserva para coordinar la transferencia. */
   whatsappNumber: "5493541694363",
   /**
-   * Tipos de entrada. Las reservas se pagan por transferencia: la web toma los
-   * datos y deriva a WhatsApp. El precio de cada tipo sale siempre de acá.
+   * Tipos de entrada (todas en pesos). Se pagan con Mercado Pago en el momento
+   * (tarjeta en cuotas, débito o dinero en cuenta) o por transferencia.
+   * El precio de cada tipo sale siempre de acá.
    */
   tiers: {
     general: {
@@ -37,8 +40,8 @@ export const eventConfig = {
       /** "Venite con una amiga": cada par de entradas generales cuesta esto. */
       pairPrice: 55500,
     },
-    vip: { label: "VIP", price: 200, currency: "USD", maxInstallments: 2 },
-    platino: { label: "Platino", price: 750, currency: "USD", limited: 10, maxInstallments: 3 },
+    vip: { label: "VIP", price: 290000, currency: "ARS", maxInstallments: 2 },
+    platino: { label: "Platino", price: 880000, currency: "ARS", limited: 10, maxInstallments: 3 },
   },
   /**
    * Precio de la General después de la preventa (desde el 16/12). Se aplica
@@ -81,6 +84,8 @@ export const eventConfig = {
     entries: { reference: 1486000150, name: 240262012, email: 929126682, phone: 624773563 },
     sheetUrl: "https://docs.google.com/spreadsheets/d/1_38z5wBOvP8H9MBjijK8nqq4dSgyJDw5_TsZBsNWXMk/edit",
   },
+  /** Máximo de cuotas con tarjeta que ofrece Mercado Pago. */
+  mpMaxInstallments: 12,
   /** Aparece en el resumen de la tarjeta del comprador (máx. 22 caracteres). */
   statementDescriptor: "ESTASPARAMAS",
   contactEmail: "hola@estasparamas.com",

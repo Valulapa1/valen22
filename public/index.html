@@ -29,6 +29,7 @@ src="https://www.facebook.com/tr?id=1753795619133410&ev=PageView&noscript=1"
 <!-- Vercel Web Analytics: esta página es HTML estático (no pasa por Next.js),
      así que necesita el script a mano. Las páginas de Next (/admin, /pago/*)
      lo reciben solas vía el componente <Analytics /> en app/layout.tsx. -->
+<script src="/anti-bot.js"></script>
 <script defer src="/_vercel/insights/script.js"></script>
 
 <!-- Contador de visitas propio + embudo (gratis, vía Supabase; no depende
@@ -1569,6 +1570,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
     if(data.lastName.length < 2) errors.lastName = 'El apellido debe tener al menos 2 caracteres.';
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) errors.email = 'Ingresá un email válido.';
     if(!/^\+?[\d\s\-().]{8,20}$/.test(data.phone)) errors.phone = 'Ingresá un número de WhatsApp válido.';
+    else if(window.epmPhoneOk && !window.epmPhoneOk(data.phone)) errors.phone = window.epmPhoneMsg;
     if(data.documentNumber && !/^\d{7,9}$/.test(data.documentNumber)) errors.documentNumber = 'El DNI debe tener entre 7 y 9 dígitos.';
     const max = eventInfo ? eventInfo.maxTicketsPerPurchase : 5;
     if(!(data.quantity >= 1 && data.quantity <= max)) errors.quantity = 'Elegí entre 1 y '+max+' entradas.';
@@ -1914,6 +1916,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       msg.className='lc-msg';
       if(data.firstName.length<2){ msg.textContent='Decinos tu nombre.'; f.firstName.focus(); return; }
       if(!/^\+?[\d\s\-().]{8,20}$/.test(data.phone)){ msg.textContent='Ingresá un WhatsApp válido, con código de área.'; f.phone.focus(); return; }
+      if(window.epmPhoneOk && !window.epmPhoneOk(data.phone)){ msg.textContent=window.epmPhoneMsg; f.phone.focus(); return; }
       if(data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)){ msg.textContent='Revisá el email.'; f.email.focus(); return; }
       btn.disabled=true;
       fetch('/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),keepalive:true})
@@ -1997,6 +2000,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
     var msg=document.getElementById('pa-msg');
     if(d.n.length<2){ msg.textContent='Decime tu nombre.'; return; }
     if(!/^\+?[\d\s\-().]{8,20}$/.test(d.w)){ msg.textContent='Revisá tu WhatsApp.'; return; }
+    if(window.epmPhoneOk && !window.epmPhoneOk(d.w)){ msg.textContent=window.epmPhoneMsg; return; }
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.e)){ msg.textContent='Revisá tu email.'; return; }
     if(d.q1.length<3||d.q2.length<3){ msg.textContent='Contame un poquito más en las preguntas.'; return; }
     var notes='Qué quiere cambiar: '+d.q1+'\nPor qué Platino: '+d.q2+'\nPago: '+d.q3;

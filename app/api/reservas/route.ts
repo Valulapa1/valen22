@@ -5,6 +5,7 @@ import { registrationSchema } from "@/lib/validation";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { money, notifyAdmin, reservationEmail, sendEmail } from "@/lib/email";
 import { getUsdRate } from "@/lib/dolar";
+import { isValidPhone, suspiciousReason } from "@/lib/spam";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,6 +18,11 @@ const reservaSchema = registrationSchema.extend({
     errorMap: () => ({ message: "Elegí un tipo de entrada." }),
   }),
   paymentPlan: z.enum(["unico", "cuotas"]).default("unico"),
+  // Campo trampa anti-bots (oculto en el formulario).
+  website: z.string().optional(),
+}).refine((d) => isValidPhone(d.phone), {
+  path: ["phone"],
+  message: "Si no sos de Argentina, poné tu WhatsApp con el código de país (ej. +52...).",
 });
 
 /**
@@ -49,6 +55,12 @@ export async function POST(request: Request) {
   }
 
   const data = parsed.data;
+  if (data.website) {
+    return NextResponse.json({ error: "No pudimos registrar la reserva." }, { status: 400 });
+  }
+  // A una reserva sospechosa la guardamos (por si es real), pero no le
+  // mandamos mails automáticos ni te avisamos.
+  const suspicious = suspiciousReason({ firstName: `${data.firstName} ${data.lastName}`, email: data.email, phone: data.phone });
   const tier = getCurrentTier(data.ticketType);
   const total = getTierTotal(data.ticketType, data.quantity);
   const schedule = getPaymentSchedule(data.ticketType, data.quantity, data.paymentPlan);
@@ -101,14 +113,14 @@ export async function POST(request: Request) {
         { ...row, ticket_type: data.ticketType, label: tier.label, schedule },
         usdRate,
       );
-      const sent = await sendEmail({ to: data.email, ...mail });
+      const sent = suspicious ? false : await sendEmail({ to: data.email, ...mail });
       if (sent) {
         await supabase
           .from("event_registrations")
           .update({ reservation_email_sent_at: new Date().toISOString() })
           .eq("external_reference", reference);
       }
-      await notifyAdmin(`Nueva reserva: ${data.firstName} ${data.lastName} · ${tier.label}`, [
+      if (!suspicious) await notifyAdmin(`Nueva reserva: ${data.firstName} ${data.lastName} · ${tier.label}`, [
         `${data.firstName} ${data.lastName} reservó ${data.quantity} × ${tier.label}.`,
         `Total: ${money(total, tier.currency)}${schedule.length > 1 ? ` en ${schedule.length} cuotas` : ""}.`,
         `WhatsApp: ${data.phone} · Email: ${data.email}`,

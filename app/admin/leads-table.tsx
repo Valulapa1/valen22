@@ -65,19 +65,29 @@ function toCsv(rows: LeadRow[]): string {
   return [header, ...lines].join("\n");
 }
 
-export function LeadsTable({ rows: initialRows }: { rows: LeadRow[] }) {
+export function LeadsTable({
+  rows: initialRows,
+  suspicious = {},
+}: {
+  rows: LeadRow[];
+  /** id → motivo, para los contactos que parecen bots. */
+  suspicious?: Record<string, string>;
+}) {
   const [rows, setRows] = useState(initialRows);
+  const [showBots, setShowBots] = useState(false);
+  const botRows = useMemo(() => rows.filter((r) => suspicious[r.id]), [rows, suspicious]);
   const [search, setSearch] = useState("");
   const [source, setSource] = useState("all");
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return rows.filter((r) => {
+      if (Boolean(suspicious[r.id]) !== showBots) return false;
       if (source !== "all" && r.source !== source) return false;
       if (!q) return true;
       return `${r.first_name} ${r.email ?? ""} ${r.phone}`.toLowerCase().includes(q);
     });
-  }, [rows, search, source]);
+  }, [rows, search, source, showBots, suspicious]);
 
   async function removeLead(r: LeadRow) {
     if (!confirm(`¿Eliminar el contacto de ${r.first_name}? No se puede deshacer.`)) return;
@@ -93,6 +103,24 @@ export function LeadsTable({ rows: initialRows }: { rows: LeadRow[] }) {
     setRows((prev) => prev.filter((x) => x.id !== r.id));
   }
 
+  async function removeBots() {
+    const ids = botRows.map((r) => r.id);
+    if (ids.length === 0) return;
+    if (!confirm(`¿Eliminar los ${ids.length} contactos sospechosos? No se puede deshacer.`)) return;
+    const res = await fetch("/api/admin/leads", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids }),
+    }).catch(() => null);
+    if (!res || !res.ok) {
+      alert("No se pudieron eliminar. Probá de nuevo.");
+      return;
+    }
+    const gone = new Set(ids);
+    setRows((prev) => prev.filter((x) => !gone.has(x.id)));
+    setShowBots(false);
+  }
+
   function download() {
     const blob = new Blob(["﻿" + toCsv(filtered)], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -105,6 +133,23 @@ export function LeadsTable({ rows: initialRows }: { rows: LeadRow[] }) {
 
   return (
     <>
+      {botRows.length > 0 && (
+        <div className="admin-toolbar" style={{ alignItems: "center" }}>
+          <span style={{ fontSize: ".9rem" }}>
+            {showBots
+              ? `Estás viendo ${botRows.length} contactos sospechosos (bots). No reciben mails automáticos.`
+              : `Ocultamos ${botRows.length} contactos sospechosos (bots). No cuentan en los números ni reciben mails.`}
+          </span>
+          <button type="button" className="admin-action" onClick={() => setShowBots((v) => !v)}>
+            {showBots ? "Volver a los contactos reales" : "Ver sospechosos"}
+          </button>
+          {showBots && (
+            <button type="button" className="admin-del" onClick={removeBots}>
+              Eliminar los {botRows.length} sospechosos
+            </button>
+          )}
+        </div>
+      )}
       <div className="admin-toolbar">
         <input
           type="search"
@@ -150,7 +195,12 @@ export function LeadsTable({ rows: initialRows }: { rows: LeadRow[] }) {
             <tbody>
               {filtered.map((r) => (
                 <tr key={r.id}>
-                  <td>{r.first_name}</td>
+                  <td>
+                    {r.first_name}
+                    {suspicious[r.id] && (
+                      <div style={{ fontSize: ".75rem", opacity: 0.7 }}>Sospechoso: {suspicious[r.id]}</div>
+                    )}
+                  </td>
                   <td>
                     <a href={waLink(r.phone, r.first_name.split(" ")[0])} target="_blank" rel="noopener noreferrer">
                       {r.phone}

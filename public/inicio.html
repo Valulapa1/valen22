@@ -46,6 +46,7 @@ details[open] summary::after{content:"–"}
   section{padding-left:16px!important;padding-right:16px!important}
 }
 </style>
+<script src="/anti-bot.js"></script>
 </head>
 <body>
 <div style="font-family: 'Poppins', system-ui, sans-serif; font-weight: 300; color: #2E2236; background: #F6F0EA; font-size: 16px; line-height: 1.7">
@@ -344,6 +345,7 @@ details[open] summary::after{content:"–"}
   f.addEventListener('submit',function(e){
     e.preventDefault();
     var n=f.nombre.value.trim(), em=f.email.value.trim(), wp=f.whatsapp.value.trim();
+    if(window.epmPhoneOk && !window.epmPhoneOk(wp)){ alert(window.epmPhoneMsg); f.whatsapp.focus(); return; }
     try{
       fetch('/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},keepalive:true,
         body:JSON.stringify({firstName:n,phone:wp,email:em,source:'home_clase'})}).catch(function(){});
@@ -439,6 +441,7 @@ details[open] summary::after{content:"–"}
     var err='';
     if(d.nombre.length<2) err='Decime tu nombre.';
     else if(!/^\+?[\d\s\-().]{8,20}$/.test(d.whatsapp)) err='Revisá tu WhatsApp.';
+    else if(window.epmPhoneOk && !window.epmPhoneOk(d.whatsapp)) err=window.epmPhoneMsg;
     else if(mode==='adn' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)) err='Necesito tu email para la agenda.';
     if(err){ document.getElementById('pre-err').textContent=err; return; }
     save({nombre:d.nombre, whatsapp:d.whatsapp, email:d.email});

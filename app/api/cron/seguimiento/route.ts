@@ -1,3 +1,4 @@
+import { findSuspicious, suspiciousReason } from "@/lib/spam";
 import { NextResponse } from "next/server";
 import { getPaymentSchedule, type PaymentPlan } from "@/config/event";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
@@ -48,6 +49,8 @@ export async function GET(request: Request) {
     .eq("status", "pending");
 
   for (const r of regs ?? []) {
+    // Reservas hechas por bots: sin recordatorios.
+    if (suspiciousReason({ firstName: `${r.first_name} ${r.last_name}`, email: r.email, phone: r.phone })) continue;
     const paid = Number(r.amount_paid ?? 0);
     const age = now - new Date(r.created_at).getTime();
     const tier = (r.ticket_type ?? "general") as Tier;
@@ -121,10 +124,29 @@ export async function GET(request: Request) {
     .neq("source", "aplicacion_platino")
     .limit(200);
 
+  // Bots: se los mira junto con todos los registros recientes de su mismo
+  // mail, así se reconocen aunque ese registro puntual parezca normal.
+  const emails = [...new Set((leads ?? []).map((l) => String(l.email).toLowerCase()))];
+  const { data: sameMail } = emails.length
+    ? await supabase
+        .from("leads")
+        .select("id, first_name, email, phone")
+        .in("email", emails)
+        .gt("created_at", new Date(now - 30 * 24 * HOUR).toISOString())
+        .limit(2000)
+    : { data: [] };
+  const suspicious = findSuspicious([...(sameMail ?? []), ...(leads ?? [])]);
+  let skipped = 0;
+
   const { data: allRegs } = await supabase.from("event_registrations").select("email, phone");
   const booked = new Set((allRegs ?? []).flatMap((x) => [String(x.email).toLowerCase(), String(x.phone).replace(/\D/g, "")]));
   for (const l of leads ?? []) {
     if (!l.email) continue;
+    if (suspicious.has(l.id)) {
+      await supabase.from("leads").update({ followup_sent_at: new Date().toISOString() }).eq("id", l.id);
+      skipped++;
+      continue;
+    }
     const isEvent = !String(l.source).startsWith("home_") || l.source === "home_clase";
     if (isEvent && (booked.has(l.email.toLowerCase()) || booked.has(String(l.phone).replace(/\D/g, "")))) {
       await supabase.from("leads").update({ followup_sent_at: new Date().toISOString() }).eq("id", l.id);
@@ -146,5 +168,5 @@ export async function GET(request: Request) {
     ]);
   }
 
-  return NextResponse.json({ ok: true, ...log });
+  return NextResponse.json({ ok: true, ...log, botsSkipped: skipped });
 }

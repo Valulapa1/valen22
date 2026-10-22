@@ -6,6 +6,7 @@ import { paidOf, type AdminRow } from "./paid";
 import { ticketUrl } from "@/lib/site";
 import { eventConfig } from "@/config/event";
 import { LeadsTable, type LeadRow } from "./leads-table";
+import { findSuspicious } from "@/lib/spam";
 
 export const metadata: Metadata = {
   title: "Panel — Estoy Para Más",
@@ -92,7 +93,10 @@ export default async function AdminPage() {
     leadsFinal = retry.data;
   }
   if (leadsError) console.error("[admin] Error consultando contactos:", leadsError.message);
-  const leads = leadsFinal ?? [];
+  const allLeads = leadsFinal ?? [];
+  // Los bots no cuentan en los números; en la tabla quedan ocultos (ver leads-table).
+  const suspiciousLeads = findSuspicious(allLeads);
+  const leads = allLeads.filter((l) => !suspiciousLeads.has(l.id));
 
   // Contador de visitas propio (ver /api/track-visit). "24 hs" y "7 días"
   // son ventanas de tiempo, no días de calendario.
@@ -222,7 +226,7 @@ export default async function AdminPage() {
       <p className="admin-block-note">
         Todas las personas que dejaron sus datos, hayan reservado o no. Ideal para el seguimiento.
       </p>
-      <LeadsTable rows={leads} />
+      <LeadsTable rows={allLeads} suspicious={Object.fromEntries(suspiciousLeads)} />
     </main>
   );
 }

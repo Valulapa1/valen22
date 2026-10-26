@@ -84,7 +84,8 @@ export type UalaOrder = {
 
 /**
  * Crea la orden y devuelve el link de pago de Ualá.
- * El importe va en centavos, como entero en texto ("4000000" = $40.000).
+ * El importe va en pesos, como texto ("40000" = $40.000). Probado en producción:
+ * mandarlo en centavos hacía que Ualá cobrara 100 veces más.
  */
 export async function createUalaOrder(input: {
   amountPesos: number;
@@ -97,7 +98,7 @@ export async function createUalaOrder(input: {
   const data = await call<{ uuid?: string; links?: { checkout_link?: string } }>("/checkout", {
     method: "POST",
     body: JSON.stringify({
-      amount: String(Math.round(input.amountPesos * 100)),
+      amount: String(Math.round(input.amountPesos)),
       description: input.description.slice(0, 120),
       callback_success: input.successUrl,
       callback_fail: input.failUrl,

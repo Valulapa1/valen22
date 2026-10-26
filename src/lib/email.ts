@@ -164,9 +164,9 @@ function comprobanteButton(r: ReservationForEmail): string {
 
 function mpBlock(r: ReservationForEmail): string {
   if (r.currency !== "ARS") return "";
-  const url = `${siteUrl()}/api/mercadopago/pagar?ref=${encodeURIComponent(r.external_reference)}`;
-  return `${button(url, "Pagar ahora con Mercado Pago")}
-<p style="margin:-14px 0 18px;font-size:13px;color:#8a7a84;font-family:Arial,sans-serif">Tarjeta de crédito en cuotas, débito o dinero en cuenta. Tu entrada te llega al instante.</p>`;
+  const url = `${siteUrl()}/api/uala/pagar?ref=${encodeURIComponent(r.external_reference)}`;
+  return `${button(url, "Pagar ahora con tarjeta")}
+<p style="margin:-14px 0 18px;font-size:13px;color:#8a7a84;font-family:Arial,sans-serif">Crédito en cuotas, débito o prepaga, de cualquier banco. Tu entrada te llega al instante.</p>`;
 }
 
 /** 1) Apenas reserva: resumen + datos para pagar. */
@@ -196,7 +196,7 @@ export function unpaidReminderEmail(r: ReservationForEmail, n: 1 | 2, usdRate: n
   const title = n === 1 ? `${r.first_name}, tu lugar sigue guardado` : `Último aviso: hoy se libera tu lugar`;
   const intro =
     n === 1
-      ? `Ayer reservaste tu lugar en Estoy Para Más y todavía no nos llegó el pago. Podés cerrarlo en un minuto con Mercado Pago (también en cuotas) o por transferencia.`
+      ? `Ayer reservaste tu lugar en Estoy Para Más y todavía no nos llegó el pago. Podés cerrarlo en un minuto con tarjeta (también en cuotas) o por transferencia.`
       : `Tu reserva vence hoy. Si querés vivir Estoy Para Más, completá el pago hoy: si no, el lugar pasa a otra mujer que lo está esperando.`;
   return {
     subject: n === 1 ? `${r.first_name}, ¿pudiste hacer la transferencia?` : `Hoy se libera tu lugar en Estoy Para Más`,

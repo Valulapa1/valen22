@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { getPaymentClient } from "@/lib/mercadopago";
 import { getSupabaseAdmin, type RegistrationRow } from "@/lib/supabase-admin";
-import { money, notifyAdmin, sendEmail, ticketEmail } from "@/lib/email";
+import { money, notifyAdmin } from "@/lib/email";
+import { maybeSendConfirmationEmail } from "@/lib/payment-confirmation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -228,51 +229,4 @@ async function processPayment(paymentId: string): Promise<void> {
     .update({ ...mpFields, status: "payment_failed", payment_status: status })
     .eq("id", registration.id);
   if (error) throw new Error(`Supabase update: ${error.message}`);
-}
-
-/**
- * Envía el email de confirmación exactamente una vez: el UPDATE condicional
- * sobre confirmation_email_sent_at IS NULL actúa de lock — si dos webhooks
- * llegan a la vez, solo uno obtiene la fila y envía.
- */
-async function maybeSendConfirmationEmail(registration: RegistrationRow): Promise<void> {
-  const supabase = getSupabaseAdmin();
-  const { data: claimed, error } = await supabase
-    .from("event_registrations")
-    .update({ confirmation_email_sent_at: new Date().toISOString() })
-    .eq("id", registration.id)
-    .is("confirmation_email_sent_at", null)
-    .select("id")
-    .maybeSingle();
-
-  if (error) {
-    console.error("[webhook] No se pudo reservar el envío de email:", error.message);
-    return;
-  }
-  if (!claimed) return; // otro webhook ya lo envió
-
-  const r = registration as RegistrationRow & { ticket_type?: string | null; profile_completed_at?: string | null };
-  const mail = ticketEmail(
-    {
-      first_name: r.first_name,
-      last_name: r.last_name,
-      email: r.email,
-      phone: r.phone,
-      quantity: Number(r.quantity),
-      total_amount: Number(r.total_amount),
-      currency: r.currency,
-      external_reference: r.external_reference,
-      ticket_type: r.ticket_type ?? null,
-      schedule: [],
-    },
-    Boolean(r.profile_completed_at),
-  );
-  const sent = await sendEmail({ to: r.email, ...mail });
-  if (!sent) {
-    // Liberar el lock para que un próximo webhook pueda reintentar el envío.
-    await supabase
-      .from("event_registrations")
-      .update({ confirmation_email_sent_at: null })
-      .eq("id", registration.id);
-  }
 }

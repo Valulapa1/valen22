@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isUalaEnabled } from "@/lib/uala";
 import { eventConfig, getCurrentTiers, isPresaleOver } from "@/config/event";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -47,5 +48,6 @@ export async function GET() {
     presaleOver: isPresaleOver(),
     paymentAccounts: eventConfig.paymentAccounts,
     platinoLeft: taken === null ? null : Math.max(0, limit - taken),
+    ualaEnabled: isUalaEnabled(),
   });
 }

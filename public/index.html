@@ -1651,6 +1651,8 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
           '<div class="ok-amount">' + fmt(first.amount, info.currency) + '</div>' +
           '<button type="button" class="btn btn-primary btn-block" id="mp-pay">Pagar con Mercado Pago <span class="arw">→</span></button>' +
           '<p class="ok-fine">Tarjeta de crédito en cuotas, débito o dinero en cuenta. Apenas se aprueba, te llega tu entrada con el QR por mail.</p>' +
+          (eventInfo && eventInfo.ualaEnabled ? '<button type="button" class="btn btn-block" id="uala-pay" style="margin-top:10px;border:1px solid currentColor;background:transparent">Pagar con Ualá <span class="arw">→</span></button>' +
+          '<p class="ok-fine">Con Ualá: tarjeta de crédito, débito o prepaga.</p>' : '') +
           '<p class="ok-fine" id="mp-msg" role="alert"></p></div>' +
           '<details class="ok-alt"><summary>Prefiero pagar por transferencia</summary>';
       }
@@ -1716,6 +1718,21 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
             mpBtn.disabled = false;
             mpBtn.innerHTML = 'Pagar con Mercado Pago <span class="arw">→</span>';
             msg.textContent = err.message + ' Podés intentar de nuevo o pagar por transferencia.';
+          });
+      });
+      const ualaBtn = document.getElementById('uala-pay');
+      if(ualaBtn) ualaBtn.addEventListener('click', () => {
+        const msg = document.getElementById('mp-msg');
+        ualaBtn.disabled = true;
+        ualaBtn.innerHTML = '<span class="buy-spin" aria-hidden="true"></span> Abriendo Ualá…';
+        try{ if(typeof window.epmTrack === 'function') window.epmTrack('checkout_initiated', { method: 'uala' }); }catch(e){}
+        fetch('/api/uala/pagar', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({reference: info.reference})})
+          .then(r => r.json().then(j => ({ok: r.ok, j})))
+          .then(({ok, j}) => { if(!ok || !j.checkoutUrl) throw new Error(j.error || 'No pudimos abrir Ualá.'); location.href = j.checkoutUrl; })
+          .catch(err => {
+            ualaBtn.disabled = false;
+            ualaBtn.innerHTML = 'Pagar con Ualá <span class="arw">→</span>';
+            msg.textContent = err.message + ' Podés intentar de nuevo, pagar con Mercado Pago o por transferencia.';
           });
       });
       box.querySelectorAll('[data-pay]').forEach(b => b.addEventListener('click', () => {

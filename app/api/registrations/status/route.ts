@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { eventConfig } from "@/config/event";
 import { getSupabaseAdmin, type RegistrationRow } from "@/lib/supabase-admin";
+import { syncUalaOrder } from "@/lib/payment-confirmation";
+import { isUalaEnabled, UALA_PREFIX } from "@/lib/uala";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -31,6 +33,21 @@ export async function GET(request: Request) {
   } catch (err) {
     console.error("[status] Configuración incompleta:", (err as Error).message);
     return NextResponse.json({ error: "Servicio no disponible." }, { status: 500 });
+  }
+
+  // Si pagó con Ualá y el aviso todavía no llegó, le preguntamos directo a Ualá.
+  if (isUalaEnabled()) {
+    const { data: pre } = await supabase
+      .from("event_registrations")
+      .select("status, mercadopago_preference_id")
+      .eq("external_reference", ref)
+      .maybeSingle();
+    const pref = String(pre?.mercadopago_preference_id ?? "");
+    if (pre && pre.status !== "confirmed" && pref.startsWith(UALA_PREFIX)) {
+      await syncUalaOrder(pref.slice(UALA_PREFIX.length)).catch((err) =>
+        console.error("[status] No se pudo consultar Ualá:", (err as Error).message),
+      );
+    }
   }
 
   const { data, error } = await supabase

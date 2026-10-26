@@ -1079,7 +1079,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
         <div class="tier-badge">Recomendada</div>
         <div class="tier-name">VIP</div>
         <div class="tier-price">$290.000</div>
-        <p class="tier-ars">En cuotas con Mercado Pago</p>
+        <p class="tier-ars">En cuotas con tarjeta de crédito</p>
         <p class="tier-note">Todo lo de la General, más:</p>
         <ul class="tier-list">
           <li>Zona preferencial, en las primeras filas</li>
@@ -1092,7 +1092,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
       <div class="tier tier-platino">
         <div class="tier-name">Platino · Solo 10 lugares</div>
         <div class="tier-price">$880.000</div>
-        <p class="tier-ars">En cuotas con Mercado Pago</p>
+        <p class="tier-ars">En cuotas con tarjeta de crédito</p>
         <p class="tier-note">Todo lo de la VIP, más:</p>
         <ul class="tier-list">
           <li>Primera fila, con mesa propia</li>
@@ -1106,7 +1106,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
       </div>
     </div>
 
-    <p class="pay-line">Pagás en el momento con Mercado Pago: tarjeta de crédito en cuotas, débito o dinero en cuenta, y tu entrada te llega al instante. También podés pagar por transferencia (VIP y Platino, con seña y cuotas hasta el 15/12).</p>
+    <p class="pay-line">Pagás en el momento con cualquier tarjeta: crédito en cuotas, débito o prepaga, de cualquier banco, y tu entrada te llega al instante. También podés pagar por transferencia (VIP y Platino, con seña y cuotas hasta el 15/12).</p>
   </div>
 </section>
 
@@ -1207,7 +1207,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
             <label class="plan-opt"><input type="radio" name="paymentPlan" value="unico" checked><span><b>Pago completo</b><small id="plan-unico-txt"></small></span></label>
             <label class="plan-opt"><input type="radio" name="paymentPlan" value="cuotas"><span><b>Seña + cuotas por transferencia</b><small id="plan-cuotas-txt"></small></span></label>
           </div>
-          <p class="plan-note">Pago completo: con Mercado Pago podés hacerlo en cuotas con tarjeta. Seña + cuotas: por transferencia; la seña confirma tu lugar y <b>no es reembolsable</b>, y el resto se completa antes del 15 de diciembre.</p>
+          <p class="plan-note">Pago completo: con tarjeta de crédito podés hacerlo en cuotas. Seña + cuotas: por transferencia; la seña confirma tu lugar y <b>no es reembolsable</b>, y el resto se completa antes del 15 de diciembre.</p>
         </div>
 
         <div class="buy-summary" aria-live="polite">
@@ -1248,8 +1248,8 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
       <details><summary>¿Hay comida?</summary><p>Sí, va a haber catering. También podés llevar cosas para comer y compartir con las demás.</p></details>
       <details><summary>Voy sola, ¿está bien?</summary><p>Totalmente. Muchas llegan solas y se van con amigas nuevas: el evento está pensado para que conectes desde el primer momento.</p></details>
       <details><summary>Si no puedo ir, ¿pierdo la entrada?</summary><p>No. La entrada no tiene devolución, pero podés transferírsela a una amiga, una conocida o alguien de tu familia. Solo avisanos por WhatsApp a nombre de quién queda.</p></details>
-      <details><summary>¿Cómo pago?</summary><p>Con Mercado Pago, en el momento: tarjeta de crédito, débito o dinero en cuenta. Apenas se aprueba el pago te llega tu entrada con el QR por mail. Si preferís, también podés pagar por transferencia. Todas las entradas son en pesos.</p></details>
-      <details><summary>¿Puedo pagar en cuotas?</summary><p>Sí. Con tarjeta de crédito, Mercado Pago te ofrece las cuotas al pagar (según tu banco). Y en VIP y Platino también podés pagar por transferencia: dejás una seña al reservar y completás el resto en cuotas hasta el 15 de diciembre. La seña confirma tu lugar y no es reembolsable.</p></details>
+      <details><summary>¿Cómo pago?</summary><p>En el momento, con cualquier tarjeta de crédito, débito o prepaga (Visa, Mastercard, American Express, Cabal o Naranja), de cualquier banco. Apenas se aprueba el pago te llega tu entrada con el QR por mail. Si preferís, también podés pagar por transferencia. Todas las entradas son en pesos.</p></details>
+      <details><summary>¿Puedo pagar en cuotas?</summary><p>Sí. Con tarjeta de crédito podés elegir las cuotas al pagar. Y en VIP y Platino también podés pagar por transferencia: dejás una seña al reservar y completás el resto en cuotas hasta el 15 de diciembre. La seña confirma tu lugar y no es reembolsable.</p></details>
       <details><summary>¿Qué es la promo “Venite con una amiga”?</summary><p data-post="Dos entradas generales por $80.000 en vez de $111.000. Elegís 2 entradas en el formulario y se aplica sola.">Dos entradas generales por $55.500 en vez de $80.000, durante la preventa. Elegís 2 entradas en el formulario y se aplica sola.</p></details>
       <details><summary>¿Cuántos lugares hay?</summary><p>Vamos por 500 mujeres y los cupos son limitados. Platino tiene solo 10 lugares y se accede por aplicación.</p></details>
     </div>
@@ -1393,7 +1393,7 @@ const io=new IntersectionObserver(es=>{
 },{threshold:.12,rootMargin:'0px 0px -60px 0px'});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 
-/* ============ Compra de entradas (Mercado Pago Checkout Pro) ============
+/* ============ Compra de entradas (pago con tarjeta vía Ualá Bis) ============
    El frontend solo junta datos y cantidad. El precio y el total que se
    cobran se calculan en el servidor: lo que se muestra acá sale de
    GET /api/event y es meramente informativo. */
@@ -1649,10 +1649,8 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       if(mp){
         html += '<div class="ok-step ok-mp"><h4>1 · Pagá ahora y asegurá tu lugar</h4>' +
           '<div class="ok-amount">' + fmt(first.amount, info.currency) + '</div>' +
-          '<button type="button" class="btn btn-primary btn-block" id="mp-pay">Pagar con Mercado Pago <span class="arw">→</span></button>' +
-          '<p class="ok-fine">Tarjeta de crédito en cuotas, débito o dinero en cuenta. Apenas se aprueba, te llega tu entrada con el QR por mail.</p>' +
-          (eventInfo && eventInfo.ualaEnabled ? '<button type="button" class="btn btn-block" id="uala-pay" style="margin-top:10px;border:1px solid currentColor;background:transparent">Pagar con Ualá <span class="arw">→</span></button>' +
-          '<p class="ok-fine">Con Ualá: tarjeta de crédito, débito o prepaga.</p>' : '') +
+          '<button type="button" class="btn btn-primary btn-block" id="card-pay">Pagar con tarjeta <span class="arw">→</span></button>' +
+          '<p class="ok-fine">Crédito en cuotas, débito o prepaga, de cualquier banco. Apenas se aprueba, te llega tu entrada con el QR por mail.</p>' +
           '<p class="ok-fine" id="mp-msg" role="alert"></p></div>' +
           '<details class="ok-alt"><summary>Prefiero pagar por transferencia</summary>';
       }
@@ -1696,7 +1694,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
         html += '<div class="upsell"><h4 style="font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px;font-weight:500">✨ Antes de pagar</h4>' +
           '<p style="font-family:var(--display);font-size:1.35rem;color:#fff;margin-bottom:8px">¿Querés vivirlo en VIP?</p>' +
           '<p>Zona preferencial, desayuno los dos días en un espacio exclusivo con una ponencia extra, merienda exclusiva antes del evento y tu invitación en una caja de regalo, entregada en mano.</p>' +
-          '<p><b>' + fmtARS(vipTotal) + '</b> · en cuotas con tarjeta por Mercado Pago, o seña + 2 cuotas por transferencia.</p>' +
+          '<p><b>' + fmtARS(vipTotal) + '</b> · en cuotas con tarjeta de crédito, o seña + 2 cuotas por transferencia.</p>' +
           '<button type="button" class="btn btn-block" data-upgrade="unico" style="background:#E8CFA9;color:#33202F">Pasar a VIP · pago completo</button>' +
           '<button type="button" class="btn btn-block" data-upgrade="cuotas" style="border:1px solid #E8CFA9;color:#F4ECE6;background:transparent">Pasar a VIP · seña + cuotas</button>' +
           '<p class="ok-fine" id="upgrade-msg" style="color:#eadde5"></p></div>';
@@ -1705,34 +1703,19 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       document.querySelector('#comprar .form-card:not(.ok-card)').hidden = true;
       box.hidden = false;
       box.scrollIntoView({behavior:'smooth', block:'start'});
-      const mpBtn = document.getElementById('mp-pay');
-      if(mpBtn) mpBtn.addEventListener('click', () => {
+      const cardBtn = document.getElementById('card-pay');
+      if(cardBtn) cardBtn.addEventListener('click', () => {
         const msg = document.getElementById('mp-msg');
-        mpBtn.disabled = true;
-        mpBtn.innerHTML = '<span class="buy-spin" aria-hidden="true"></span> Abriendo Mercado Pago…';
-        try{ if(typeof window.epmTrack === 'function') window.epmTrack('checkout_initiated', { method: 'mercadopago' }); }catch(e){}
-        fetch('/api/mercadopago/pagar', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({reference: info.reference})})
-          .then(r => r.json().then(j => ({ok: r.ok, j})))
-          .then(({ok, j}) => { if(!ok || !j.checkoutUrl) throw new Error(j.error || 'No pudimos abrir Mercado Pago.'); location.href = j.checkoutUrl; })
-          .catch(err => {
-            mpBtn.disabled = false;
-            mpBtn.innerHTML = 'Pagar con Mercado Pago <span class="arw">→</span>';
-            msg.textContent = err.message + ' Podés intentar de nuevo o pagar por transferencia.';
-          });
-      });
-      const ualaBtn = document.getElementById('uala-pay');
-      if(ualaBtn) ualaBtn.addEventListener('click', () => {
-        const msg = document.getElementById('mp-msg');
-        ualaBtn.disabled = true;
-        ualaBtn.innerHTML = '<span class="buy-spin" aria-hidden="true"></span> Abriendo Ualá…';
+        cardBtn.disabled = true;
+        cardBtn.innerHTML = '<span class="buy-spin" aria-hidden="true"></span> Abriendo el pago…';
         try{ if(typeof window.epmTrack === 'function') window.epmTrack('checkout_initiated', { method: 'uala' }); }catch(e){}
         fetch('/api/uala/pagar', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({reference: info.reference})})
           .then(r => r.json().then(j => ({ok: r.ok, j})))
-          .then(({ok, j}) => { if(!ok || !j.checkoutUrl) throw new Error(j.error || 'No pudimos abrir Ualá.'); location.href = j.checkoutUrl; })
+          .then(({ok, j}) => { if(!ok || !j.checkoutUrl) throw new Error(j.error || 'No pudimos abrir el pago.'); location.href = j.checkoutUrl; })
           .catch(err => {
-            ualaBtn.disabled = false;
-            ualaBtn.innerHTML = 'Pagar con Ualá <span class="arw">→</span>';
-            msg.textContent = err.message + ' Podés intentar de nuevo, pagar con Mercado Pago o por transferencia.';
+            cardBtn.disabled = false;
+            cardBtn.innerHTML = 'Pagar con tarjeta <span class="arw">→</span>';
+            msg.textContent = err.message + ' Podés intentar de nuevo o pagar por transferencia.';
           });
       });
       box.querySelectorAll('[data-pay]').forEach(b => b.addEventListener('click', () => {
@@ -1992,7 +1975,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
         <div class="field"><label for="pa-q1">¿Qué querés que cambie en tu vida o tu negocio este año?</label><textarea id="pa-q1" name="q1" rows="3" required></textarea></div>
         <div class="field"><label for="pa-q2">¿Por qué Platino y no VIP?</label><textarea id="pa-q2" name="q2" rows="2" required></textarea></div>
         <div class="field"><label for="pa-q3">¿Cómo preferís pagar?</label>
-          <select id="pa-q3" name="q3"><option>Pago completo con Mercado Pago (cuotas con tarjeta)</option><option>Seña + 3 cuotas por transferencia hasta el 15/12</option><option>Quiero consultarlo</option></select></div>
+          <select id="pa-q3" name="q3"><option>Pago completo con tarjeta (cuotas con crédito)</option><option>Seña + 3 cuotas por transferencia hasta el 15/12</option><option>Quiero consultarlo</option></select></div>
         <p class="lc-msg" id="pa-msg" role="status" aria-live="polite"></p>
         <button type="submit" class="btn btn-primary btn-block">Enviar mi aplicación <span class="arw">→</span></button>
       </form>

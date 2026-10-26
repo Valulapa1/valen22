@@ -12,7 +12,7 @@ export default async function PagoRechazadoPage({
   const params = await searchParams;
   const reference = params.ref ?? params.external_reference ?? null;
   const retry = reference
-    ? `/api/mercadopago/pagar?ref=${encodeURIComponent(reference)}`
+    ? `/api/uala/pagar?ref=${encodeURIComponent(reference)}`
     : "/estoy-para-mas#comprar";
   return (
     <main className="pago-page">
@@ -24,7 +24,7 @@ export default async function PagoRechazadoPage({
         <p className="pago-eyebrow">Pago no completado</p>
         <h1>El pago no pudo completarse.</h1>
         <p>
-          Mercado Pago rechazó o canceló la operación. Puede pasar por límite de la
+          El pago fue rechazado o cancelado. Puede pasar por límite de la
           tarjeta, datos mal cargados o un problema momentáneo del medio de pago. No
           se te cobró nada.
         </p>

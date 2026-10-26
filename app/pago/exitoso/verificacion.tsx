@@ -108,7 +108,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
         <h1>Falta la referencia del pago</h1>
         <p>
           No pudimos identificar tu inscripción desde esta URL. Si acabás de pagar,
-          revisá el correo de Mercado Pago o escribinos por WhatsApp con tu
+          revisá el comprobante de pago que te llegó por mail o escribinos por WhatsApp con tu
           comprobante.
         </p>
         <div className="pago-actions">
@@ -127,7 +127,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
         <p className="pago-eyebrow">Un momento</p>
         <h1>Estamos verificando tu pago…</h1>
         <p>
-          Consultamos directamente a Mercado Pago para confirmar tu inscripción.
+          Consultamos directamente el estado del pago para confirmar tu inscripción.
           Esto suele tardar unos segundos. No cierres esta pestaña.
         </p>
       </section>
@@ -186,11 +186,11 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
         </div>
         <h1>El pago no se completó</h1>
         <p>
-          Mercado Pago informó que este pago fue rechazado o cancelado. Tu reserva
+          El medio de pago informó que este pago fue rechazado o cancelado. Tu reserva
           sigue guardada: podés intentar de nuevo con otro medio de pago.
         </p>
         <div className="pago-actions">
-          <a className="btn btn-primary" href={`/api/mercadopago/pagar?ref=${encodeURIComponent(view.data.reference)}`}>
+          <a className="btn btn-primary" href={`/api/uala/pagar?ref=${encodeURIComponent(view.data.reference)}`}>
             Intentar de nuevo
           </a>
           <a className="btn btn-outline" href="/estoy-para-mas">
@@ -210,7 +210,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
         <p className="pago-eyebrow">En proceso</p>
         <h1>Tu pago se está procesando</h1>
         <p>
-          Mercado Pago todavía no nos confirmó el pago. Es normal con algunos medios
+          El pago todavía no se confirmó. Es normal con algunos medios
           de pago: puede tardar desde minutos hasta 2 días hábiles. Apenas se
           apruebe, tu entrada queda confirmada y te llega un correo.
         </p>
@@ -253,7 +253,7 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
       <h1>No pudimos verificar tu pago</h1>
       <p>
         No encontramos una inscripción con esta referencia. Si el dinero se debitó,
-        no te preocupes: el pago queda registrado en Mercado Pago. Escribinos por
+        no te preocupes: el pago queda registrado. Escribinos por
         WhatsApp y lo resolvemos.
       </p>
       <div className="pago-actions">

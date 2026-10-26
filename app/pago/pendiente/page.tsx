@@ -20,7 +20,7 @@ export default async function PagoPendientePage({
           ⏳
         </div>
         <p className="pago-eyebrow">Pago en proceso</p>
-        <h1>Mercado Pago está procesando tu pago.</h1>
+        <h1>Tu pago se está procesando.</h1>
         <p>
           Algunos medios de pago (como efectivo o transferencias) tardan en
           acreditarse: desde unos minutos hasta 2 días hábiles. Tu entrada se

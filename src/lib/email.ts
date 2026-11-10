@@ -57,7 +57,58 @@ export async function notifyAdmin(subject: string, lines: string[]): Promise<voi
   });
 }
 
-// ---------------------------------------------------------------- formato
+const LEAD_SOURCE: Record<string, string> = {
+  popup_evento: "ventana del evento",
+  inline_evento: "página del evento",
+  home_clase: "clase de regalo",
+  home_transformarte: "quiere Transformarte",
+  home_adn: "quiere agendar la llamada de ADN",
+  aplicacion_platino: "aplicó a Platino",
+};
+
+/** Aviso inmediato a Valentina cuando alguien deja sus datos en la web. */
+export async function notifyNewLead(lead: {
+  firstName: string;
+  phone: string;
+  email?: string | null;
+  source: string;
+  interest?: string | null;
+  notes?: string | null;
+}): Promise<void> {
+  const to = process.env.ADMIN_NOTIFY_EMAIL;
+  if (!to) return;
+  const origin = LEAD_SOURCE[lead.source] ?? lead.source;
+  const digits = lead.phone.replace(/\D/g, "");
+  const wa = digits.startsWith("54") ? digits : `549${digits.replace(/^0/, "").replace(/^(\d{2,4})15/, "$1")}`;
+  const hello =
+    lead.source === "home_clase"
+      ? `¡Hola ${lead.firstName}! Soy Valen 🤍 Vi que te anotaste a la clase de regalo, ¿pudiste verla?`
+      : lead.source.includes("evento") || lead.source === "aplicacion_platino"
+        ? `¡Hola ${lead.firstName}! Soy Valen 🤍 Vi que te interesó Estoy Para Más, ¿te ayudo con tu entrada?`
+        : `¡Hola ${lead.firstName}! Soy Valen 🤍 Vi que me dejaste tus datos en la web, ¿cómo estás?`;
+  const waUrl = `https://api.whatsapp.com/send?phone=${wa}&text=${encodeURIComponent(hello)}`;
+  const rows = [
+    `<b>Nombre:</b> ${esc(lead.firstName)}`,
+    `<b>WhatsApp:</b> ${esc(lead.phone)}`,
+    ...(lead.email ? [`<b>Email:</b> ${esc(lead.email)}`] : []),
+    `<b>Desde:</b> ${esc(origin)}`,
+    ...(lead.interest ? [`<b>Interés:</b> ${esc(lead.interest)}`] : []),
+  ];
+  const notes = lead.notes ? `<p style="white-space:pre-line">${esc(lead.notes)}</p>` : "";
+  await sendEmail({
+    to,
+    subject: `🔔 Nuevo contacto: ${lead.firstName} · ${origin}`,
+    html: layout(
+      `${lead.firstName} dejó sus datos (${origin}). Escribile ahora.`,
+      `<p>Alguien acaba de dejar sus datos en la web. Escribile ahora, mientras está caliente 🔥</p>
+<p>${rows.join("<br>")}</p>${notes}
+${button(waUrl, "Escribirle por WhatsApp")}
+<p style="font-size:13px;color:#8a7a84;font-family:Arial,sans-serif">El botón abre WhatsApp con un saludo listo para mandar. También la ves en tu <a href="${siteUrl()}/admin" style="color:#A87C4F">panel</a>.</p>`,
+    ),
+  });
+}
+
+
 
 export function esc(v: string | number | null | undefined): string {
   return String(v ?? "")

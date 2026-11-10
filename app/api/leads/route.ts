@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { notifyAdmin } from "@/lib/email";
+import { notifyNewLead } from "@/lib/email";
 import { isValidPhone, suspiciousReason } from "@/lib/spam";
 
 export const runtime = "nodejs";
@@ -122,12 +122,16 @@ export async function POST(request: Request) {
       console.error("[leads] Error guardando contacto:", error.message);
     } else {
       saved = true;
-      if (d.source === "aplicacion_platino" && !suspicious) {
-        await notifyAdmin(`Nueva aplicación a Platino: ${d.firstName}`, [
-          `${d.firstName} aplicó a Platino.`,
-          `WhatsApp: ${d.phone}${d.email ? ` · Email: ${d.email}` : ""}`,
-          ...(d.notes ?? "").split("\n"),
-        ]);
+      // Aviso inmediato por mail (las reservas ya tienen su propio aviso).
+      if (!suspicious && d.source !== "reserva") {
+        await notifyNewLead({
+          firstName: d.firstName,
+          phone: d.phone,
+          email: d.email,
+          source: d.source,
+          interest: d.interest,
+          notes: d.notes,
+        });
       }
       if (d.visitorId && !suspicious) {
         await supabase

@@ -7,6 +7,7 @@ import { ticketUrl } from "@/lib/site";
 import { eventConfig } from "@/config/event";
 import { LeadsTable, type LeadRow } from "./leads-table";
 import { findSuspicious } from "@/lib/spam";
+import { TeamSales } from "./team-sales";
 
 export const metadata: Metadata = {
   title: "Panel — Estoy Para Más",
@@ -211,6 +212,8 @@ export default async function AdminPage() {
         </p>
         <Funnel steps={funnelSteps} />
       </section>
+
+      <TeamSales />
 
       <h2 className="admin-block-title">Reservas</h2>
       <p className="admin-block-note">

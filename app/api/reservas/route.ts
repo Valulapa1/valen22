@@ -6,6 +6,7 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { money, notifyAdmin, reservationEmail, sendEmail } from "@/lib/email";
 import { getUsdRate } from "@/lib/dolar";
 import { isValidPhone, suspiciousReason } from "@/lib/spam";
+import { normalizeSeller } from "@/config/team";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,6 +21,8 @@ const reservaSchema = registrationSchema.extend({
   paymentPlan: z.enum(["unico", "cuotas"]).default("unico"),
   // Campo trampa anti-bots (oculto en el formulario).
   website: z.string().optional(),
+  // Código del link personal de venta (?v=…) de alguien del equipo.
+  seller: z.string().max(40).optional(),
 }).refine((d) => isValidPhone(d.phone), {
   path: ["phone"],
   message: "Si no sos de Argentina, poné tu WhatsApp con el código de país (ej. +52...).",
@@ -89,16 +92,29 @@ export async function POST(request: Request) {
       external_reference: reference,
       visitor_id: data.visitorId ?? null,
     };
+    const seller = normalizeSeller(data.seller);
     let { error } = await supabase
       .from("event_registrations")
       .insert({
         ...row,
+        ...(seller ? { seller } : {}),
         ticket_type: data.ticketType,
         payment_method: "transferencia",
         payment_plan: plan,
         installments: schedule.length,
         amount_paid: 0,
       });
+    // Si todavía no se corrió la migración de vendedoras, guardamos sin ese dato.
+    if (error && seller && /seller/.test(error.message)) {
+      ({ error } = await supabase.from("event_registrations").insert({
+        ...row,
+        ticket_type: data.ticketType,
+        payment_method: "transferencia",
+        payment_plan: plan,
+        installments: schedule.length,
+        amount_paid: 0,
+      }));
+    }
     // Si todavía no se corrieron las migraciones nuevas, guardamos igual.
     if (error && /ticket_type|payment_method|payment_plan|installments|amount_paid/.test(error.message)) {
       ({ error } = await supabase.from("event_registrations").insert(row));
@@ -128,14 +144,18 @@ export async function POST(request: Request) {
       ]);
     }
     // También queda como contacto, para el seguimiento aunque no pague.
-    const { error: leadError } = await supabase.from("leads").insert({
+    const leadRow: Record<string, unknown> = {
       first_name: `${data.firstName} ${data.lastName}`,
       phone: data.phone,
       email: data.email,
       interest: data.ticketType,
       source: "reserva",
       visitor_id: data.visitorId ?? null,
-    });
+    };
+    let { error: leadError } = await supabase.from("leads").insert(seller ? { ...leadRow, seller } : leadRow);
+    if (leadError && seller && /seller/.test(leadError.message)) {
+      ({ error: leadError } = await supabase.from("leads").insert(leadRow));
+    }
     if (leadError) console.error("[reservas] Error guardando contacto:", leadError.message);
   } catch (err) {
     console.error("[reservas] Supabase no disponible:", (err as Error).message);

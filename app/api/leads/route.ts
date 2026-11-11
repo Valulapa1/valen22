@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { notifyAdmin } from "@/lib/email";
 import { isValidPhone, suspiciousReason } from "@/lib/spam";
+import { normalizeSeller } from "@/config/team";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,6 +33,8 @@ const leadSchema = z.object({
   website: z.string().optional(),
   // Milisegundos desde que se abrió la página hasta que mandó el formulario.
   elapsedMs: z.number().optional(),
+  // Código del link personal de venta (?v=…) de alguien del equipo.
+  seller: z.string().max(40).optional(),
 });
 
 /** Al bot le respondemos "ok" para que no insista, pero no guardamos nada. */
@@ -106,7 +109,8 @@ export async function POST(request: Request) {
       (phones.size >= 3 ? "mismo mail con muchos teléfonos" : null);
     if (suspicious) console.warn(`[leads] Contacto sospechoso (${suspicious}): ${d.firstName}`);
 
-    const { error } = await supabase.from("leads").insert({
+    const seller = normalizeSeller(d.seller);
+    const leadRow: Record<string, unknown> = {
       first_name: d.firstName,
       phone: d.phone,
       email: d.email ?? null,
@@ -117,7 +121,12 @@ export async function POST(request: Request) {
       // A los sospechosos se los marca como "ya seguidos" para que el
       // seguimiento automático nunca les mande un mail.
       ...(suspicious ? { followup_sent_at: new Date().toISOString() } : {}),
-    });
+    };
+    let { error } = await supabase.from("leads").insert(seller ? { ...leadRow, seller } : leadRow);
+    // Si todavía no se corrió la migración de vendedoras, guardamos sin ese dato.
+    if (error && seller && /seller/.test(error.message)) {
+      ({ error } = await supabase.from("leads").insert(leadRow));
+    }
     if (error) {
       console.error("[leads] Error guardando contacto:", error.message);
     } else {

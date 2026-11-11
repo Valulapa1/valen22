@@ -1,4 +1,5 @@
-/* Filtro anti-bots invisible para todos los formularios de la web.
+/* Filtro anti-bots invisible para todos los formularios de la web,
+   y registro del link personal de venta (?v=) del equipo.
    - Agrega a cada formulario un campo oculto ("website"). Una persona no lo
      ve ni lo completa; los bots completan todo, y así se delatan.
    - Mide cuánto tardó en mandar el formulario desde que abrió la página.
@@ -6,6 +7,24 @@
    No cambia nada de lo que ve una persona real. */
 (function(){
   var t0 = Date.now();
+
+  /* Link personal de venta del equipo: valentinaparodi.com/estoy-para-mas?v=flor
+     Se recuerda 60 días en este navegador; si la persona entra con otro link,
+     vale el último. El servidor solo acepta códigos del equipo. */
+  var SELLER_KEY = 'epm_seller', SELLER_DAYS = 60;
+  try {
+    var v = new URLSearchParams(location.search).get('v');
+    if (v && /^[a-z0-9_-]{2,40}$/i.test(v)) {
+      localStorage.setItem(SELLER_KEY, JSON.stringify({ code: v.toLowerCase(), at: Date.now() }));
+    }
+  } catch (e) {}
+  function sellerCode(){
+    try {
+      var s = JSON.parse(localStorage.getItem(SELLER_KEY) || 'null');
+      if (s && s.code && Date.now() - s.at < SELLER_DAYS * 864e5) return s.code;
+    } catch (e) {}
+    return '';
+  }
 
   function addTrap(form){
     if (form.querySelector('input[name="epm_hp_confirm"]')) return;
@@ -35,6 +54,7 @@
         var data = JSON.parse(init.body);
         data.website = trapValue();
         data.elapsedMs = Date.now() - t0;
+        var sc = sellerCode(); if (sc && !data.seller) data.seller = sc;
         init = Object.assign({}, init, { body: JSON.stringify(data) });
       }
     } catch (e) {}

@@ -144,8 +144,8 @@ export function VerificacionPago({ reference }: { reference: string | null }) {
         <p className="pago-eyebrow">Pago confirmado</p>
         <h1>¡Ya estás adentro! 🤍</h1>
         <p>
-          Te mandamos tu entrada con el código QR por mail. El sábado 6 y domingo 7
-          de marzo te esperamos, de 10:30 a 18:30 hs.
+          Te mandamos tu entrada con el código QR por mail. Ahí tenés el horario y
+          todo lo que necesitás para el sábado 6 y domingo 7 de marzo.
         </p>
         <dl className="pago-detail">
           <div>

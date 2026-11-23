@@ -22,7 +22,6 @@ const BASE_COLUMNS =
 const TIERS = [
   { key: "general", label: "General" },
   { key: "vip", label: "VIP" },
-  { key: "platino", label: "Platino" },
 ] as const;
 
 function money(n: number, currency: string) {

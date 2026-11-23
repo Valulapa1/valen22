@@ -127,3 +127,19 @@ export function ualaAmountMatches(orderAmount: number | string, expectedPesos: n
 
 /** Guardamos el uuid de Ualá en la columna de "preferencia" con este prefijo. */
 export const UALA_PREFIX = "uala:";
+
+/**
+ * Lo que se guarda: "uala:<uuid>", o "uala:<uuid>|ars=<importe>" cuando la
+ * reserva es en dólares y se cobró en pesos (así se verifica ese importe).
+ */
+export function encodeUalaPref(uuid: string, ars?: number): string {
+  return `${UALA_PREFIX}${uuid}${ars ? `|ars=${ars}` : ""}`;
+}
+
+export function parseUalaPref(pref: string | null | undefined): { uuid: string; ars: number | null } | null {
+  const v = String(pref ?? "");
+  if (!v.startsWith(UALA_PREFIX)) return null;
+  const [uuid, extra] = v.slice(UALA_PREFIX.length).split("|");
+  const ars = extra?.startsWith("ars=") ? Number(extra.slice(4)) : NaN;
+  return { uuid, ars: Number.isFinite(ars) && ars > 0 ? ars : null };
+}

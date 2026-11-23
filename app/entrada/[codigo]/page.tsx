@@ -20,6 +20,7 @@ type Row = {
 };
 
 const LABEL: Record<string, string> = { general: "General", vip: "VIP", platino: "Platino" };
+const HOURS = (t: string | null) => (t === "vip" || t === "platino" ? eventConfig.vipHours : eventConfig.eventHours);
 
 export default async function Entrada({
   params,
@@ -106,7 +107,7 @@ export default async function Entrada({
         <p style={{ fontFamily: "Arial, sans-serif", fontSize: 14, color: "#3a2e35", margin: 0 }}>
           {eventConfig.eventDateLabel}
           <br />
-          10:30 a 18:30 hs · Capital Federal, Buenos Aires
+          {HOURS(row.ticket_type)} · Capital Federal, Buenos Aires
         </p>
         {paid && !isStaff && (
           <p style={{ fontFamily: "Arial, sans-serif", fontSize: 13, color: "#6E5F69", margin: "16px 0 0" }}>

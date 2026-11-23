@@ -11,45 +11,46 @@ export const eventConfig = {
   name: "Estoy Para Más — 2.ª edición Buenos Aires 2027",
   ticketName: "Entrada general · Preventa 2 días",
   /** Precio de preventa por entrada (incluye sábado y domingo). */
-  ticketPrice: 40000,
+  ticketPrice: 55500,
   currency: "ARS",
   maxTicketsPerPurchase: 5,
   /** Primer día del evento (se usa para la cuenta regresiva). */
   eventDate: "2027-03-06",
   /** Texto de fecha que se muestra en correos y pantallas. */
   eventDateLabel: "Sábado 6 y domingo 7 de marzo de 2027",
-  eventTime: "10:30 a 18:30",
-  /** Horario corto para textos: "de 10:30 a 18:30 hs". */
-  eventHours: "10:30 a 18:30 hs",
+  eventTime: "10:00 a 18:00",
+  /** Horario corto para textos de la General: "de 10:00 a 18:00 hs". */
+  eventHours: "10:00 a 18:00 hs",
+  /** La VIP empieza antes (desayuno) y termina después (2 horas exclusivas). */
+  vipHours: "9:00 a 20:00 hs",
   location:
     "Salón privado en Capital Federal, Buenos Aires (la dirección exacta se envía al confirmar)",
   /** Último día de la preventa de la entrada general (inclusive). */
-  presaleEndsAt: "2026-12-15",
+  presaleEndsAt: "2027-01-06",
   /** WhatsApp al que se deriva cada reserva para coordinar la transferencia. */
   whatsappNumber: "5493541694363",
   /**
-   * Tipos de entrada (todas en pesos). Se pagan con Mercado Pago en el momento
-   * (tarjeta en cuotas, débito o dinero en cuenta) o por transferencia.
-   * El precio de cada tipo sale siempre de acá.
+   * Tipos de entrada. La General es en pesos; la VIP en dólares, y se puede
+   * pagar en dólares por transferencia o en pesos al dólar del día (también con
+   * tarjeta en Ualá). El precio de cada tipo sale siempre de acá.
    */
   tiers: {
     general: {
       label: "General · Preventa",
-      price: 40000,
+      price: 55500,
       currency: "ARS",
       /** "Venite con una amiga": cada par de entradas generales cuesta esto. */
-      pairPrice: 55500,
+      pairPrice: 88800,
     },
-    vip: { label: "VIP", price: 290000, currency: "ARS", maxInstallments: 2 },
-    platino: { label: "Platino", price: 880000, currency: "ARS", limited: 10, maxInstallments: 3 },
+    vip: { label: "VIP", price: 550, currency: "USD", maxInstallments: 3 },
   },
   /**
-   * Precio de la General después de la preventa (desde el 16/12). Se aplica
-   * solo según la fecha: no hay que tocar nada ese día.
+   * Precio de la General después de la preventa (desde el 7/1). Se aplica solo
+   * según la fecha. Todavía no está definido: por ahora queda igual.
    */
-  generalAfterPresale: { label: "General", price: 55500, pairPrice: 80000 },
-  /** Las cuotas (VIP y Platino) se completan hasta esta fecha, inclusive. */
-  installmentsDeadline: "2026-12-15",
+  generalAfterPresale: { label: "General", price: 55500, pairPrice: 88800 },
+  /** Las cuotas de la VIP se completan hasta esta fecha, inclusive. */
+  installmentsDeadline: "2027-02-15",
   /** Datos de transferencia que ve la persona apenas reserva. */
   paymentAccounts: {
     ars: {
@@ -108,7 +109,7 @@ export function getUnitPriceForOrder(quantity: number): number {
 
 type TierKey = keyof typeof eventConfig.tiers;
 
-/** ¿Ya terminó la preventa? (después del 15/12 a las 23:59, hora argentina) */
+/** ¿Ya terminó la preventa? (después del 6/1 a las 23:59, hora argentina) */
 export function isPresaleOver(at: Date = new Date()): boolean {
   return at.getTime() > new Date(`${eventConfig.presaleEndsAt}T23:59:59-03:00`).getTime();
 }
@@ -127,7 +128,6 @@ export function getCurrentTiers(at: Date = new Date()) {
   return {
     general: getCurrentTier("general", at),
     vip: getCurrentTier("vip", at),
-    platino: getCurrentTier("platino", at),
   };
 }
 
@@ -146,7 +146,7 @@ export function getTierTotal(ticketType: TierKey, quantity: number): number {
 export type PaymentPlan = "unico" | "cuotas";
 
 /**
- * Cronograma de pagos. Pago único: todo hoy. En cuotas (solo VIP y Platino):
+ * Cronograma de pagos. Pago único: todo hoy. En cuotas (solo VIP):
  * la seña hoy y el resto el día 15 de los meses siguientes, hasta la fecha
  * límite. Cuantas menos fechas quedan, menos cuotas. La landing replica este
  * mismo cálculo para mostrarlo antes de confirmar.

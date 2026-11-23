@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 const HOUR = 36e5;
-type Tier = "general" | "vip" | "platino";
+type Tier = "general" | "vip";
 
 /**
  * GET /api/cron/seguimiento — lo corre Vercel una vez por día (vercel.json).
@@ -53,7 +53,8 @@ export async function GET(request: Request) {
     if (suspiciousReason({ firstName: `${r.first_name} ${r.last_name}`, email: r.email, phone: r.phone })) continue;
     const paid = Number(r.amount_paid ?? 0);
     const age = now - new Date(r.created_at).getTime();
-    const tier = (r.ticket_type ?? "general") as Tier;
+    // Reservas viejas de Platino: el total no coincide y quedan como pago único.
+    const tier: Tier = r.ticket_type === "vip" ? "vip" : "general";
     const plan = (r.payment_plan ?? "unico") as PaymentPlan;
     // El cronograma se calcula desde el día de la reserva, igual que se le mostró.
     let schedule = getPaymentSchedule(tier, Number(r.quantity), plan, new Date(r.created_at));

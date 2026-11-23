@@ -144,7 +144,7 @@ function scheduleBlock(r: ReservationForEmail): string {
   if (r.schedule.length < 2) return "";
   return `<table width="100%" cellpadding="0" cellspacing="0" style="font-family:Arial,sans-serif;font-size:14px;margin:8px 0">
 ${r.schedule.map((x, i) => `<tr><td style="padding:6px 0;border-bottom:1px dashed #EFE6DD">${i === 0 ? "Seña · al reservar" : `Cuota ${i + 1} · antes del ${shortDate(x.date)}`}</td><td style="padding:6px 0;border-bottom:1px dashed #EFE6DD;text-align:right"><b>${money(x.amount, r.currency)}</b></td></tr>`).join("")}
-</table><p style="font-size:13px;color:#8a7a84;font-family:Arial,sans-serif">La seña confirma tu lugar y no es reembolsable. Las cuotas se completan antes del 15 de diciembre.</p>`;
+</table><p style="font-size:13px;color:#8a7a84;font-family:Arial,sans-serif">La seña confirma tu lugar y no es reembolsable. Las cuotas se completan antes del 15 de febrero.</p>`;
 }
 
 function profileBlock(r: ReservationForEmail): string {
@@ -250,7 +250,7 @@ export function ticketEmail(r: ReservationForEmail, profileDone = false) {
 <tr><td style="padding:0 16px 6px" align="center">${esc(tierLabel(r))} · ${r.quantity} ${r.quantity > 1 ? "entradas" : "entrada"}</td></tr>
 <tr><td style="padding:0 16px 16px;font-family:monospace" align="center">${esc(r.external_reference)}</td></tr>
 </table>
-<p><b>Cuándo:</b> ${esc(eventConfig.eventDateLabel)}, de ${esc(eventConfig.eventHours)}.<br>
+<p><b>Cuándo:</b> ${esc(eventConfig.eventDateLabel)}, de ${esc(r.ticket_type === "vip" ? eventConfig.vipHours : eventConfig.eventHours)}.${r.ticket_type === "vip" ? " Y el lunes 8 de marzo, la Mastermind VIP." : ""}<br>
 <b>Dónde:</b> Capital Federal, Buenos Aires. Te mandamos la dirección exacta unos días antes.</p>
 ${button(url, "Ver mi entrada")}
 <p>Mostrá el QR en la entrada (desde el celular está perfecto). Si no podés ir, podés transferirla a una amiga: avisanos por WhatsApp.</p>

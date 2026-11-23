@@ -3,7 +3,8 @@ import { z } from "zod";
 import { eventConfig } from "@/config/event";
 import { siteUrl } from "@/lib/site";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { createUalaOrder, isUalaEnabled, UALA_PREFIX } from "@/lib/uala";
+import { createUalaOrder, encodeUalaPref, isUalaEnabled } from "@/lib/uala";
+import { getUsdRate } from "@/lib/dolar";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -63,9 +64,20 @@ async function createCheckout(
   if (error || !row) return { error: "No encontramos la reserva.", status: 404 };
   if (row.status === "confirmed") return { error: "Esta reserva ya está paga.", status: 409 };
 
-  const amount = Math.round(Number(row.total_amount) - Number(row.amount_paid ?? 0));
-  if (!(amount > 0)) return { error: "Esta reserva ya está paga.", status: 409 };
-  if (row.currency !== "ARS") return { error: "Esta reserva se paga por transferencia.", status: 400 };
+  const due = Number(row.total_amount) - Number(row.amount_paid ?? 0);
+  if (!(due > 0)) return { error: "Esta reserva ya está paga.", status: 409 };
+
+  // La VIP está en dólares: con tarjeta se cobra en pesos al dólar blue del día.
+  let amount = Math.round(due);
+  let usdNote = "";
+  if (row.currency === "USD") {
+    const rate = await getUsdRate();
+    if (!rate) return { error: "No pudimos obtener el dólar de hoy. Probá en un rato o pagá por transferencia.", status: 503 };
+    amount = Math.round(due * rate);
+    usdNote = ` (USD ${due} al dólar ${rate})`;
+  } else if (row.currency !== "ARS") {
+    return { error: "Esta reserva se paga por transferencia.", status: 400 };
+  }
 
   const tierKey = (row.ticket_type ?? "general") as TierKey;
   const label = eventConfig.tiers[tierKey]?.label.replace(" · Preventa", "") ?? "General";
@@ -75,7 +87,7 @@ async function createCheckout(
   try {
     const order = await createUalaOrder({
       amountPesos: amount,
-      description: `Estoy Para Más 2027 · Entrada ${label}${q > 1 ? ` x ${q}` : ""}`,
+      description: `Estoy Para Más 2027 · Entrada ${label}${q > 1 ? ` x ${q}` : ""}${usdNote}`,
       externalReference: reference,
       successUrl: `${base}/pago/exitoso?ref=${reference}`,
       failUrl: `${base}/pago/rechazado?ref=${reference}`,
@@ -83,7 +95,7 @@ async function createCheckout(
     });
     await supabase
       .from("event_registrations")
-      .update({ mercadopago_preference_id: `${UALA_PREFIX}${order.uuid}` })
+      .update({ mercadopago_preference_id: encodeUalaPref(order.uuid, row.currency === "USD" ? amount : undefined) })
       .eq("id", row.id);
     return { checkoutUrl: order.checkoutUrl, amount };
   } catch (err) {

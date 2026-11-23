@@ -56,7 +56,7 @@ export async function maybeSendConfirmationEmail(registration: RegistrationRow):
  * exitoso", reintentos).
  */
 export async function syncUalaOrder(uuid: string): Promise<"confirmed" | "pending" | "failed" | "ignored"> {
-  const { getUalaOrder, ualaAmountMatches, UALA_PREFIX } = await import("@/lib/uala");
+  const { getUalaOrder, ualaAmountMatches, UALA_PREFIX, parseUalaPref } = await import("@/lib/uala");
   const { money, notifyAdmin } = await import("@/lib/email");
 
   const order = await getUalaOrder(uuid);
@@ -66,7 +66,7 @@ export async function syncUalaOrder(uuid: string): Promise<"confirmed" | "pendin
   let query = supabase.from("event_registrations").select("*");
   query = reference
     ? query.eq("external_reference", reference)
-    : query.eq("mercadopago_preference_id", `${UALA_PREFIX}${uuid}`);
+    : query.like("mercadopago_preference_id", `${UALA_PREFIX}${uuid}%`);
   const { data: registration, error } = await query.maybeSingle<RegistrationRow & { amount_paid?: number | null }>();
   if (error) throw new Error(`Supabase: ${error.message}`);
   if (!registration) {
@@ -93,7 +93,12 @@ export async function syncUalaOrder(uuid: string): Promise<"confirmed" | "pendin
   if (status === "APPROVED" || status === "PROCESSED") {
     const total = Number(registration.total_amount);
     const due = total - Number(registration.amount_paid ?? 0);
-    if (!ualaAmountMatches(order.amount, [total, due])) {
+    // Reserva en dólares cobrada en pesos: el importe esperado es el que se cotizó.
+    const quotedArs = registration.currency === "USD"
+      ? parseUalaPref(registration.mercadopago_preference_id)?.ars ?? null
+      : null;
+    const expected = registration.currency === "USD" ? (quotedArs ? [quotedArs] : []) : [total, due];
+    if (!ualaAmountMatches(order.amount, expected)) {
       console.error(`[uala] ALERTA orden ${uuid}: importe ${order.amount} no coincide con ${total} / ${due}. NO se confirma.`);
       await supabase
         .from("event_registrations")
@@ -101,7 +106,7 @@ export async function syncUalaOrder(uuid: string): Promise<"confirmed" | "pendin
         .eq("id", registration.id);
       await notifyAdmin(`⚠️ Revisar pago con Ualá: ${registration.first_name} ${registration.last_name}`, [
         `Ualá informa un pago de la reserva ${registration.external_reference}, pero el importe no coincide.`,
-        `Importe de Ualá: ${order.amount} · Esperado: ${money(due, "ARS")}.`,
+        `Importe de Ualá: ${order.amount} · Esperado: ${quotedArs ? money(quotedArs, "ARS") : money(due, registration.currency)}.`,
         `No se marcó como pagada. Revisalo en tu panel de Ualá Bis.`,
       ]);
       return "pending";
@@ -127,7 +132,7 @@ export async function syncUalaOrder(uuid: string): Promise<"confirmed" | "pendin
     if (!claimed) return "confirmed";
 
     await notifyAdmin(`💳 Pago confirmado con Ualá: ${registration.first_name} ${registration.last_name}`, [
-      `${registration.first_name} ${registration.last_name} pagó ${money(due, "ARS")} con Ualá.`,
+      `${registration.first_name} ${registration.last_name} pagó ${quotedArs ? `${money(quotedArs, "ARS")} (${money(due, "USD")})` : money(due, "ARS")} con Ualá.`,
       `Código: ${registration.external_reference} · ${registration.quantity} entrada(s).`,
       `Ya le llegó la entrada con el QR por mail.`,
     ]);

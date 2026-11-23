@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eventConfig } from "@/config/event";
 import { getSupabaseAdmin, type RegistrationRow } from "@/lib/supabase-admin";
 import { syncUalaOrder } from "@/lib/payment-confirmation";
-import { isUalaEnabled, UALA_PREFIX } from "@/lib/uala";
+import { isUalaEnabled, parseUalaPref } from "@/lib/uala";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -42,9 +42,9 @@ export async function GET(request: Request) {
       .select("status, mercadopago_preference_id")
       .eq("external_reference", ref)
       .maybeSingle();
-    const pref = String(pre?.mercadopago_preference_id ?? "");
-    if (pre && pre.status !== "confirmed" && pref.startsWith(UALA_PREFIX)) {
-      await syncUalaOrder(pref.slice(UALA_PREFIX.length)).catch((err) =>
+    const pref = parseUalaPref(pre?.mercadopago_preference_id);
+    if (pre && pre.status !== "confirmed" && pref) {
+      await syncUalaOrder(pref.uuid).catch((err) =>
         console.error("[status] No se pudo consultar Ualá:", (err as Error).message),
       );
     }

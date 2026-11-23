@@ -57,7 +57,7 @@ export async function TeamSales() {
       <h2 className="admin-section-title">Ventas del equipo</h2>
       <p className="admin-section-note">
         Lo que entró por el link personal de cada una. Comisión del {Math.round(COMMISSION_RATE * 100)}%: “a pagar” son
-        reservas pagas completas; “en camino”, reservas por cobrar o en cuotas.
+        reservas pagas; “en camino”, reservas todavía por cobrar.
       </p>
       {migrationMissing && (
         <p className="admin-section-note" style={{ fontWeight: 600 }}>

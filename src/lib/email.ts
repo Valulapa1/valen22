@@ -285,7 +285,7 @@ ${button(lead.source === "home_adn" ? "https://calendly.com/valentinaparodi/60mi
       "Dos días que pueden cambiar tu año.",
       `<h1 style="font-weight:400;font-size:24px;margin:0 0 12px">Hola ${esc(name)} 🤍</h1>
 <p>Ayer dejaste tus datos en la página de <b>Estoy Para Más</b>. Te cuento lo más importante en 3 líneas:</p>
-<ul style="padding-left:18px"><li>Sábado 6 y domingo 7 de marzo, en Capital Federal. Vamos por 500 mujeres.</li>
+<ul style="padding-left:18px"><li>Sábado 6 y domingo 7 de marzo, en Capital Federal. Vamos por 150 mujeres.</li>
 <li>Sábado: tu transformación personal. Domingo: tu nuevo entorno.</li>
 <li>Venite con una amiga: 2 entradas generales a precio especial.</li></ul>
 ${button(`${siteUrl()}/estoy-para-mas#entradas`, "Ver las entradas")}

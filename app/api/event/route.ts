@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { isUalaEnabled } from "@/lib/uala";
+import { vipLeft } from "@/lib/vip";
 import { eventConfig, getCurrentTiers, isPresaleOver } from "@/config/event";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -12,6 +13,7 @@ export const dynamic = "force-dynamic";
  * hace de nuevo en el servidor al reservar.
  */
 export async function GET() {
+  const left = await vipLeft();
   return NextResponse.json({
     id: eventConfig.id,
     name: eventConfig.name,
@@ -22,6 +24,8 @@ export async function GET() {
     eventDate: eventConfig.eventDate,
     eventTime: eventConfig.eventTime,
     vipHours: eventConfig.vipHours,
+    vipLimit: eventConfig.tiers.vip.limited,
+    vipLeft: left,
     location: eventConfig.location,
     presaleEndsAt: eventConfig.presaleEndsAt,
     installmentsDeadline: eventConfig.installmentsDeadline,

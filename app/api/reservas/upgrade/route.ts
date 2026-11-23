@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { vipLeft } from "@/lib/vip";
 import { z } from "zod";
 import { eventConfig, getCurrentTier, getPaymentSchedule, getTierTotal } from "@/config/event";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
@@ -35,6 +36,10 @@ export async function POST(request: Request) {
   }
 
   const quantity = Number(row.quantity);
+  const left = await vipLeft();
+  if (left !== null && quantity > left) {
+    return NextResponse.json({ error: left > 0 ? `Quedan ${left} lugares VIP.` : "La VIP está agotada." }, { status: 409 });
+  }
   const tier = getCurrentTier("vip");
   const total = getTierTotal("vip", quantity);
   const schedule = getPaymentSchedule("vip", quantity, paymentPlan);

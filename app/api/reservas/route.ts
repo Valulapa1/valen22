@@ -7,6 +7,7 @@ import { money, notifyAdmin, reservationEmail, sendEmail } from "@/lib/email";
 import { getUsdRate } from "@/lib/dolar";
 import { isValidPhone, suspiciousReason } from "@/lib/spam";
 import { normalizeSeller } from "@/config/team";
+import { vipLeft } from "@/lib/vip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -64,6 +65,15 @@ export async function POST(request: Request) {
   // A una reserva sospechosa la guardamos (por si es real), pero no le
   // mandamos mails automáticos ni te avisamos.
   const suspicious = suspiciousReason({ firstName: `${data.firstName} ${data.lastName}`, email: data.email, phone: data.phone });
+  if (data.ticketType === "vip") {
+    const left = await vipLeft();
+    if (left !== null && data.quantity > left) {
+      return NextResponse.json(
+        { error: left > 0 ? `Quedan ${left} ${left === 1 ? "lugar" : "lugares"} VIP.` : "La VIP está agotada. Podés reservar la General." },
+        { status: 409 },
+      );
+    }
+  }
   const tier = getCurrentTier(data.ticketType);
   const total = getTierTotal(data.ticketType, data.quantity);
   const schedule = getPaymentSchedule(data.ticketType, data.quantity, data.paymentPlan);

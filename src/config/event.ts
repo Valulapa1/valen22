@@ -42,7 +42,8 @@ export const eventConfig = {
       /** "Venite con una amiga": cada par de entradas generales cuesta esto. */
       pairPrice: 88800,
     },
-    vip: { label: "VIP", price: 550, currency: "USD", maxInstallments: 3 },
+    /** VIP: solo 10 lugares y sin cuotas por transferencia. */
+    vip: { label: "VIP", price: 550, currency: "USD", limited: 10 },
   },
   /**
    * Precio de la General después de la preventa (desde el 7/1). Se aplica solo
@@ -160,7 +161,7 @@ export function getPaymentSchedule(
   const tier = eventConfig.tiers[ticketType];
   const total = getTierTotal(ticketType, quantity);
   const today = from.toISOString().slice(0, 10);
-  const max = "maxInstallments" in tier ? tier.maxInstallments : 1;
+  const max = "maxInstallments" in tier ? Number(tier.maxInstallments) : 1;
   if (plan !== "cuotas" || max < 2) return [{ date: today, amount: total }];
 
   const deadline = eventConfig.installmentsDeadline;

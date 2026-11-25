@@ -9,6 +9,8 @@ const nextConfig = {
         { source: "/", destination: "/inicio.html" },
         // Landing del evento con la venta de entradas.
         { source: "/estoy-para-mas", destination: "/index.html" },
+        // Casting de la serie de Estoy Para Más (inscripción vía Google Forms).
+        { source: "/casting", destination: "/casting.html" },
         // Legales.
         { source: "/terminos", destination: "/terminos.html" },
         { source: "/privacidad", destination: "/privacidad.html" },

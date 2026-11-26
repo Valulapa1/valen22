@@ -28,7 +28,7 @@ export const eventConfig = {
   /** Último día de la preventa de la entrada general (inclusive). */
   presaleEndsAt: "2027-01-06",
   /** WhatsApp al que se deriva cada reserva para coordinar la transferencia. */
-  whatsappNumber: "5493541694363",
+  whatsappNumber: "5491168457007",
   /**
    * Tipos de entrada. La General es en pesos; la VIP en dólares, y se puede
    * pagar en dólares por transferencia o en pesos al dólar del día (también con

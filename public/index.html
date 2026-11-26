@@ -1240,7 +1240,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
       <details><summary>¿Qué es la promo “Venite con una amiga”?</summary><p>Dos entradas generales por $88.800 en vez de $111.000. Elegís 2 entradas en el formulario y se aplica sola.</p></details>
       <details><summary>¿Cuántos lugares hay?</summary><p>Vamos por 150 mujeres y los cupos son limitados. La VIP tiene solo 10 lugares: son de quienes pagan primero.</p></details>
     </div>
-    <p class="center rv" style="text-align:center;margin-top:28px;color:var(--gris)">¿Otra duda? <a href="https://api.whatsapp.com/send?phone=5493541694363&amp;text=Hola%20Valen!%20Tengo%20una%20duda%20sobre%20Estoy%20Para%20M%C3%A1s" target="_blank" rel="noopener" style="color:var(--bronce);text-decoration:underline">Escribime por WhatsApp</a> y te contesto yo.</p>
+    <p class="center rv" style="text-align:center;margin-top:28px;color:var(--gris)">¿Otra duda? <a href="https://api.whatsapp.com/send?phone=5491168457007&amp;text=Hola%20Valen!%20Tengo%20una%20duda%20sobre%20Estoy%20Para%20M%C3%A1s" target="_blank" rel="noopener" style="color:var(--bronce);text-decoration:underline">Escribime por WhatsApp</a> y te contesto yo.</p>
   </div>
 </section>
 
@@ -1310,7 +1310,7 @@ h3{font-size:1.28rem;line-height:1.25;font-variation-settings:'opsz' 36}
           <a href="https://www.instagram.com/soyvalentinaparodi?igsh=cHdpaXQwY21iZzhs" class="soc" aria-label="Instagram" target="_blank" rel="noopener">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
           </a>
-          <a href="https://api.whatsapp.com/send?phone=5493541694363" class="soc" aria-label="WhatsApp" target="_blank" rel="noopener">
+          <a href="https://api.whatsapp.com/send?phone=5491168457007" class="soc" aria-label="WhatsApp" target="_blank" rel="noopener">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M21 11.5a8.4 8.4 0 01-12.6 7.3L3 21l2.3-5.3A8.4 8.4 0 1121 11.5z"/></svg>
           </a>
         </div>
@@ -1518,7 +1518,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
       submitBtn.disabled = false;
     }).catch(()=>{
       /* Sin servidor, seguimos con los precios publicados: la reserva viaja por WhatsApp. */
-      eventInfo = { maxTicketsPerPurchase: 5, whatsappNumber: '5493541694363', tiers: {
+      eventInfo = { maxTicketsPerPurchase: 5, whatsappNumber: '5491168457007', tiers: {
         general: (Date.now() > new Date('2027-01-06T23:59:59-03:00').getTime()) ? { label: 'General', price: 55500, currency: 'ARS', pairPrice: 88800 } : { label: 'General · Preventa', price: 55500, currency: 'ARS', pairPrice: 88800 },
         vip: { label: 'VIP', price: 550, currency: 'USD', maxInstallments: 3 }
       }, installmentsDeadline: '2027-02-15', paymentAccounts: FALLBACK_ACCOUNTS };
@@ -1601,7 +1601,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
     submitBtn.innerHTML = '<span class="buy-spin" aria-hidden="true"></span> Reservando tu lugar…';
 
     const t = currentTier() || {label: tipoSelect.options[tipoSelect.selectedIndex].text, price: 0, currency: 'ARS'};
-    const waNumber = (eventInfo && eventInfo.whatsappNumber) || '5493541694363';
+    const waNumber = (eventInfo && eventInfo.whatsappNumber) || '5491168457007';
 
     function waLines(info){
       const lines = [
